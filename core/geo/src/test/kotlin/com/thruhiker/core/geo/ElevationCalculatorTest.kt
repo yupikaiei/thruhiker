@@ -2,6 +2,7 @@ package com.thruhiker.core.geo
 
 import com.thruhiker.core.model.Track
 import com.thruhiker.core.model.TrackPoint
+import com.thruhiker.core.model.TrackSegment
 import com.thruhiker.core.model.LatLng
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -116,7 +117,7 @@ class ElevationCalculatorTest {
 
   @Test
   fun `track overload reads elevations from the track`() {
-    val track = Track(
+    val track = Track.of(
       listOf(
         TrackPoint(LatLng(46.0, 7.0), elevationMeters = 0.0),
         TrackPoint(LatLng(46.001, 7.0), elevationMeters = 300.0),
@@ -124,6 +125,39 @@ class ElevationCalculatorTest {
     )
     val result = ElevationCalculator.gainLoss(track)
     assertEquals(300.0, result.gainMeters, 1e-9)
+    assertEquals(0.0, result.lossMeters, 1e-9)
+  }
+
+  /**
+   * Ascent between segments is unknown travel, not climb.
+   *
+   * A pause recorded at the foot of a hill, resumed at the top, must not report
+   * the height of that hill as ascent. This is the elevation half of the reason
+   * segments exist.
+   */
+  @Test
+  fun `elevation change across a segment boundary is not counted`() {
+    val track = Track(
+      listOf(
+        TrackSegment(
+          listOf(
+            TrackPoint(LatLng(46.0, 7.0), elevationMeters = 0.0),
+            TrackPoint(LatLng(46.001, 7.0), elevationMeters = 100.0),
+          ),
+        ),
+        TrackSegment(
+          listOf(
+            TrackPoint(LatLng(46.100, 7.0), elevationMeters = 900.0),
+            TrackPoint(LatLng(46.101, 7.0), elevationMeters = 1000.0),
+          ),
+        ),
+      ),
+    )
+
+    val result = ElevationCalculator.gainLoss(track)
+
+    // 100 m inside each segment; the 800 m of unknown ground between them ignored.
+    assertEquals(200.0, result.gainMeters, 1e-9)
     assertEquals(0.0, result.lossMeters, 1e-9)
   }
 }

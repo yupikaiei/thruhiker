@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="ThruHiker sample" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata>
+    <name>Chamonix test loop</name>
+    <desc>Synthetic test data. Terrain is real, the path is not.</desc>
+  </metadata>
+  <trk>
+    <name>Chamonix test loop</name>
+    <trkseg>
+      <trkpt lat="45.9237" lon="6.8694"><ele>1035.0</ele><time>2026-07-14T06:00:00Z</time></trkpt>
+      <trkpt lat="45.9280" lon="6.8700"><ele>1080.0</ele><time>2026-07-14T06:10:00Z</time></trkpt>
+      <trkpt lat="45.9320" lon="6.8712"><ele>1180.0</ele><time>2026-07-14T06:22:00Z</time></trkpt>
+      <trkpt lat="45.9350" lon="6.8730"><ele>1290.0</ele><time>2026-07-14T06:35:00Z</time></trkpt>
+      <trkpt lat="45.9380" lon="6.8755"><ele>1420.0</ele><time>2026-07-14T06:50:00Z</time></trkpt>
+      <trkpt lat="45.9410" lon="6.8780"><ele>1560.0</ele><time>2026-07-14T07:05:00Z</time></trkpt>
+      <trkpt lat="45.9435" lon="6.8805"><ele>1690.0</ele><time>2026-07-14T07:20:00Z</time></trkpt>
+      <trkpt lat="45.9450" lon="6.8830"><ele>1877.0</ele><time>2026-07-14T07:38:00Z</time></trkpt>
+      <trkpt lat="45.9510" lon="6.8845"><ele>1980.0</ele><time>2026-07-14T08:00:00Z</time></trkpt>
+      <trkpt lat="45.9580" lon="6.8860"><ele>2090.0</ele><time>2026-07-14T08:25:00Z</time></trkpt>
+      <trkpt lat="45.9650" lon="6.8875"><ele>2180.0</ele><time>2026-07-14T08:50:00Z</time></trkpt>
+      <trkpt lat="45.9720" lon="6.8890"><ele>2270.0</ele><time>2026-07-14T09:15:00Z</time></trkpt>
+    </trkseg>
+    <trkseg>
+      <trkpt lat="45.9800" lon="6.8900"><ele>2352.0</ele><time>2026-07-14T10:40:00Z</time></trkpt>
+      <trkpt lat="45.9700" lon="6.8860"><ele>2180.0</ele><time>2026-07-14T11:20:00Z</time></trkpt>
+      <trkpt lat="45.9600" lon="6.8820"><ele>2010.0</ele><time>2026-07-14T12:00:00Z</time></trkpt>
+      <trkpt lat="45.9500" lon="6.8780"><ele>1850.0</ele><time>2026-07-14T12:40:00Z</time></trkpt>
+      <trkpt lat="45.9400" lon="6.8740"><ele>1600.0</ele><time>2026-07-14T13:25:00Z</time></trkpt>
+      <trkpt lat="45.9320" lon="6.8710"><ele>1300.0</ele><time>2026-07-14T14:20:00Z</time></trkpt>
+      <trkpt lat="45.9260" lon="6.8700"><ele>1120.0</ele><time>2026-07-14T15:00:00Z</time></trkpt>
+      <trkpt lat="45.9237" lon="6.8694"><ele>1035.0</ele><time>2026-07-14T15:30:00Z</time></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

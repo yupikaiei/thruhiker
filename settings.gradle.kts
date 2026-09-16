@@ -35,5 +35,6 @@ rootProject.name = "ThruHiker"
 include(":app")
 include(":core:model")
 include(":core:geo")
+include(":core:gpx")
 include(":core:designsystem")
 include(":core:mapping")

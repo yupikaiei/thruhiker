@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.geo.GeodesicTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-09-16T14:33:09.853Z" hostname="codespaces-acf759" time="0.064">
+<testsuite name="com.thruhiker.core.geo.GeodesicTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:06:14.991Z" hostname="codespaces-acf759" time="0.051">
   <properties/>
-  <testcase name="invalid coordinates are rejected" classname="com.thruhiker.core.geo.GeodesicTest" time="0.044"/>
-  <testcase name="interpolate clamps fractions outside the unit interval" classname="com.thruhiker.core.geo.GeodesicTest" time="0.005"/>
+  <testcase name="invalid coordinates are rejected" classname="com.thruhiker.core.geo.GeodesicTest" time="0.027"/>
+  <testcase name="interpolate clamps fractions outside the unit interval" classname="com.thruhiker.core.geo.GeodesicTest" time="0.003"/>
   <testcase name="interpolate returns the endpoints at the extremes" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
-  <testcase name="equator to north pole equals the published meridian quadrant" classname="com.thruhiker.core.geo.GeodesicTest" time="0.002"/>
+  <testcase name="equator to north pole equals the published meridian quadrant" classname="com.thruhiker.core.geo.GeodesicTest" time="0.001"/>
   <testcase name="cumulative distances start at zero and accumulate" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
   <testcase name="longitude difference across the antimeridian is short" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
   <testcase name="interpolate finds the midpoint along the equator" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
-  <testcase name="normalize helpers wrap values into range" classname="com.thruhiker.core.geo.GeodesicTest" time="0.001"/>
+  <testcase name="normalize helpers wrap values into range" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
   <testcase name="path over the pole equals twice the distance to the pole" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
-  <testcase name="distance is symmetric" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
+  <testcase name="distance is symmetric" classname="com.thruhiker.core.geo.GeodesicTest" time="0.005"/>
   <testcase name="reversing a path reverses both bearings" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
   <testcase name="coincident points report zero distance and bearing" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
   <testcase name="one degree of longitude on the equator matches the WGS84 equatorial degree" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
-  <testcase name="near antipodal pairs still produce a plausible half circumference" classname="com.thruhiker.core.geo.GeodesicTest" time="0.004"/>
-  <testcase name="destination round trips through inverse" classname="com.thruhiker.core.geo.GeodesicTest" time="0.004"/>
+  <testcase name="near antipodal pairs still produce a plausible half circumference" classname="com.thruhiker.core.geo.GeodesicTest" time="0.0"/>
+  <testcase name="destination round trips through inverse" classname="com.thruhiker.core.geo.GeodesicTest" time="0.009"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

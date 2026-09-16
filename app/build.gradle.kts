@@ -66,6 +66,7 @@ kotlin {
 dependencies {
   implementation(project(":core:model"))
   implementation(project(":core:geo"))
+  implementation(project(":core:gpx"))
   implementation(project(":core:designsystem"))
   implementation(project(":core:mapping"))
 

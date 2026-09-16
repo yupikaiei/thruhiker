@@ -1,9 +1,10 @@
-#Wed Sep 16 14:39:50 UTC 2026
+#Wed Sep 16 15:09:10 UTC 2026
 base.0=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeLibDexDebug/12/classes.dex
 base.10=/workspaces/thruhiker/app/build/intermediates/global_synthetics_dex/debug/mergeDebugGlobalSynthetics/classes.dex
 base.11=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
 base.12=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
+base.13=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeLibDexDebug/3/classes.dex
 base.2=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeLibDexDebug/5/classes.dex
 base.3=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeLibDexDebug/8/classes.dex
 base.4=/workspaces/thruhiker/app/build/intermediates/dex/debug/mergeLibDexDebug/9/classes.dex
@@ -17,6 +18,7 @@ path.1=12/classes.dex
 path.10=classes.dex
 path.11=classes2.dex
 path.12=classes3.dex
+path.13=3/classes.dex
 path.2=5/classes.dex
 path.3=8/classes.dex
 path.4=9/classes.dex
@@ -30,6 +32,7 @@ renamed.1=classes2.dex
 renamed.10=classes11.dex
 renamed.11=classes12.dex
 renamed.12=classes13.dex
+renamed.13=classes14.dex
 renamed.2=classes3.dex
 renamed.3=classes4.dex
 renamed.4=classes5.dex

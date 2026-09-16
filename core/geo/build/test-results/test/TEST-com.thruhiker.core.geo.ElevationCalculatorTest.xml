@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.geo.ElevationCalculatorTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-09-16T14:33:09.924Z" hostname="codespaces-acf759" time="0.033">
+<testsuite name="com.thruhiker.core.geo.ElevationCalculatorTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:06:14.923Z" hostname="codespaces-acf759" time="0.06">
   <properties/>
-  <testcase name="stairs under-count slightly by design" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.008"/>
-  <testcase name="samples without elevation are ignored entirely" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
-  <testcase name="empty input yields zero gain and loss" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.003"/>
-  <testcase name="a single sample yields zero gain and loss" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
-  <testcase name="a flat profile yields zero gain and loss" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.001"/>
+  <testcase name="stairs under-count slightly by design" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.01"/>
+  <testcase name="samples without elevation are ignored entirely" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.017"/>
+  <testcase name="empty input yields zero gain and loss" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.001"/>
+  <testcase name="a single sample yields zero gain and loss" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.001"/>
+  <testcase name="a flat profile yields zero gain and loss" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
   <testcase name="noise inside the threshold band is discarded" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
+  <testcase name="elevation change across a segment boundary is not counted" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.002"/>
   <testcase name="non finite samples are treated as missing" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
-  <testcase name="a negative threshold is rejected" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.01"/>
+  <testcase name="a negative threshold is rejected" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.014"/>
   <testcase name="climb then descent reports both directions" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
-  <testcase name="track overload reads elevations from the track" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.001"/>
-  <testcase name="minimum and maximum ignore missing values" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.005"/>
-  <testcase name="minimum and maximum are null when no elevation is present" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
-  <testcase name="null samples inside a climb are skipped without breaking accumulation" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
+  <testcase name="track overload reads elevations from the track" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
+  <testcase name="minimum and maximum ignore missing values" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.004"/>
+  <testcase name="minimum and maximum are null when no elevation is present" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.003"/>
+  <testcase name="null samples inside a climb are skipped without breaking accumulation" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.003"/>
   <testcase name="a zero threshold counts every movement" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
-  <testcase name="a single large climb is counted in full" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.0"/>
+  <testcase name="a single large climb is counted in full" classname="com.thruhiker.core.geo.ElevationCalculatorTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

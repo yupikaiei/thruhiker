@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.thruhiker.core.gpx.GpxRoundTripTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:06:14.559Z" hostname="codespaces-acf759" time="0.1">
+  <properties/>
+  <testcase name="elevations and times survive exactly" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.048"/>
+  <testcase name="waypoints survive the round trip" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.009"/>
+  <testcase name="xml metacharacters are escaped" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.001"/>
+  <testcase name="coordinates survive to the centimetre" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.015"/>
+  <testcase name="an empty track still produces a document that parses" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.004"/>
+  <testcase name="a written track reads back with the same shape" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.01"/>
+  <testcase name="the header is a namespaced gpx 1_1 document" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,5 +1,6 @@
 package com.thruhiker.core.geo
 
+import com.thruhiker.core.model.Track
 import com.thruhiker.core.model.TrackPoint
 import kotlin.math.abs
 import kotlin.math.exp
@@ -73,4 +74,8 @@ object ToblerEstimator {
     }
     return total
   }
+
+  /** Walking time for a whole track, summed segment by segment. */
+  fun hikingSeconds(track: Track): Double =
+    track.segments.sumOf { hikingSeconds(it.points) }
 }

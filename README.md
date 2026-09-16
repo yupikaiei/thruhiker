@@ -21,20 +21,25 @@ everything from the elevation profile to the itinerary is computed locally.
 Phase 0, foundations. What works today:
 
 - Multi-module Gradle build with a shared version catalog, verified on AGP 9 / Kotlin 2.3 / JDK 21.
-- `core:model` and `core:geo`: pure-Kotlin domain types and WGS84 geodesic maths, with 59 unit tests.
-- `core:mapping`: MapLibre rendering real 3D terrain with hillshade and sky, wrapped in a Compose
-  map surface. 10 unit tests cover the style factory.
+- `core:model` and `core:geo`: pure-Kotlin domain types and WGS84 geodesic maths.
+- `core:gpx`: reads GPX 1.0 and 1.1, and writes GPX 1.1.
+- `core:mapping`: MapLibre rendering real 3D terrain with hillshade, sky and a route line, wrapped
+  in a Compose map surface.
 - `core:designsystem`: Material 3 theme (pine, granite, sunrise) with Material You support.
-- `app`: Compose shell with Navigation 3, a four-destination bottom bar, and a live 3D terrain view
-  over the Mont Blanc massif.
+- `app`: Compose shell with Navigation 3, a four-destination bottom bar, and a Flyover tab that
+  imports a GPX file, draws it over terrain, and reports what the maths makes of it.
 
-69 unit tests, all passing.
+**127 unit tests, all passing.** The end-to-end path that works today is: pick a GPX file →
+parse → compute distance, ascent, elapsed and moving time → estimate walking time with Tobler →
+encode as GeoJSON → draw over 3D terrain with the camera framed on the route.
 
 **Nothing has run on a device yet.** This container has no emulator and cannot reach a USB-attached
 phone, so the map is verified to compile and to produce a correct style document, not to render on
-a screen. First real-device check is an outstanding task.
+a screen. That is still the top outstanding risk, and it is the reason the sample file exists: it
+takes one import to find out.
 
-Not yet built: recording, the planning engine, and video export. See "Roadmap" below.
+Not yet built: recording, the flyover camera rig and video export, and the planning engine. See
+"Roadmap" below.
 
 ## Module map
 
@@ -43,7 +48,8 @@ Not yet built: recording, the planning engine, and video export. See "Roadmap" b
 | `app` | Android app | Shell, navigation, DI wiring |
 | `core:model` | Kotlin JVM | Domain types (`LatLng`, `TrackPoint`, `Track`). No platform dependencies |
 | `core:geo` | Kotlin JVM | Geodesic maths, elevation, simplification, hiking-time estimation |
-| `core:mapping` | Android library | MapLibre terrain styles, camera model, Compose map surface |
+| `core:gpx` | Kotlin JVM | GPX parsing and writing |
+| `core:mapping` | Android library | MapLibre terrain styles, GeoJSON encoding, camera framing, Compose map surface |
 | `core:designsystem` | Android library | Theme and shared UI primitives |
 
 Pure Kotlin JVM modules are deliberate: the hard part of this app is arithmetic, and arithmetic
@@ -62,6 +68,18 @@ that runs on the JVM runs its tests in milliseconds instead of needing an emulat
 - **`ToblerEstimator`** — walking time from grade. Tobler's function peaks on a slight descent,
   so time estimates are asymmetric uphill and downhill rather than a flat speed plus penalty.
 - **`TrackStatsCalculator`** — distance, gain, loss, elapsed time and moving time in one pass.
+
+### Why tracks have segments
+
+A `Track` is a list of `TrackSegment`s, not a flat list of points, because GPS recording is not
+continuous. A hiker pauses for lunch, loses signal in a canyon, or switches the phone off
+overnight. Treating those gaps as ordinary consecutive samples invents a straight-line jump across
+however far they walked in between, which corrupts distance and speed at the same time. Elevation
+gain across a gap is unknown travel rather than climb, so the hysteresis reference resets at every
+segment boundary, and the map draws the gaps instead of spanning them.
+
+`Track.points` still exists for display, but it deliberately erases the boundaries and must not be
+used for measurement.
 
 ## Building
 
@@ -105,7 +123,7 @@ No API keys, no per-MAU billing:
 | Phase | Deliverable |
 | --- | --- |
 | 0 | Foundations, build, CI, geo core ✅ |
-| 1 | Trail pack, GPX/FIT import-export, offline elevation profiles |
+| 1 | GPX import/export ✅ · trail pack and offline elevation profiles outstanding |
 | 2 | 3D cinematic recap: camera rig, trail reveal, MP4/GIF export |
 | 3 | Recording: foreground service, adaptive sampling, barometric elevation |
 | 4 | Offline corridor maps and OSM routing for alternates and bailouts |
@@ -113,3 +131,8 @@ No API keys, no per-MAU billing:
 | 6 | Cinematic preview of the next day's section |
 | 7 | On-trail execution: alerts, town cards, check-in timer, Health Connect, Wear OS |
 | 8 | Battery and frame profiling, signed release APK |
+
+## Trying it
+
+Import `samples/chamonix-test-loop.gpx` from the Flyover tab. It is synthetic test data with a
+deliberate recording gap in it; `samples/README.md` explains what should happen.

@@ -11,6 +11,10 @@
       jars="/workspaces/thruhiker/core/geo/build/libs/geo.jar"
       resolved="::"/>
   <library
+      name=":@@:core:gpx"
+      jars="/workspaces/thruhiker/core/gpx/build/libs/gpx.jar"
+      resolved="::"/>
+  <library
       name=":@@:core:designsystem::debug"
       project=":core:designsystem"/>
   <library

@@ -63,8 +63,26 @@ object ElevationCalculator {
     return ElevationGainLoss(gain, loss)
   }
 
-  fun gainLoss(track: Track, thresholdMeters: Double = DEFAULT_THRESHOLD_METERS): ElevationGainLoss =
-    gainLoss(track.elevations(), thresholdMeters)
+  /**
+   * Gain and loss summed across segments.
+   *
+   * The hysteresis reference is deliberately reset at every segment boundary: the
+   * terrain crossed during a pause is unknown, so counting the elevation
+   * difference across the gap as ascent would be inventing metres the hiker never
+   * climbed.
+   */
+  fun gainLoss(track: Track, thresholdMeters: Double = DEFAULT_THRESHOLD_METERS): ElevationGainLoss {
+    var gain = 0.0
+    var loss = 0.0
+
+    for (segment in track.segments) {
+      val segmentResult = gainLoss(segment.elevations(), thresholdMeters)
+      gain += segmentResult.gainMeters
+      loss += segmentResult.lossMeters
+    }
+
+    return ElevationGainLoss(gain, loss)
+  }
 
   /** Lowest recorded elevation, or null when the track carries no elevation data. */
   fun minimum(elevations: Iterable<Double?>): Double? =

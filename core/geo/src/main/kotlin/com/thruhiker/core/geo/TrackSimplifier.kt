@@ -2,6 +2,7 @@ package com.thruhiker.core.geo
 
 import com.thruhiker.core.model.Track
 import com.thruhiker.core.model.TrackPoint
+import com.thruhiker.core.model.TrackSegment
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -85,12 +86,15 @@ object TrackSimplifier {
     return points.filterIndexed { index, _ -> keep[index] }
   }
 
+  /** Simplifies each segment independently, never merging across a gap. */
   fun simplify(
     track: Track,
     horizontalToleranceMeters: Double = DEFAULT_HORIZONTAL_TOLERANCE_METERS,
     verticalToleranceMeters: Double = DEFAULT_VERTICAL_TOLERANCE_METERS,
   ): Track = Track(
-    simplify(track.points, horizontalToleranceMeters, verticalToleranceMeters),
+    track.segments.map { segment ->
+      TrackSegment(simplify(segment.points, horizontalToleranceMeters, verticalToleranceMeters))
+    },
   )
 
   private fun normalizedDeviation(

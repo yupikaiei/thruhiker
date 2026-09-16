@@ -3,6 +3,7 @@ package com.thruhiker.core.geo
 import com.thruhiker.core.model.LatLng
 import com.thruhiker.core.model.Track
 import com.thruhiker.core.model.TrackPoint
+import com.thruhiker.core.model.TrackSegment
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -118,8 +119,37 @@ class TrackSimplifierTest {
 
   @Test
   fun `track overload simplifies the underlying points`() {
-    val track = Track((0..4).map { point(46.0 + it * 0.001, 7.0, 1000.0) })
+    val track = Track.of((0..4).map { point(46.0 + it * 0.001, 7.0, 1000.0) })
     assertEquals(2, TrackSimplifier.simplify(track).size)
+  }
+
+  /**
+   * Two collinear segments must remain two segments.
+   *
+   * Merging them would draw a line across ground the hiker never walked, and the
+   * flyover's progressive reveal would then cheerfully travel along it.
+   */
+  @Test
+  fun `segments are simplified independently and never merged`() {
+    val first = listOf(
+      point(46.000, 7.0, 1000.0),
+      point(46.001, 7.0, 1000.0),
+      point(46.002, 7.0, 1000.0),
+    )
+    val second = listOf(
+      point(47.000, 7.0, 1000.0),
+      point(47.001, 7.0, 1000.0),
+      point(47.002, 7.0, 1000.0),
+    )
+
+    val simplified = TrackSimplifier.simplify(
+      Track(listOf(TrackSegment(first), TrackSegment(second))),
+    )
+
+    assertEquals(2, simplified.segments.size)
+    assertEquals(2, simplified.segments[0].size)
+    assertEquals(2, simplified.segments[1].size)
+    assertEquals(4, simplified.size)
   }
 
   private fun point(latitude: Double, longitude: Double, elevation: Double?): TrackPoint =

@@ -5,8 +5,18 @@
     <string name="destination_journal">Journal</string>
     <string name="destination_plan">Plan</string>
     <string name="destination_record">Record</string>
+    <string name="import_gpx">Import GPX</string>
+    <string name="import_gpx_another">Import another</string>
     <string name="placeholder_journal">Photos pinned to their mile marker, auto day recaps, and the end-of-hike book export. Phase 7.</string>
     <string name="placeholder_plan">The itinerary generator, elevation-profile day splitter, resupply and nutrition engine, and permit vault all live here. Phase 5.</string>
     <string name="placeholder_record">Battery-sipping foreground recording with barometric elevation and auto-pause. Phase 3.</string>
+    <string name="route_error_no_track">That file has no track points in it.</string>
+    <string name="route_error_unreadable">Could not read that file.</string>
+    <string name="route_none_body">Import a GPX file to draw it over the terrain.</string>
+    <string name="route_none_title">No route loaded</string>
+    <string name="stats_ascent">Ascent</string>
+    <string name="stats_distance">Distance</string>
+    <string name="stats_walking_time">Est. walking time</string>
+    <string name="stats_walking_time_hint">Tobler, from the elevation profile</string>
     <style name="Theme.ThruHiker" parent="android:Theme.Material.Light.NoActionBar"/>
 </resources>

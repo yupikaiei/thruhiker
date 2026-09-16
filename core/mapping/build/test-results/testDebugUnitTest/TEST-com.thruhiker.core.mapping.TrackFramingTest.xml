@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.thruhiker.core.mapping.TrackFramingTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:09:09.647Z" hostname="codespaces-acf759" time="0.04">
+  <properties/>
+  <testcase name="a single point track zooms all the way in" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.006"/>
+  <testcase name="the diagonal spans the track rather than its width" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.0"/>
+  <testcase name="a two thousand kilometre route lands in a continental zoom range" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.013"/>
+  <testcase name="the centroid is correct across the antimeridian" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.001"/>
+  <testcase name="the centroid of symmetric points is between them" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.0"/>
+  <testcase name="a centroid of no positions is rejected" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.001"/>
+  <testcase name="segments do not distort the frame" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.0"/>
+  <testcase name="zoom falls as the route grows" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.0"/>
+  <testcase name="zoom is clamped at both ends" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.0"/>
+  <testcase name="the camera frames the whole route" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.002"/>
+  <testcase name="an empty track has no camera" classname="com.thruhiker.core.mapping.TrackFramingTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

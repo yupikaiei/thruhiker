@@ -19,23 +19,25 @@ import org.maplibre.android.MapLibre
 import org.maplibre.android.maps.MapView
 
 /**
- * A MapLibre map rendering real 3D terrain.
+ * A MapLibre map rendering real 3D terrain, optionally with a route drawn over it.
  *
- * The style is fetched and decorated off the main thread, so a flat vector
- * basemap appears first and terrain snaps in a moment later. On a long trail that
- * ordering matters: it means a hiker standing on a pass with two bars of signal
- * still gets a usable map while the DEM tiles are still arriving.
+ * The basemap style is fetched once and then decorated locally, so importing a
+ * route does not mean hitting the network again. Terrain is a style-level rather
+ * than imperative feature in MapLibre, so there is no "enable 3D" call:
+ * [MapStyleFactory] injects the DEM source, the `terrain` property and the track
+ * layers, and the renderer does the rest.
  *
- * Terrain is a style-level rather than imperative feature in MapLibre, so there is
- * no "enable 3D" call: [MapStyleFactory] injects the DEM source and the `terrain`
- * property, and the renderer does the rest.
+ * Rebuilding the whole style to change the route is heavier than mutating a
+ * source, but it happens only when the user imports a file, and it keeps the
+ * route on the same code path as terrain, which is fully unit-tested.
  */
 @Composable
 fun ThruHikerMap(
-  initialCamera: CameraOptions,
+  camera: CameraOptions,
   modifier: Modifier = Modifier,
   styleUrl: String = MapStyleFactory.OPEN_FREE_MAP_STYLE_URL,
   terrainExaggeration: Double = MapStyleFactory.DEFAULT_EXAGGERATION,
+  trackGeoJson: String? = null,
   onMapReady: (MapController) -> Unit = {},
 ) {
   val context = LocalContext.current
@@ -47,7 +49,7 @@ fun ThruHikerMap(
   }
 
   var controller by remember { mutableStateOf<MapController?>(null) }
-  var styleJson by remember { mutableStateOf<String?>(null) }
+  var baseStyleJson by remember(styleUrl) { mutableStateOf<String?>(null) }
   val requestState = remember { MapRequestState() }
 
   DisposableEffect(lifecycleOwner, mapView) {
@@ -70,14 +72,9 @@ fun ThruHikerMap(
     }
   }
 
-  LaunchedEffect(styleUrl, terrainExaggeration) {
-    styleJson = withContext(Dispatchers.IO) {
-      runCatching {
-        MapStyleFactory.withTerrain(
-          baseStyleJson = MapStyleLoader.fetch(styleUrl),
-          exaggeration = terrainExaggeration,
-        )
-      }.getOrNull()
+  LaunchedEffect(styleUrl) {
+    baseStyleJson = withContext(Dispatchers.IO) {
+      runCatching { MapStyleLoader.fetch(styleUrl) }.getOrNull()
     }
   }
 
@@ -96,11 +93,21 @@ fun ThruHikerMap(
     },
   )
 
-  LaunchedEffect(controller, styleJson) {
+  // Style and camera are applied together: MapLibre preserves the camera across a
+  // style change, so setting both here keeps framing deterministic instead of
+  // racing two effects against each other.
+  LaunchedEffect(controller, baseStyleJson, terrainExaggeration, trackGeoJson, camera) {
     val readyController = controller ?: return@LaunchedEffect
-    val json = styleJson ?: return@LaunchedEffect
-    readyController.applyStyle(json)
-    readyController.moveCamera(initialCamera)
+    val base = baseStyleJson ?: return@LaunchedEffect
+
+    readyController.applyStyle(
+      MapStyleFactory.withTerrainAndTrack(
+        baseStyleJson = base,
+        trackGeoJson = trackGeoJson,
+        exaggeration = terrainExaggeration,
+      ),
+    )
+    readyController.moveCamera(camera)
   }
 }
 
