@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ThruHiker</string>
+
+    <!-- Bottom navigation -->
+    <string name="destination_flyover">Flyover</string>
+    <string name="destination_plan">Plan</string>
+    <string name="destination_record">Record</string>
+    <string name="destination_journal">Journal</string>
+
+    <!-- Placeholder copy, replaced as each feature lands -->
+    <string name="placeholder_plan">The itinerary generator, elevation-profile day splitter, resupply and nutrition engine, and permit vault all live here. Phase 5.</string>
+    <string name="placeholder_record">Battery-sipping foreground recording with barometric elevation and auto-pause. Phase 3.</string>
+    <string name="placeholder_journal">Photos pinned to their mile marker, auto day recaps, and the end-of-hike book export. Phase 7.</string>
+</resources>

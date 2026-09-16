@@ -1,0 +1,17 @@
+R_DEF: Internal format may change without notice
+local
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string destination_flyover
+string destination_journal
+string destination_plan
+string destination_record
+string placeholder_journal
+string placeholder_plan
+string placeholder_record
+style Theme.ThruHiker
+xml backup_rules
+xml data_extraction_rules
