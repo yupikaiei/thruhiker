@@ -1,5 +1,6 @@
 package com.thruhiker.core.mapping
 
+import com.thruhiker.core.model.CameraOptions
 import com.thruhiker.core.model.LatLng
 import com.thruhiker.core.model.Track
 import com.thruhiker.core.model.TrackPoint

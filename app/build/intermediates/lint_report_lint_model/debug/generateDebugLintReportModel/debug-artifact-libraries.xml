@@ -15,6 +15,10 @@
       jars="/workspaces/thruhiker/core/gpx/build/libs/gpx.jar"
       resolved="::"/>
   <library
+      name=":@@:core:flyover"
+      jars="/workspaces/thruhiker/core/flyover/build/libs/flyover.jar"
+      resolved="::"/>
+  <library
       name=":@@:core:designsystem::debug"
       project=":core:designsystem"/>
   <library

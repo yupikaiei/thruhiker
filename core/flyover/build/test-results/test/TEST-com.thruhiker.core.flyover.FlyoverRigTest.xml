@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.thruhiker.core.flyover.FlyoverRigTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:46:08.189Z" hostname="codespaces-acf759" time="0.22">
+  <properties/>
+  <testcase name="the travelling camera is offset from the direction of travel" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.07"/>
+  <testcase name="shortest angle delta is signed and bounded" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.003"/>
+  <testcase name="elapsed time outside the flight is clamped" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.001"/>
+  <testcase name="the phases occur in order" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="an invalid configuration is rejected" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.029"/>
+  <testcase name="tilt stays within sane bounds throughout" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.053"/>
+  <testcase name="angle interpolation takes the short way round" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.001"/>
+  <testcase name="distance along the route never exceeds its length" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.005"/>
+  <testcase name="progress runs from zero to one" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.001"/>
+  <testcase name="the travelling camera looks a fixed distance ahead" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="an empty track has no rig" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.001"/>
+  <testcase name="a single point route produces a still flight rather than failing" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="the flight closes on the finish with everything revealed" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="the reveal never goes backwards" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.01"/>
+  <testcase name="the flight opens on the trailhead with nothing revealed" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="bearing stays normalised throughout" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.024"/>
+  <testcase name="travel duration is clamped at both ends" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="the camera target advances along the route through travel" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.004"/>
+  <testcase name="the intro sweeps in from wide and the outro pulls back out" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="duration is the sum of the three phases" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <testcase name="travel zoom and tilt are the configured ones" classname="com.thruhiker.core.flyover.FlyoverRigTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

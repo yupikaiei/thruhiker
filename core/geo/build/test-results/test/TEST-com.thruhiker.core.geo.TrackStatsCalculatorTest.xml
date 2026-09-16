@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.geo.TrackStatsCalculatorTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:06:15.103Z" hostname="codespaces-acf759" time="0.012">
+<testsuite name="com.thruhiker.core.geo.TrackStatsCalculatorTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:46:09.583Z" hostname="codespaces-acf759" time="0.024">
   <properties/>
-  <testcase name="custom elevation threshold is honoured" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.003"/>
-  <testcase name="distance sums the geodesic legs" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.001"/>
-  <testcase name="a track without timestamps reports null timing" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.001"/>
-  <testcase name="standing still accrues distance but not moving time" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.001"/>
-  <testcase name="moving time is not accrued across a segment boundary" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.001"/>
+  <testcase name="custom elevation threshold is honoured" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.017"/>
+  <testcase name="distance sums the geodesic legs" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.003"/>
+  <testcase name="a track without timestamps reports null timing" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
+  <testcase name="standing still accrues distance but not moving time" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
+  <testcase name="moving time is not accrued across a segment boundary" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
   <testcase name="distance never spans a segment boundary" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
   <testcase name="an empty track yields empty stats" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
   <testcase name="timestamps drive elapsed and average speed" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
   <testcase name="elevation gain loss and extremes are reported" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
   <testcase name="a single point has no distance and no timing" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.0"/>
-  <testcase name="a long pause is excluded from moving time" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.001"/>
+  <testcase name="a long pause is excluded from moving time" classname="com.thruhiker.core.geo.TrackStatsCalculatorTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

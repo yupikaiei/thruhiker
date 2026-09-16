@@ -8,6 +8,11 @@ string destination_flyover
 string destination_journal
 string destination_plan
 string destination_record
+string flyover_elevation
+string flyover_pause
+string flyover_play
+string flyover_progress
+string flyover_replay
 string import_gpx
 string import_gpx_another
 string placeholder_journal

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.mapping.GeoJsonEncoderTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:09:09.400Z" hostname="codespaces-acf759" time="0.08">
+<testsuite name="com.thruhiker.core.mapping.GeoJsonEncoderTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:50:36.459Z" hostname="codespaces-acf759" time="0.092">
   <properties/>
-  <testcase name="empty segments are dropped rather than emitted as empty lines" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.063"/>
-  <testcase name="the feature wrapper is well formed" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.001"/>
-  <testcase name="multiple segments become a multi line string" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.001"/>
-  <testcase name="coordinates are rounded to about eleven centimetres" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.003"/>
-  <testcase name="a single segment becomes a line string" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.001"/>
-  <testcase name="an empty track encodes to an empty multi line string" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.001"/>
+  <testcase name="empty segments are dropped rather than emitted as empty lines" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.079"/>
+  <testcase name="the feature wrapper is well formed" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.0"/>
+  <testcase name="multiple segments become a multi line string" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.002"/>
+  <testcase name="coordinates are rounded to about eleven centimetres" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.002"/>
+  <testcase name="a single segment becomes a line string" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.002"/>
+  <testcase name="an empty track encodes to an empty multi line string" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.002"/>
   <testcase name="coordinates are longitude first" classname="com.thruhiker.core.mapping.GeoJsonEncoderTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

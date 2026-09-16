@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.geo.ToblerEstimatorTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:06:15.048Z" hostname="codespaces-acf759" time="0.015">
+<testsuite name="com.thruhiker.core.geo.ToblerEstimatorTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:46:09.477Z" hostname="codespaces-acf759" time="0.02">
   <properties/>
-  <testcase name="speed falls away on both sides of the optimum" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.002"/>
-  <testcase name="vertical grades stay finite because speed is floored" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
-  <testcase name="climbing takes longer than walking flat" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
+  <testcase name="speed falls away on both sides of the optimum" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.011"/>
+  <testcase name="vertical grades stay finite because speed is floored" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
+  <testcase name="climbing takes longer than walking flat" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
   <testcase name="flat ground speed matches the fitted constant" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
   <testcase name="track estimate sums per segment and uses elevation" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
-  <testcase name="non finite grades are rejected" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
-  <testcase name="zero distance takes no time" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
-  <testcase name="speed peaks on a slight descent" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
-  <testcase name="five flat kilometres takes just under an hour" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
+  <testcase name="non finite grades are rejected" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.005"/>
+  <testcase name="zero distance takes no time" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
+  <testcase name="speed peaks on a slight descent" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.0"/>
+  <testcase name="five flat kilometres takes just under an hour" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
   <testcase name="track estimate treats missing elevation as flat" classname="com.thruhiker.core.geo.ToblerEstimatorTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

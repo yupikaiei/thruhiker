@@ -364,4 +364,28 @@
             file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/mipmap-anydpi-v26"/>
     </incident>
 
+    <incident
+        id="AutoboxingStateCreation"
+        severity="informational"
+        message="Prefer `mutableLongStateOf` instead of `mutableStateOf`">
+        <fix-replace
+            description="Replace with mutableLongStateOf"
+            replacement="androidx.compose.runtime.mutableLongStateOf"
+            shortenNames="true"
+            priority="0">
+            <range
+                file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/thruhiker/ui/flyover/FlyoverScreen.kt"
+                startOffset="4693"
+                endOffset="4707"/>
+        </fix-replace>
+        <location
+            file="${:app*debug*MAIN*sourceProvider*0*javaDir*0}/com/thruhiker/ui/flyover/FlyoverScreen.kt"
+            line="125"
+            column="34"
+            startOffset="4693"
+            endLine="125"
+            endColumn="48"
+            endOffset="4707"/>
+    </incident>
+
 </incidents>

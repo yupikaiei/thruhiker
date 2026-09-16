@@ -1,7 +1,9 @@
 package com.thruhiker.core.mapping
 
+import com.thruhiker.core.model.CameraOptions
 import com.thruhiker.core.model.LatLng
 import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.style.sources.GeoJsonSource
 
 /**
  * Thin handle over a live map.
@@ -36,5 +38,23 @@ class MapController internal constructor(private val map: MapLibreMap) {
       tilt = position.tilt,
       bearing = position.bearing,
     )
+  }
+
+  /**
+   * Replaces the drawn route without rebuilding the style.
+   *
+   * The flyover calls this many times a second, and re-applying the whole style
+   * would mean re-parsing every basemap layer and re-fetching nothing but
+   * re-uploading everything. Swapping a GeoJSON source is the one update that is
+   * cheap enough to drive an animation.
+   *
+   * No-op until the style has loaded, or if the route source is absent, which is
+   * the case before any route has been imported.
+   */
+  fun updateTrack(geoJson: String) {
+    map.getStyle { style ->
+      style.getSourceAs<GeoJsonSource>(MapStyleFactory.TRACK_SOURCE_ID)
+        ?.setGeoJson(geoJson)
+    }
   }
 }

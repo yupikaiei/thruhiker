@@ -125,12 +125,37 @@ coroutines = "1.10.2"
    where the version qualifier is less than or equal to the minSdkVersion,
    where the contents should be merged into the best folder.
 
+/workspaces/thruhiker/app/src/main/java/com/thruhiker/ui/flyover/FlyoverScreen.kt:125: Hint: Prefer mutableLongStateOf instead of mutableStateOf [AutoboxingStateCreation from androidx.compose.runtime]
+  var flightMillis by remember { mutableStateOf(0L) }
+                                 ~~~~~~~~~~~~~~
+
+   Explanation for issues of type "AutoboxingStateCreation":
+   Calling mutableStateOf<T>() when T is either backed by a primitive type on
+   the JVM or is a value class results in a state implementation that requires
+   all state values to be boxed. This usually causes an additional allocation
+   for each state write, and adds some additional work to auto-unbox values
+   when reading the value of the state. Instead, prefer to use a specialized
+   primitive state implementation for Int, Long, Float, and Double when the
+   state does not need to track null values and does not override the default
+   SnapshotMutationPolicy. See mutableIntStateOf(), mutableLongStateOf(),
+   mutableFloatStateOf(), and mutableDoubleStateOf() for more information.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.runtime
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
 /workspaces/thruhiker/app/src/main/res/xml/backup_rules.xml:8: Warning: The resource R.xml.backup_rules appears to be unused [UnusedResources]
 <full-backup-content>
 ^
 /workspaces/thruhiker/app/src/main/res/xml/data_extraction_rules.xml:6: Warning: The resource R.xml.data_extraction_rules appears to be unused [UnusedResources]
 <data-extraction-rules>
 ^
+/workspaces/thruhiker/app/src/main/res/values/strings.xml:25: Warning: The resource R.string.stats_walking_time_hint appears to be unused [UnusedResources]
+    <string name="stats_walking_time_hint">Tobler, from the elevation profile</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspaces/thruhiker/app/src/main/res/values/strings.xml:32: Warning: The resource R.string.flyover_elevation appears to be unused [UnusedResources]
+    <string name="flyover_elevation">Elevation</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~
 
    Explanation for issues of type "UnusedResources":
    Unused resources make applications larger and slow down builds.
@@ -165,4 +190,4 @@ coroutines = "1.10.2"
    </lint>
    ```
 
-0 errors, 21 warnings
+0 errors, 23 warnings, 1 hint

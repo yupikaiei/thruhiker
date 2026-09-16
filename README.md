@@ -21,25 +21,24 @@ everything from the elevation profile to the itinerary is computed locally.
 Phase 0, foundations. What works today:
 
 - Multi-module Gradle build with a shared version catalog, verified on AGP 9 / Kotlin 2.3 / JDK 21.
-- `core:model` and `core:geo`: pure-Kotlin domain types and WGS84 geodesic maths.
+- `core:model` and `core:geo`: domain types, WGS84 geodesic maths, and distance-based track sampling.
 - `core:gpx`: reads GPX 1.0 and 1.1, and writes GPX 1.1.
-- `core:mapping`: MapLibre rendering real 3D terrain with hillshade, sky and a route line, wrapped
-  in a Compose map surface.
+- `core:flyover`: the cinematic camera, as a pure function of elapsed time.
+- `core:mapping`: MapLibre rendering real 3D terrain with hillshade, sky and a route that draws
+  itself, wrapped in a Compose map surface.
 - `core:designsystem`: Material 3 theme (pine, granite, sunrise) with Material You support.
-- `app`: Compose shell with Navigation 3, a four-destination bottom bar, and a Flyover tab that
-  imports a GPX file, draws it over terrain, and reports what the maths makes of it.
+- `app`: Compose shell with Navigation 3, a four-destination bottom bar, and a Flyover tab.
 
-**127 unit tests, all passing.** The end-to-end path that works today is: pick a GPX file →
-parse → compute distance, ascent, elapsed and moving time → estimate walking time with Tobler →
-encode as GeoJSON → draw over 3D terrain with the camera framed on the route.
+**176 unit tests, all passing.** The end-to-end path that works today: pick a GPX file → parse it →
+measure it → plan a flight over it → fly it in 3D while the route draws itself behind the camera,
+with play, pause, replay and scrubbing.
 
 **Nothing has run on a device yet.** This container has no emulator and cannot reach a USB-attached
 phone, so the map is verified to compile and to produce a correct style document, not to render on
-a screen. That is still the top outstanding risk, and it is the reason the sample file exists: it
-takes one import to find out.
+a screen. Everything visual below is in that category. That is still the top outstanding risk, and
+it is the reason the sample file exists: it takes one import to find out.
 
-Not yet built: recording, the flyover camera rig and video export, and the planning engine. See
-"Roadmap" below.
+Not yet built: video export, recording, and the planning engine. See "Roadmap" below.
 
 ## Module map
 
@@ -50,6 +49,7 @@ Not yet built: recording, the flyover camera rig and video export, and the plann
 | `core:geo` | Kotlin JVM | Geodesic maths, elevation, simplification, hiking-time estimation |
 | `core:gpx` | Kotlin JVM | GPX parsing and writing |
 | `core:mapping` | Android library | MapLibre terrain styles, GeoJSON encoding, camera framing, Compose map surface |
+| `core:flyover` | Kotlin JVM | Cinematic camera: timeline, keyframes, easing |
 | `core:designsystem` | Android library | Theme and shared UI primitives |
 
 Pure Kotlin JVM modules are deliberate: the hard part of this app is arithmetic, and arithmetic
@@ -81,6 +81,32 @@ segment boundary, and the map draws the gaps instead of spanning them.
 `Track.points` still exists for display, but it deliberately erases the boundaries and must not be
 used for measurement.
 
+### How the flyover works
+
+`FlyoverRig.frameAt(elapsedMillis)` is a pure function from a millisecond offset to a camera. That
+one decision is what makes the rest tractable: the camera maths is testable without a map, and video
+export becomes possible later because an exporter can ask for frame 1,247 directly instead of
+playing frames 1 to 1,246.
+
+The flight has three parts. An **intro** settles from a wide establishing shot onto the trailhead,
+turned off-axis so the first sweep reveals the terrain. **Travel** flies the route at a constant
+ground speed with the camera looking a fixed distance *ahead* of the walker, offset in bearing so
+the route runs diagonally across the frame rather than dead ahead into the distance, where
+foreshortening would flatten it into nothing. The **outro** pulls up and flattens out over the
+finish.
+
+Camera position comes from `TrackSampler`, which walks the track by *distance* rather than by point
+index. Track points are not evenly spaced, so stepping through the array would make the camera
+lurch through dense sections and sprint through sparse ones, at a different speed on every
+recording. Travel duration is clamped rather than proportional: without a floor a two-kilometre
+stroll is over before you have focused, and without a ceiling the Pacific Crest Trail takes two
+hours to fly.
+
+The route drawing itself is `GeoJsonEncoder.encode(track, revealedFraction)`, which cuts the
+geometry mid-leg at exactly the right distance. The reveal granularity is a bandwidth decision, not
+a visual one — every step re-encodes and re-uploads the geometry so far, so a hundred-thousand-point
+route revealed in three hundred steps would move gigabytes of JSON.
+
 ## Building
 
 Requires JDK 17+ (JDK 21 recommended) and an Android SDK with platform 36.
@@ -98,7 +124,7 @@ The debug APK lands in `app/build/outputs/apk/debug/`, split per ABI because Map
 ~13 MB native library for each one. Install `app-arm64-v8a-debug.apk` on any modern phone; the
 x86_64 build is for emulators. A universal APK would be about 60 MB, so splits stay on.
 
-If `ANDROID_HOME` is not set, Gradle reads `sdk.dir` from `local.properties` (not committed).
+If `ANFlyover camera, progressive reveal, in-app playback ✅ · MP4/GIF export outstandingroperties` (not committed).
 
 ### Terrain
 

@@ -7,6 +7,11 @@ int string destination_flyover 0x0
 int string destination_journal 0x0
 int string destination_plan 0x0
 int string destination_record 0x0
+int string flyover_elevation 0x0
+int string flyover_pause 0x0
+int string flyover_play 0x0
+int string flyover_progress 0x0
+int string flyover_replay 0x0
 int string import_gpx 0x0
 int string import_gpx_another 0x0
 int string placeholder_journal 0x0

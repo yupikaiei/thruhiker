@@ -23,4 +23,11 @@
     <string name="stats_ascent">Ascent</string>
     <string name="stats_walking_time">Est. walking time</string>
     <string name="stats_walking_time_hint">Tobler, from the elevation profile</string>
+
+    <!-- Flyover -->
+    <string name="flyover_play">Play</string>
+    <string name="flyover_pause">Pause</string>
+    <string name="flyover_replay">Replay</string>
+    <string name="flyover_progress">%1$d%% of the flight</string>
+    <string name="flyover_elevation">Elevation</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.thruhiker.core.mapping
 
 import com.thruhiker.core.geo.Geodesic
+import com.thruhiker.core.model.CameraOptions
 import com.thruhiker.core.model.LatLng
 import com.thruhiker.core.model.Track
 import kotlin.math.atan2

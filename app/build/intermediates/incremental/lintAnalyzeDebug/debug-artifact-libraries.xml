@@ -1,10 +1,10 @@
 <libraries>
   <library
       name=":@@:core:mapping::debug"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/e3905e36388dd5c7f0eb9ff139fbe63b/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/e3905e36388dd5c7f0eb9ff139fbe63b/transformed/out/jars/libs/R.jar"
+      jars="/home/codespace/.gradle/caches/9.1.0/transforms/7932ed03158f5bceee4d6189feee1cdd/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/7932ed03158f5bceee4d6189feee1cdd/transformed/out/jars/libs/R.jar"
       resolved="ThruHiker.core:mapping:unspecified"
       partialResultsDir="/workspaces/thruhiker/core/mapping/build/intermediates/lint_partial_results/debug/lintAnalyzeDebug/out"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/e3905e36388dd5c7f0eb9ff139fbe63b/transformed/out"
+      folder="/home/codespace/.gradle/caches/9.1.0/transforms/7932ed03158f5bceee4d6189feee1cdd/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -24,6 +24,10 @@
   <library
       name=":@@:core:gpx"
       jars="/workspaces/thruhiker/core/gpx/build/libs/gpx.jar"
+      resolved="::"/>
+  <library
+      name=":@@:core:flyover"
+      jars="/workspaces/thruhiker/core/flyover/build/libs/flyover.jar"
       resolved="::"/>
   <library
       name=":@@:core:designsystem::debug"

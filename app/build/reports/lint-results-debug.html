@@ -177,9 +177,9 @@ document.getElementById(id).style.display = 'none';
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
-      <span class="mdl-layout-title">Lint Report: 21 warnings</span>
+      <span class="mdl-layout-title">Lint Report: 23 warnings and 1 hint</span>
       <div class="mdl-layout-spacer"></div>
-      <nav class="mdl-navigation mdl-layout--large-screen-only">Check performed at Wed Sep 16 15:10:08 UTC 2026 by AGP (9.0.1)</nav>
+      <nav class="mdl-navigation mdl-layout--large-screen-only">Check performed at Wed Sep 16 15:50:52 UTC 2026 by AGP (9.0.1)</nav>
     </div>
   </header>
   <div class="mdl-layout__drawer">
@@ -192,7 +192,8 @@ document.getElementById(id).style.display = 'none';
       <a class="mdl-navigation__link" href="#GradleDependency"><i class="material-icons warning-icon">warning</i>Obsolete Gradle Dependency (8)</a>
       <a class="mdl-navigation__link" href="#NewerVersionAvailable"><i class="material-icons warning-icon">warning</i>Newer Library Versions Available (5)</a>
       <a class="mdl-navigation__link" href="#ObsoleteSdkInt"><i class="material-icons warning-icon">warning</i>Obsolete SDK_INT Version Check (1)</a>
-      <a class="mdl-navigation__link" href="#UnusedResources"><i class="material-icons warning-icon">warning</i>Unused resources (2)</a>
+      <a class="mdl-navigation__link" href="#AutoboxingStateCreation"><i class="material-icons warning-icon">warning</i><code>State&lt;T></code> will autobox values assigned to this state. Use a specialized state type instead. (1)</a>
+      <a class="mdl-navigation__link" href="#UnusedResources"><i class="material-icons warning-icon">warning</i>Unused resources (4)</a>
     </nav>
   </div>
   <main class="mdl-layout__content">
@@ -228,7 +229,10 @@ document.getElementById(id).style.display = 'none';
 <td class="countColumn">1</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
 <a href="#ObsoleteSdkInt">ObsoleteSdkInt</a>: Obsolete SDK_INT Version Check</td></tr>
 <tr>
-<td class="countColumn">2</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
+<td class="countColumn">1</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
+<a href="#AutoboxingStateCreation">AutoboxingStateCreation</a>: <code>State&lt;T></code> will autobox values assigned to this state. Use a specialized state type instead.</td></tr>
+<tr>
+<td class="countColumn">4</td><td class="issueColumn"><i class="material-icons warning-icon">warning</i>
 <a href="#UnusedResources">UnusedResources</a>: Unused resources</td></tr>
 <tr><td></td><td class="categoryColumn"><a href="#ExtraIssues">Included Additional Checks (83)</a>
 </td></tr>
@@ -643,6 +647,55 @@ To suppress this error, use the issue id "ObsoleteSdkInt" as explained in the <a
 Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="ObsoleteSdkIntCardLink" onclick="hideid('ObsoleteSdkIntCard');">
 Dismiss</button>            </div>
             </div>
+          </section><a name="AutoboxingStateCreation"></a>
+<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="AutoboxingStateCreationCard" style="display: block;">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">State&lt;T> will autobox values assigned to this state. Use a specialized state type instead.</h2>
+  </div>
+              <div class="mdl-card__supporting-text">
+<div class="issue">
+<div class="warningslist">
+<span class="location"><a href="../../src/main/java/com/thruhiker/ui/flyover/FlyoverScreen.kt">../../src/main/java/com/thruhiker/ui/flyover/FlyoverScreen.kt</a>:125</span>: <span class="message">Prefer <code>mutableLongStateOf</code> instead of <code>mutableStateOf</code></span><br /><pre class="errorlines">
+<span class="lineno"> 122 </span>  <span class="keyword">var</span> errorMessage by remember { mutableStateOf&lt;String?>(<span class="keyword">null</span>) }
+<span class="lineno"> 123 </span>  <span class="keyword">var</span> controller by remember { mutableStateOf&lt;MapController?>(<span class="keyword">null</span>) }
+<span class="lineno"> 124 </span>  <span class="keyword">var</span> isPlaying by remember { mutableStateOf(<span class="keyword">false</span>) }
+<span class="caretline"><span class="lineno"> 125 </span>  <span class="keyword">var</span> flightMillis by remember { <span class="warning">mutableStateOf</span>(<span class="number">0L</span>) }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 126 </span>  <span class="keyword">var</span> hud by remember { mutableStateOf&lt;FlightHud?>(<span class="keyword">null</span>) }
+<span class="lineno"> 127 </span>  <span class="keyword">var</span> finished by remember { mutableStateOf(<span class="keyword">false</span>) }
+</pre>
+
+</div>
+<div class="metadata"><div class="explanation" id="explanationAutoboxingStateCreation" style="display: none;">
+Calling <code>mutableStateOf&lt;T>()</code> when <code>T</code> is either backed by a primitive type on the JVM or is a value class results in a state implementation that requires all state values to be boxed. This usually causes an additional allocation for each state write, and adds some additional work to auto-unbox values when reading the value of the state. Instead, prefer to use a specialized primitive state implementation for <code>Int</code>, <code>Long</code>, <code>Float</code>, and <code>Double</code> when the state does not need to track null values and does not override the default <code>SnapshotMutationPolicy</code>. See <code>mutableIntStateOf()</code>, <code>mutableLongStateOf()</code>, <code>mutableFloatStateOf()</code>, and <code>mutableDoubleStateOf()</code> for more information.<br/>To suppress this error, use the issue id "AutoboxingStateCreation" as explained in the <a href="#SuppressInfo">Suppressing Warnings and Errors</a> section.<br/>
+<br/></div>
+</div>
+</div>
+<div class="vendor">
+Vendor: Jetpack Compose<br/>
+Identifier: androidx.compose.runtime<br/>
+Feedback: <a href="https://issuetracker.google.com/issues/new?component=612128">https://issuetracker.google.com/issues/new?component=612128</a><br/>
+</div>
+<div class="chips">
+<span class="mdl-chip">
+    <span class="mdl-chip__text">AutoboxingStateCreation</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Performance</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Hint</span>
+</span>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">Priority 3/10</span>
+</span>
+</div>
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+<button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="explanationAutoboxingStateCreationLink" onclick="reveal('explanationAutoboxingStateCreation');">
+Explain</button><button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="AutoboxingStateCreationCardLink" onclick="hideid('AutoboxingStateCreationCard');">
+Dismiss</button>            </div>
+            </div>
           </section><a name="UnusedResources"></a>
 <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" id="UnusedResourcesCard" style="display: block;">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
@@ -671,6 +724,22 @@ Dismiss</button>            </div>
 <span class="lineno">  8 </span>        <span class="comment">&lt;!-- TODO: Use &lt;include> and &lt;exclude> to control what is backed up.
 </span><span class="lineno">  9 </span><span class="comment">        &lt;include .../>
 </span></pre>
+
+<span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:25</span>: <span class="message">The resource <code>R.string.stats_walking_time_hint</code> appears to be unused</span><br /><pre class="errorlines">
+<span class="lineno"> 22 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"stats_distance"</span>>Distance<span class="tag">&lt;/string></span>
+<span class="lineno"> 23 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"stats_ascent"</span>>Ascent<span class="tag">&lt;/string></span>
+<span class="lineno"> 24 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"stats_walking_time"</span>>Est. walking time<span class="tag">&lt;/string></span>
+<span class="caretline"><span class="lineno"> 25 </span>    <span class="tag">&lt;string</span><span class="attribute"> </span><span class="warning"><span class="attribute">name</span>=<span class="value">"stats_walking_time_hint"</span></span>>Tobler, from the elevation profile<span class="tag">&lt;/string></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 26 </span>
+<span class="lineno"> 27 </span>    <span class="comment">&lt;!-- Flyover --></span>
+<span class="lineno"> 28 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"flyover_play"</span>>Play<span class="tag">&lt;/string></span></pre>
+
+<span class="location"><a href="../../src/main/res/values/strings.xml">../../src/main/res/values/strings.xml</a>:32</span>: <span class="message">The resource <code>R.string.flyover_elevation</code> appears to be unused</span><br /><pre class="errorlines">
+<span class="lineno"> 29 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"flyover_pause"</span>>Pause<span class="tag">&lt;/string></span>
+<span class="lineno"> 30 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"flyover_replay"</span>>Replay<span class="tag">&lt;/string></span>
+<span class="lineno"> 31 </span>    <span class="tag">&lt;string</span><span class="attribute"> name</span>=<span class="value">"flyover_progress"</span>>%1$d%% of the flight<span class="tag">&lt;/string></span>
+<span class="caretline"><span class="lineno"> 32 </span>    <span class="tag">&lt;string</span><span class="attribute"> </span><span class="warning"><span class="attribute">name</span>=<span class="value">"flyover_elevation"</span></span>>Elevation<span class="tag">&lt;/string></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class="lineno"> 33 </span><span class="tag">&lt;/resources></span></pre>
 
 </div>
 <div class="metadata"><div class="explanation" id="explanationUnusedResources" style="display: none;">
