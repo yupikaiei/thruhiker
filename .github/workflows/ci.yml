@@ -3,7 +3,9 @@ name: CI
 on:
   push:
     branches: [main]
+    tags: ['v*']
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,7 +18,7 @@ jobs:
   build:
     name: Build and test
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     steps:
       - name: Check out
@@ -31,33 +33,134 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # The runner image ships an Android SDK, but not necessarily the platform
-      # this project compiles against. Install it if the tooling is available.
-      - name: Ensure Android SDK packages
+      # The runner ships an Android SDK, but not necessarily the platform this
+      # project compiles against, and the tooling for installing one changed shape
+      # in 2026: `android sdk install` replaced `sdkmanager`. Support both, and fail
+      # with a clear message rather than a confusing Gradle error.
+      - name: Ensure the Android SDK has what the build needs
         run: |
-          SDK_ROOT="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
-          SDKMANAGER="$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
-          if [ -x "$SDKMANAGER" ]; then
-            yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
-            "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0" > /dev/null || true
-          else
-            echo "sdkmanager not found; relying on the runner image"
+          SDK="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          echo "Android SDK root: $SDK"
+
+          if [ -d "$SDK/platforms/android-36" ]; then
+            echo "platforms/android-36 is already installed"
+            exit 0
           fi
 
-      # Unit tests only. Instrumented tests need an emulator, which is a
-      # deliberate later step: see the plan's dev-loop notes.
+          NEW_CLI="$SDK/cmdline-tools/latest/bin/android"
+          OLD_CLI="$SDK/cmdline-tools/latest/bin/sdkmanager"
+
+          if [ -x "$NEW_CLI" ]; then
+            echo "Installing platform 36 with the android CLI"
+            "$NEW_CLI" --sdk "$SDK" sdk install platforms/android-36 build-tools/36.0.0 || true
+          elif [ -x "$OLD_CLI" ]; then
+            echo "Installing platform 36 with sdkmanager"
+            yes | "$OLD_CLI" --licenses > /dev/null 2>&1 || true
+            "$OLD_CLI" "platforms;android-36" "build-tools;36.0.0" || true
+          else
+            echo "No SDK manager found on the runner image; relying on what is installed."
+          fi
+
+          if [ ! -d "$SDK/platforms/android-36" ]; then
+            echo "::error::platforms;android-36 is missing and could not be installed."
+            exit 1
+          fi
+
       - name: Unit tests
         run: ./gradlew test --continue
 
       - name: Lint
         run: ./gradlew lint
 
-      - name: Assemble debug APK
+      - name: Assemble debug APKs
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
+          name: thruhiker-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+          retention-days: 30
+
+  # Turns a build into something you can download from a phone. Actions artifacts
+  # need a signed-in session and expire; a release asset is a plain URL that can be
+  # opened and installed directly.
+  publish:
+    name: Publish download
+    needs: build
+    # Never publish from a pull request: those commits are not on the main branch,
+    # and publishing is a public invitation to install.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download the built APKs
+        uses: actions/download-artifact@v4
+        with:
+          name: thruhiker-debug-apk
+          path: apk
+
+      # "app-arm64-v8a-debug.apk" says nothing about which commit it is. Somebody
+      # comparing two downloads on a phone needs to be able to tell them apart.
+      - name: Give the APKs names worth downloading
+        run: |
+          short_sha="${GITHUB_SHA:0:7}"
+          mkdir -p named
+          for file in apk/*.apk; do
+            base=$(basename "$file" .apk)
+            abi=${base#app-}
+            abi=${abi%-debug}
+            cp "$file" "named/thruhiker-${short_sha}-${abi}.apk"
+          done
+          ls -la named
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo="$GITHUB_REPOSITORY"
+          short_sha="${GITHUB_SHA:0:7}"
+
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            tag="${GITHUB_REF_NAME}"
+            title="ThruHiker ${tag}"
+          else
+            # One rolling release, so there is always a stable download URL at
+            # github.com/OWNER/REPO/releases/latest
+            tag="latest"
+            title="Latest build from main"
+          fi
+
+          cat > notes.md <<EOF
+          Built from \`${GITHUB_SHA}\` on $(date -u +%Y-%m-%d).
+
+          Install \`thruhiker-${short_sha}-arm64-v8a.apk\` on any modern phone. The x86_64 build is for emulators and the armeabi-v7a build is for older 32-bit devices; you only need one of them.
+
+          These are debug builds signed with the standard Android debug key, so Android will ask you to allow installing from an unknown source and Play Protect may warn. That is expected. A release-signed build needs a keystore and is not set up yet.
+          EOF
+
+          if [ "${tag}" = "latest" ]; then
+            # Move the tag to the commit actually being published, so the release does
+            # not drift away from the assets attached to it.
+            git tag -f latest "${GITHUB_SHA}"
+            git push --force origin refs/tags/latest
+          fi
+
+          if gh release view "${tag}" --repo "${repo}" > /dev/null 2>&1; then
+            gh release edit "${tag}" --repo "${repo}" --title "${title}" --notes-file notes.md
+          else
+            gh release create "${tag}" --repo "${repo}" --title "${title}" \
+              --notes-file notes.md --target "${GITHUB_SHA}"
+          fi
+
+          gh release upload "${tag}" named/*.apk --repo "${repo}" --clobber
+          echo "Published to https://github.com/${repo}/releases/tag/${tag}"

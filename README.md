@@ -107,6 +107,26 @@ geometry mid-leg at exactly the right distance. The reveal granularity is a band
 a visual one — every step re-encodes and re-uploads the geometry so far, so a hundred-thousand-point
 route revealed in three hundred steps would move gigabytes of JSON.
 
+## Downloading a build
+
+Every push to `main` publishes a release, so there is always a current build here:
+
+**https://github.com/yupikaiei/thruhiker/releases/latest**
+
+Open that on the phone, download `thruhiker-<sha>-arm64-v8a.apk`, and install it. Android will ask
+you to allow installs from an unknown source, and Play Protect may warn; both are expected for a
+build signed with the debug key. You only need one APK — arm64-v8a covers any modern phone, x86_64
+is for emulators, and armeabi-v7a is for older 32-bit devices.
+
+To cut a versioned release instead of updating the rolling one, tag a commit:
+
+```bash
+git tag v0.1.0 && git push origin v0.1.0
+```
+
+Actions artifacts are uploaded per run as well, but they need a signed-in GitHub session and expire
+after 30 days, which is the reason the release exists.
+
 ## Building
 
 Requires JDK 17+ (JDK 21 recommended) and an Android SDK with platform 36.
