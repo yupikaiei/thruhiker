@@ -156,11 +156,18 @@ jobs:
           fi
 
           if gh release view "${tag}" --repo "${repo}" > /dev/null 2>&1; then
+            # A rolling release means "the current build", so the previous APKs go.
+            # --clobber alone only replaces identically named assets, which would
+            # leave three more files behind on every single push.
+            for asset in $(gh release view "${tag}" --repo "${repo}" --json assets --jq '.assets[].name'); do
+              gh release delete-asset "${tag}" "${asset}" --repo "${repo}" --yes
+            done
+
             gh release edit "${tag}" --repo "${repo}" --title "${title}" --notes-file notes.md
           else
             gh release create "${tag}" --repo "${repo}" --title "${title}" \
               --notes-file notes.md --target "${GITHUB_SHA}"
           fi
 
-          gh release upload "${tag}" named/*.apk --repo "${repo}" --clobber
+          gh release upload "${tag}" named/*.apk --repo "${repo}"
           echo "Published to https://github.com/${repo}/releases/tag/${tag}"
