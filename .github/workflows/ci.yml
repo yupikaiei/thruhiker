@@ -83,9 +83,15 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-  # Turns a build into something you can download from a phone. Actions artifacts
-  # need a signed-in session and expire; a release asset is a plain URL that can be
-  # opened and installed directly.
+  # Turns a build into something you can open on a phone. Actions artifacts need a
+  # signed-in session and expire; a release asset is a plain URL.
+  #
+  # Two kinds of release, deliberately kept apart:
+  #
+  #   latest    the newest build from main, replaced on every push, assets named
+  #             without the commit in them so the download URL never changes. Marked
+  #             as a prerelease so it does not take the "Latest" badge.
+  #   vX.Y.Z    a frozen version, assets named after the version.
   publish:
     name: Publish download
     needs: build
@@ -108,20 +114,6 @@ jobs:
           name: thruhiker-debug-apk
           path: apk
 
-      # "app-arm64-v8a-debug.apk" says nothing about which commit it is. Somebody
-      # comparing two downloads on a phone needs to be able to tell them apart.
-      - name: Give the APKs names worth downloading
-        run: |
-          short_sha="${GITHUB_SHA:0:7}"
-          mkdir -p named
-          for file in apk/*.apk; do
-            base=$(basename "$file" .apk)
-            abi=${base#app-}
-            abi=${abi%-debug}
-            cp "$file" "named/thruhiker-${short_sha}-${abi}.apk"
-          done
-          ls -la named
-
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -133,17 +125,31 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             tag="${GITHUB_REF_NAME}"
             title="ThruHiker ${tag}"
+            asset_prefix="thruhiker-${tag}"
+            prerelease_flag=""
           else
-            # One rolling release, so there is always a stable download URL at
-            # github.com/OWNER/REPO/releases/latest
             tag="latest"
-            title="Latest build from main"
+            title="Latest build from main (${short_sha})"
+            # No commit in the asset names, so this URL is permanent and always serves
+            # the newest build:
+            #   .../releases/download/latest/thruhiker-arm64-v8a.apk
+            asset_prefix="thruhiker"
+            prerelease_flag="--prerelease"
           fi
+
+          mkdir -p named
+          for file in apk/*.apk; do
+            base=$(basename "$file" .apk)
+            abi=${base#app-}
+            abi=${abi%-debug}
+            cp "$file" "named/${asset_prefix}-${abi}.apk"
+          done
+          ls -la named
 
           cat > notes.md <<EOF
           Built from \`${GITHUB_SHA}\` on $(date -u +%Y-%m-%d).
 
-          Install \`thruhiker-${short_sha}-arm64-v8a.apk\` on any modern phone. The x86_64 build is for emulators and the armeabi-v7a build is for older 32-bit devices; you only need one of them.
+          Install \`${asset_prefix}-arm64-v8a.apk\` on any modern phone. The x86_64 build is for emulators and the armeabi-v7a build is for older 32-bit devices; you only need one of them.
 
           These are debug builds signed with the standard Android debug key, so Android will ask you to allow installing from an unknown source and Play Protect may warn. That is expected. A release-signed build needs a keystore and is not set up yet.
           EOF
@@ -163,11 +169,12 @@ jobs:
               gh release delete-asset "${tag}" "${asset}" --repo "${repo}" --yes
             done
 
-            gh release edit "${tag}" --repo "${repo}" --title "${title}" --notes-file notes.md
+            gh release edit "${tag}" --repo "${repo}" --title "${title}" \
+              --notes-file notes.md ${prerelease_flag}
           else
             gh release create "${tag}" --repo "${repo}" --title "${title}" \
-              --notes-file notes.md --target "${GITHUB_SHA}"
+              --notes-file notes.md --target "${GITHUB_SHA}" ${prerelease_flag}
           fi
 
           gh release upload "${tag}" named/*.apk --repo "${repo}"
-          echo "Published to https://github.com/${repo}/releases/tag/${tag}"
+          echo "Published https://github.com/${repo}/releases/tag/${tag}"

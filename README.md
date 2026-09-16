@@ -109,23 +109,34 @@ route revealed in three hundred steps would move gigabytes of JSON.
 
 ## Downloading a build
 
-Every push to `main` publishes a release, so there is always a current build here:
+Two things are published, on purpose.
 
-**https://github.com/yupikaiei/thruhiker/releases/latest**
+**The newest build from `main`**, replaced on every push:
+<https://github.com/yupikaiei/thruhiker/releases/tag/latest>
 
-Open that on the phone, download `thruhiker-<sha>-arm64-v8a.apk`, and install it. Android will ask
-you to allow installs from an unknown source, and Play Protect may warn; both are expected for a
-build signed with the debug key. You only need one APK — arm64-v8a covers any modern phone, x86_64
-is for emulators, and armeabi-v7a is for older 32-bit devices.
+The asset names deliberately do not contain the commit, so this link is permanent and always serves
+the current build — good enough to bookmark on a phone:
 
-To cut a versioned release instead of updating the rolling one, tag a commit:
+```
+https://github.com/yupikaiei/thruhiker/releases/download/latest/thruhiker-arm64-v8a.apk
+```
+
+**Frozen versions**, from a `v*` tag: <https://github.com/yupikaiei/thruhiker/releases/latest>
 
 ```bash
 git tag v0.1.0 && git push origin v0.1.0
 ```
 
+Rolling builds are marked as prereleases so they do not take the "Latest" badge away from a real
+tagged version, which is why the two URLs above are different pages.
+
+Install `thruhiker-arm64-v8a.apk` on any modern phone. You only need one APK: arm64-v8a covers
+modern phones, x86_64 is for emulators, and armeabi-v7a is for older 32-bit devices. Android will
+ask you to allow installs from an unknown source and Play Protect may warn — both are expected for
+a build signed with the debug key.
+
 Actions artifacts are uploaded per run as well, but they need a signed-in GitHub session and expire
-after 30 days, which is the reason the release exists.
+after 30 days, which is the reason the releases exist.
 
 ## Building
 
