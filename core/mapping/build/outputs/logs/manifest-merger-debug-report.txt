@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml:2:13-83
+INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml:2:13-83
+	package
+		INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml
+	xmlns:android
+		ADDED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml:2:23-81
+uses-sdk
+INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml reason: use-sdk injection requested
+INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml
+INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml
+	android:targetSdkVersion
+		INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml
+	android:minSdkVersion
+		INJECTED from /workspaces/thruhiker/core/mapping/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest7780596620569025584.xml

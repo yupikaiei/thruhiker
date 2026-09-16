@@ -82,6 +82,13 @@
     <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"Beskrivning"</string>
     <string msgid="6564222473543418073" name="m3c_wide_navigation_rail_close_rail">"Stäng spår"</string>
     <string msgid="8350283435461615411" name="m3c_wide_navigation_rail_pane_title">"Navigeringsspår"</string>
+    <string name="maplibre_attributionErrorNoBrowser">Ingen webbläsare installerad på enheten. Kan inte visa sidan.</string>
+    <string name="maplibre_attributionsDialogTitle">MapLibre Android</string>
+    <string name="maplibre_attributionsIconContentDescription">Tillskrivningsikon. Aktivera för att visa tillskrivningsdialog.</string>
+    <string name="maplibre_compassContentDescription">Kompass. Aktivera för att nollställa kartans rotation mot norr.</string>
+    <string name="maplibre_mapActionDescription">Visar en karta skapad med MapLibre. Scrolla genom att dra med två fingrar. Zooma genom att nypa med två fingrar.</string>
+    <string name="maplibre_myLocationViewContentDescription">Positionsvy. Denna visar din position på kartan.</string>
+    <string name="maplibre_offline_error_region_definition_invalid">Försedd OfflineRegionDefinition passar inte världens gränser: %s</string>
     <string msgid="8471891128988107974" name="mc2_snackbar_pane_title">"Varning"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Navigeringsmeny"</string>
     <string msgid="6610465462668679431" name="not_selected">"Inte vald"</string>

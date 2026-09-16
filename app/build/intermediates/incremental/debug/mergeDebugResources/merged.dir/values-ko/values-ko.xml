@@ -82,6 +82,13 @@
     <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"도움말"</string>
     <string msgid="6564222473543418073" name="m3c_wide_navigation_rail_close_rail">"레일 닫기"</string>
     <string msgid="8350283435461615411" name="m3c_wide_navigation_rail_pane_title">"탐색 레일"</string>
+    <string name="maplibre_attributionErrorNoBrowser">웹 브라우저가 설치 되어 있지 않아서 웹 페이지를 열 수 없습니다.</string>
+    <string name="maplibre_attributionsDialogTitle">MapLibre Android</string>
+    <string name="maplibre_attributionsIconContentDescription">속성 정보. 속성 대화를 표시합니다.</string>
+    <string name="maplibre_compassContentDescription"> 지도 나침반. 지도회전을 북쪽으로 재설정합니다.</string>
+    <string name="maplibre_mapActionDescription">MapLibre로 생성된 지도 표시. 두 손가락으로 드래그하여 화면을 위 아래로 움직이세요. 두 손가락을 이용해 화면을 확대 축소 하세요.</string>
+    <string name="maplibre_myLocationViewContentDescription">로케이션 뷰. 지도에서 현재 위치를 보여줍니다.</string>
+    <string name="maplibre_offline_error_region_definition_invalid">제공된 오프라인지역정의가 월드바운즈에 적합하지 않습니다: %s</string>
     <string msgid="8471891128988107974" name="mc2_snackbar_pane_title">"주의"</string>
     <string msgid="542007171693138492" name="navigation_menu">"탐색 메뉴"</string>
     <string msgid="6610465462668679431" name="not_selected">"선택되지 않음"</string>

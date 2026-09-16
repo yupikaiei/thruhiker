@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-39:/values-v30/values-v30.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-v30/values-v30.xml",
             "map": [
                 {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/a981f343d3d3f3f941194dcc87c79984/transformed/material3/res/values-v30/values-v30.xml",
+                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/b67b86581ee519add870eede593cb014/transformed/material3/res/values-v30/values-v30.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

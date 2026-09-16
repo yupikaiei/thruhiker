@@ -22,11 +22,19 @@ Phase 0, foundations. What works today:
 
 - Multi-module Gradle build with a shared version catalog, verified on AGP 9 / Kotlin 2.3 / JDK 21.
 - `core:model` and `core:geo`: pure-Kotlin domain types and WGS84 geodesic maths, with 59 unit tests.
+- `core:mapping`: MapLibre rendering real 3D terrain with hillshade and sky, wrapped in a Compose
+  map surface. 10 unit tests cover the style factory.
 - `core:designsystem`: Material 3 theme (pine, granite, sunrise) with Material You support.
-- `app`: Compose shell with Navigation 3 and a four-destination bottom bar.
+- `app`: Compose shell with Navigation 3, a four-destination bottom bar, and a live 3D terrain view
+  over the Mont Blanc massif.
 
-Not yet built: the MapLibre terrain view, recording, the planning engine, and video export.
-See "Roadmap" below.
+69 unit tests, all passing.
+
+**Nothing has run on a device yet.** This container has no emulator and cannot reach a USB-attached
+phone, so the map is verified to compile and to produce a correct style document, not to render on
+a screen. First real-device check is an outstanding task.
+
+Not yet built: recording, the planning engine, and video export. See "Roadmap" below.
 
 ## Module map
 
@@ -35,6 +43,7 @@ See "Roadmap" below.
 | `app` | Android app | Shell, navigation, DI wiring |
 | `core:model` | Kotlin JVM | Domain types (`LatLng`, `TrackPoint`, `Track`). No platform dependencies |
 | `core:geo` | Kotlin JVM | Geodesic maths, elevation, simplification, hiking-time estimation |
+| `core:mapping` | Android library | MapLibre terrain styles, camera model, Compose map surface |
 | `core:designsystem` | Android library | Theme and shared UI primitives |
 
 Pure Kotlin JVM modules are deliberate: the hard part of this app is arithmetic, and arithmetic
@@ -67,9 +76,18 @@ export ANDROID_HOME=/path/to/android-sdk
 ./gradlew lint              # Android lint
 ```
 
-The debug APK lands at `app/build/outputs/apk/debug/app-debug.apk`.
+The debug APK lands in `app/build/outputs/apk/debug/`, split per ABI because MapLibre ships a
+~13 MB native library for each one. Install `app-arm64-v8a-debug.apk` on any modern phone; the
+x86_64 build is for emulators. A universal APK would be about 60 MB, so splits stay on.
 
 If `ANDROID_HOME` is not set, Gradle reads `sdk.dir` from `local.properties` (not committed).
+
+### Terrain
+
+3D terrain has no imperative "enable" call. `MapStyleFactory` fetches the basemap style and injects
+a Terrarium-encoded `raster-dem` source, a root-level `terrain` property, a `hillshade` layer placed
+below the label layers, and a sky layer. That is the whole feature, which is why it is unit-tested
+as a JSON transformation rather than by looking at pixels.
 
 ## Free and open stack
 

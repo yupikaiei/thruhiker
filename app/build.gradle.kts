@@ -38,6 +38,20 @@ android {
     shaders = false
   }
 
+  /**
+   * MapLibre ships a ~13 MB native library per ABI, so a universal APK is about
+   * 60 MB for no benefit: any given phone uses exactly one of them. Splitting per
+   * ABI produces install-sized artifacts instead.
+   */
+  splits {
+    abi {
+      isEnable = true
+      reset()
+      include("arm64-v8a", "armeabi-v7a", "x86_64")
+      isUniversalApk = false
+    }
+  }
+
   packaging {
     resources {
       excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -53,6 +67,7 @@ dependencies {
   implementation(project(":core:model"))
   implementation(project(":core:geo"))
   implementation(project(":core:designsystem"))
+  implementation(project(":core:mapping"))
 
   val composeBom = platform(libs.androidx.compose.bom)
   implementation(composeBom)

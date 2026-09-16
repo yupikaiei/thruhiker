@@ -82,6 +82,12 @@
     <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"Tooltip"</string>
     <string msgid="6564222473543418073" name="m3c_wide_navigation_rail_close_rail">"Rail sluiten"</string>
     <string msgid="8350283435461615411" name="m3c_wide_navigation_rail_pane_title">"Navigatierail"</string>
+    <string name="maplibre_attributionsDialogTitle">MapLibre Android</string>
+    <string name="maplibre_attributionsIconContentDescription">Attributie icoon. Activeer voor het tonen van het attributie dialoog. </string>
+    <string name="maplibre_compassContentDescription">Kompas van de map. Activeer om de map rotatie te herzetten naar het noorden.</string>
+    <string name="maplibre_mapActionDescription">Toont een map gemaakt met MapLibre. Scroll door het slepen met twee vingers. Zoom door vingers te nijpen.</string>
+    <string name="maplibre_myLocationViewContentDescription">Locatie Element. Dit toont jouw locatie op de map.</string>
+    <string name="maplibre_offline_error_region_definition_invalid">Aangeleverde OfflineRegionDefinition past niet in de wereld omtrek: %s</string>
     <string msgid="8471891128988107974" name="mc2_snackbar_pane_title">"Waarschuwing"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Navigatiemenu"</string>
     <string msgid="6610465462668679431" name="not_selected">"Niet geselecteerd"</string>

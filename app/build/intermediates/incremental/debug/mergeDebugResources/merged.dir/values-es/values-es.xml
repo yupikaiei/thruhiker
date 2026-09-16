@@ -82,6 +82,13 @@
     <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"Descripción emergente"</string>
     <string msgid="6564222473543418073" name="m3c_wide_navigation_rail_close_rail">"Cerrar barra"</string>
     <string msgid="8350283435461615411" name="m3c_wide_navigation_rail_pane_title">"Barra de navegación"</string>
+    <string name="maplibre_attributionErrorNoBrowser">No puede abrir la página Web porque no hay un navegador Web en el dispositivo.</string>
+    <string name="maplibre_attributionsDialogTitle">MapLibre Android</string>
+    <string name="maplibre_attributionsIconContentDescription">Ícono de atribución. Actívalo para mostrar el diálogo de atribución.</string>
+    <string name="maplibre_compassContentDescription">Brújula del mapa. Actívala para restablecer la rotación del mapa al norte.</string>
+    <string name="maplibre_mapActionDescription">Se está mostrando un mapa creado con MapLibre. Arrastra dos dedos para desplazarte o pellizca para acercar.</string>
+    <string name="maplibre_myLocationViewContentDescription">Vista de ubicación. Muestra tu ubicación en el mapa.</string>
+    <string name="maplibre_offline_error_region_definition_invalid">El parámetro OfflineRegionDefinition que se ingresó no coincide con los límites mundiales: %s</string>
     <string msgid="8471891128988107974" name="mc2_snackbar_pane_title">"Alerta"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Menú de navegación"</string>
     <string msgid="6610465462668679431" name="not_selected">"No seleccionado"</string>

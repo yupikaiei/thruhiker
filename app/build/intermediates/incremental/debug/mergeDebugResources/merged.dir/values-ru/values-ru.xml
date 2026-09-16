@@ -82,6 +82,13 @@
     <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"Подсказка"</string>
     <string msgid="6564222473543418073" name="m3c_wide_navigation_rail_close_rail">"Закрыть боковую панель"</string>
     <string msgid="8350283435461615411" name="m3c_wide_navigation_rail_pane_title">"Боковая панель навигации"</string>
+    <string name="maplibre_attributionErrorNoBrowser">На устройстве нет веб-браузера, нельзя показать веб-страницу.</string>
+    <string name="maplibre_attributionsDialogTitle">MapLibre Android</string>
+    <string name="maplibre_attributionsIconContentDescription">Значок атрибутов. Активируйте, чтобы показать диалог.</string>
+    <string name="maplibre_compassContentDescription">Компас. Активируйте, чтобы развернуть карту на север.</string>
+    <string name="maplibre_mapActionDescription">Отображает карту, созданную при помощи MapLibre. Пролистывайте двумя пальцами. Меняйте масштаб сведением пальцев.</string>
+    <string name="maplibre_myLocationViewContentDescription">Местоположение. Отображает вашу позицию на карте.</string>
+    <string name="maplibre_offline_error_region_definition_invalid">Запрошенный OfflineRegionDefinition не входит в допустимые границы: %s</string>
     <string msgid="8471891128988107974" name="mc2_snackbar_pane_title">"Оповещение"</string>
     <string msgid="542007171693138492" name="navigation_menu">"Меню навигации"</string>
     <string msgid="6610465462668679431" name="not_selected">"Не выбрано"</string>
