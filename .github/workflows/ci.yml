@@ -150,7 +150,7 @@ jobs:
           Built from \`${GITHUB_SHA}\` on $(date -u +%Y-%m-%d).
 
           3D terrain is on: this build uses the vendored MapLibre SDK from the
-          `feature/terrain-3d` branch, which is the only place terrain exists today.
+          \`feature/terrain-3d\` branch, which is the only place terrain exists today.
           It is arm64-only, so \`${asset_prefix}-arm64-v8a.apk\` is the only build —
           install that one on any modern phone.
 
