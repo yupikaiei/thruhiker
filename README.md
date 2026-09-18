@@ -102,6 +102,21 @@ recording. Travel duration is clamped rather than proportional: without a floor 
 stroll is over before you have focused, and without a ceiling the Pacific Crest Trail takes two
 hours to fly.
 
+There are two distance axes, and the camera uses whichever one keeps it honest. Walking distance
+never crosses a gap, so the reveal stops at one and the mileage readout does not jump over ground
+nobody covered. Flight distance counts the gap as ground still to be crossed, interpolating
+straight across it, so the camera crosses the unrecorded stretch at the same ground speed as
+everything else instead of teleporting nine hundred metres between two frames. The rig reads the
+first axis for what it draws and reports, and the second for where it looks and how fast it moves.
+
+Camera heading is eased *along* the route rather than measured *across* it. A heading taken from the
+chord between two points either side of the walker is fine in the open and fails at a hairpin: the
+two ends of a wide window sit on opposite sides of the fold, a hundred metres apart, and the camera
+spins through most of the compass in a handful of frames. The rig samples the walker's own heading
+along the route, unwraps it so that crossing north is a small step rather than a jump of 350
+degrees, and only then averages it over `bearingWindowMeters`. A turn becomes a pan however tightly
+the route doubles back, and the jitter of a one-second recording averages away with it.
+
 The route drawing itself is `GeoJsonEncoder.encode(track, revealedFraction)`, which cuts the
 geometry mid-leg at exactly the right distance. The reveal granularity is a bandwidth decision, not
 a visual one — every step re-encodes and re-uploads the geometry so far, so a hundred-thousand-point
@@ -183,6 +198,14 @@ a fresh clone and CI both build terrain without needing an NDK, a token, or a ne
 `settings.gradle.kts` includes it as `:maplibre-terrain`. `core:mapping` depends on it instead of
 the published artifact — the classes are the same, so no app code changes either way. Delete the
 directory and the build falls back to the published, flat SDK.
+
+Terrain loading is budgeted to `TerrainLoadMode.BALANCED`. The SDK's default builds every newly
+revealed tile and drape in the frame it arrives, which stalls that frame; a flyover is the worst
+case there is, because the camera never stops moving and there is a fresh burst of terrain every
+second. The budget renders the same final image a frame or two later, which is invisible at a
+kilometre a second. The setting exists only in the terrain branch, so it is applied reflectively and
+a missing method is a no-op — `TerrainLoadBudgetTest` pins the lookup to whichever SDK is on the
+classpath.
 
 To refresh it when upstream moves:
 

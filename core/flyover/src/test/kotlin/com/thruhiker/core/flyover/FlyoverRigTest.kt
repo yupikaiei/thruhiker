@@ -5,6 +5,8 @@ import com.thruhiker.core.geo.TrackSampler
 import com.thruhiker.core.model.LatLng
 import com.thruhiker.core.model.Track
 import com.thruhiker.core.model.TrackPoint
+import com.thruhiker.core.model.TrackSegment
+import kotlin.math.abs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
@@ -30,6 +32,97 @@ class FlyoverRigTest {
 
   private fun rig(track: Track, configure: FlyoverOptions = options): FlyoverRig =
     FlyoverRig.of(track, configure)!!
+
+  private val degreesPerMetre = 1.0 / 111_132.0
+
+  /**
+   * Two northings a kilometre apart, which is what an interrupted recording looks like:
+   * the walking axis has a hole in it, and the camera still has to fly over the hole.
+   */
+  private fun gappedTrack(): Track {
+    fun northings(from: Double) = TrackSegment(
+      (0 until 10).map { index ->
+        point(46.0 + (from + index * 200.0) * degreesPerMetre, 7.0, 1000.0 + index * 5.0)
+      },
+    )
+    return Track(listOf(northings(0.0), northings(1_000.0)))
+  }
+
+  /**
+   * Out and back, a hundred metres apart: the shape that breaks a heading taken from a
+   * chord, because the two ends of a wide window sit on opposite sides of the fold and the
+   * chord runs across the gap between them. Long enough to be flown at the configured pace
+   * rather than the floor, because a slow flight hides the fault.
+   */
+  private fun hairpinTrack(): Track {
+    val outbound = (0 until 40).map { index ->
+      point(46.0 + index * 100.0 * degreesPerMetre, 7.0, 1000.0)
+    }
+    val homeward = (0 until 40).map { index ->
+      point(46.0 + (39 - index) * 100.0 * degreesPerMetre, 7.00135, 1000.0)
+    }
+    return Track.of(outbound + homeward)
+  }
+
+  /** The largest camera jump between two frames of a flight. */
+  private fun worstFrameSteps(rig: FlyoverRig): Pair<Double, Double> {
+    val frameMillis = 1000L / 60L
+    var previous = rig.frameAt(0L)
+    var worstBearing = 0.0
+    var worstTarget = 0.0
+    var elapsed = frameMillis
+    while (elapsed <= rig.durationMillis) {
+      val frame = rig.frameAt(elapsed)
+      worstBearing = maxOf(
+        worstBearing,
+        abs(shortestDeltaDegrees(previous.camera.bearing, frame.camera.bearing)),
+      )
+      worstTarget = maxOf(
+        worstTarget,
+        Geodesic.distanceMeters(previous.camera.target, frame.camera.target),
+      )
+      previous = frame
+      elapsed += frameMillis
+    }
+    return worstBearing to worstTarget
+  }
+
+  @Test
+  fun `the camera crosses a recording gap without teleporting`() {
+    val rig = rig(gappedTrack())
+    val (_, worstTarget) = worstFrameSteps(rig)
+
+    // Roughly twenty metres of travel a frame. The gap is a kilometre: before the flight
+    // axis existed the camera covered it between two frames.
+    assertTrue("camera target jumped $worstTarget m in a frame", worstTarget < 40.0)
+  }
+
+  @Test
+  fun `the walk holds still while the camera flies a gap`() {
+    val rig = rig(gappedTrack())
+    var held = 0
+    var previous = Double.NaN
+    var elapsed = options.introMillis
+    while (elapsed < options.introMillis + rig.travelMillis) {
+      val walked = rig.frameAt(elapsed).distanceAlongTrackMeters
+      if (!previous.isNaN() && abs(walked - previous) < 1e-9) held++
+      previous = walked
+      elapsed += 16L
+    }
+
+    assertTrue("the mileage should stand still across the gap, held for $held frames", held > 5)
+  }
+
+  @Test
+  fun `a hairpin turns the camera rather than spinning it`() {
+    val rig = rig(hairpinTrack())
+    val (worstBearing, worstTarget) = worstFrameSteps(rig)
+
+    // A chord across the fold swings the camera most of the way round the compass between
+    // two frames. Easing the heading along the route turns that into a pan instead.
+    assertTrue("bearing whipped $worstBearing deg in a frame", worstBearing < 4.0)
+    assertTrue("camera target jumped $worstTarget m in a frame", worstTarget < 40.0)
+  }
 
   @Test
   fun `an empty track has no rig`() {

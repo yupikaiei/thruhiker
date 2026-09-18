@@ -24,6 +24,7 @@ class MapController internal constructor(private val map: MapLibreMap) {
     // tiles: a soft basemap and hillshading too blunt to read as relief. Terrain detail
     // is the whole point here, so the reduction is switched off.
     map.tileLodPitchThreshold = TILE_LOD_PITCH_THRESHOLD_RADIANS
+    applyTerrainLoadBudget(map)
   }
 
   internal fun applyStyle(styleJson: String) {
@@ -87,6 +88,39 @@ class MapController internal constructor(private val map: MapLibreMap) {
  */
 internal fun styleBuilderFor(styleJson: String): Style.Builder =
   Style.Builder().fromJson(styleJson)
+
+/**
+ * Spreads 3D-terrain loading across frames instead of doing all of it at once.
+ *
+ * Full detail on demand gives the sharpest possible first frame and is the SDK's default,
+ * but it builds every newly revealed tile and drape in the frame it arrives, which stalls
+ * it. A flyover is the worst case there is: the camera never stops moving, so there is a
+ * fresh burst of terrain every second, and a stalled frame reads as a stutter.
+ *
+ * The budget mode renders the same final image, just later: detail that would have arrived
+ * with a hitch instead arrives two frames on, which is invisible when the camera is crossing
+ * ground at a kilometre a second.
+ *
+ * Only the terrain build of the SDK has this setting, and the app deliberately still builds
+ * against the published one, which has no 3D terrain at all. The lookup is reflective for
+ * that reason, and a missing method is left as a no-op rather than a failure: the setting is
+ * a performance hint, not something correctness depends on.
+ */
+private fun applyTerrainLoadBudget(map: MapLibreMap) {
+  val modeClass = runCatching { Class.forName(TERRAIN_LOAD_MODE_CLASS) }.getOrNull() ?: return
+  val balanced = modeClass.enumConstants
+    ?.firstOrNull { constant -> (constant as Enum<*>).name == TERRAIN_LOAD_MODE_BALANCED }
+    ?: return
+  runCatching {
+    MapLibreMap::class.java
+      .getMethod(TERRAIN_LOAD_MODE_SETTER, modeClass)
+      .invoke(map, balanced)
+  }
+}
+
+internal const val TERRAIN_LOAD_MODE_CLASS = "org.maplibre.android.maps.TerrainLoadMode"
+internal const val TERRAIN_LOAD_MODE_SETTER = "setTerrainLoadMode"
+internal const val TERRAIN_LOAD_MODE_BALANCED = "BALANCED"
 
 /**
  * Tile level of detail is never reduced.

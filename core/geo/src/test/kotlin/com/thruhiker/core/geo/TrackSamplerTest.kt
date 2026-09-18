@@ -181,6 +181,105 @@ class TrackSamplerTest {
     assertEquals(8.0, justIntoSecond.position.longitude, 0.01)
   }
 
+  /**
+   * Two hundred-metre recordings a hundred metres apart, standing in for a walk whose
+   * recording stopped and started again.
+   */
+  private fun gappedTrack(): Track = Track(
+    listOf(
+      TrackSegment(listOf(point(46.0, 7.0, 0.0), point(46.0018, 7.0, 100.0))),
+      TrackSegment(listOf(point(46.0027, 7.0, 200.0), point(46.0045, 7.0, 300.0))),
+    ),
+  )
+
+  private fun recordedLeg(): Double = Geodesic.distanceMeters(
+    point(46.0, 7.0).position,
+    point(46.0018, 7.0).position,
+  )
+
+  private fun recordedGap(): Double = Geodesic.distanceMeters(
+    point(46.0018, 7.0).position,
+    point(46.0027, 7.0).position,
+  )
+
+  /**
+   * The flight axis counts the unrecorded stretch between two recordings as ground a
+   * camera still has to cross. It exists because the walking axis, which must never
+   * cross a gap, makes a camera teleport over one.
+   */
+  @Test
+  fun `flight distance counts the gap between recordings`() {
+    val sampler = TrackSampler.of(gappedTrack())!!
+
+    assertEquals(recordedLeg() * 2, sampler.totalDistanceMeters, 0.5)
+    assertEquals(recordedLeg() * 2 + recordedGap(), sampler.totalFlightDistanceMeters, 0.5)
+  }
+
+  @Test
+  fun `a flight sample crosses a gap instead of jumping it`() {
+    val sampler = TrackSampler.of(gappedTrack())!!
+    val leg = recordedLeg()
+    val gap = recordedGap()
+
+    val halfWayAcross = sampler.sampleAtFlight(leg + gap / 2)
+
+    // Half way over the gap is half way between where the recording stopped and where the
+    // next one began, with elevation interpolated between the same two ends.
+    assertEquals(46.00225, halfWayAcross.position.latitude, 0.00002)
+    assertEquals(7.0, halfWayAcross.position.longitude, 1e-9)
+    assertEquals(150.0, halfWayAcross.elevationMeters!!, 2.0)
+
+    // The walk, though, has not moved: a gap is nobody's mileage.
+    assertEquals(leg, halfWayAcross.distanceMeters, 0.5)
+    assertEquals(0, halfWayAcross.segmentIndex)
+  }
+
+  @Test
+  fun `the walk holds still while the camera crosses a gap`() {
+    val sampler = TrackSampler.of(gappedTrack())!!
+    val leg = recordedLeg()
+    val gap = recordedGap()
+
+    assertEquals(leg - 50.0, sampler.walkedDistanceAtFlight(leg - 50.0), 0.5)
+    assertEquals(leg, sampler.walkedDistanceAtFlight(leg + gap * 0.1), 0.5)
+    assertEquals(leg, sampler.walkedDistanceAtFlight(leg + gap), 0.5)
+    assertEquals(leg + 50.0, sampler.walkedDistanceAtFlight(leg + gap + 50.0), 0.5)
+  }
+
+  /** The invariant the flyover camera leans on: no single step ever jumps a gap. */
+  @Test
+  fun `flight sampling never steps further than the step`() {
+    val sampler = TrackSampler.of(gappedTrack())!!
+    val step = 5.0
+
+    var previous = sampler.sampleAtFlight(0.0)
+    var distance = step
+    while (distance <= sampler.totalFlightDistanceMeters) {
+      val sample = sampler.sampleAtFlight(distance)
+      val moved = Geodesic.distanceMeters(previous.position, sample.position)
+      assertTrue("flight moved $moved m in a $step m step at $distance m", moved <= step * 1.5)
+      previous = sample
+      distance += step
+    }
+  }
+
+  @Test
+  fun `flight and walking sampling agree inside a recorded stretch`() {
+    val sampler = TrackSampler.of(gappedTrack())!!
+    val leg = recordedLeg()
+
+    var distance = 0.0
+    while (distance < leg) {
+      assertEquals(
+        sampler.sampleAt(distance).position.latitude,
+        sampler.sampleAtFlight(distance).position.latitude,
+        1e-12,
+      )
+      assertEquals(distance, sampler.walkedDistanceAtFlight(distance), 1e-9)
+      distance += 25.0
+    }
+  }
+
   @Test
   fun `the segment index advances with distance`() {
     val track = Track(

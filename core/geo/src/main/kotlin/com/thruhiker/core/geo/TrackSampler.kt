@@ -25,12 +25,24 @@ data class TrackSample(
  *
  * Gaps are honoured. Distance never crosses a segment boundary, which is what lets
  * the reveal animation stop at a gap instead of drawing a line across it.
+ *
+ * There are two distance axes. [totalDistanceMeters] / [sampleAt] measure what was
+ * walked, and stay put across a gap. [totalFlightDistanceMeters] / [sampleAtFlight]
+ * count the unrecorded stretch between two segments as ground the camera still has to
+ * cover, so a flyover crosses it in a straight line instead of teleporting. Anything
+ * that talks about the walk (mileage, revealed fraction, statistics) belongs on the
+ * first axis; anything that moves a camera belongs on the second.
  */
 class TrackSampler private constructor(
   private val segments: List<List<TrackPoint>>,
   private val cumulativeBySegment: List<DoubleArray>,
   private val segmentStartDistances: DoubleArray,
+  /** Straight-line distance of the unrecorded stretch joining segment [i-1]'s end to segment [i]'s start. */
+  private val gapBeforeSegment: DoubleArray,
+  /** Distance along the flight axis at which each segment starts, gaps included. */
+  private val flightStartDistances: DoubleArray,
   val totalDistanceMeters: Double,
+  val totalFlightDistanceMeters: Double,
 ) {
 
   val segmentCount: Int get() = segments.size
@@ -88,6 +100,76 @@ class TrackSampler private constructor(
   fun sampleAtFraction(fraction: Double): TrackSample =
     sampleAt(fraction.coerceIn(0.0, 1.0) * totalDistanceMeters)
 
+  /**
+   * The point [distanceMeters] along the flight axis, clamped to the route's extent.
+   *
+   * Inside a segment this is [sampleAt] plus the gaps that came before it. Across an
+   * unrecorded stretch it walks the straight line between where one recording stopped
+   * and the next began, so a camera moving a fixed distance per second keeps moving at
+   * a fixed speed through the gap rather than jumping it in a single frame.
+   *
+   * The unrecorded stretch is not part of the walk, so its samples keep reporting the
+   * walking distance and segment reached at the end of the previous recording, and its
+   * elevation is interpolated between the two recorded ends. Nothing is drawn there:
+   * this axis exists to move a camera, not to describe the route.
+   */
+  fun sampleAtFlight(distanceMeters: Double): TrackSample {
+    val distance = distanceMeters.coerceIn(0.0, totalFlightDistanceMeters)
+    val segmentIndex = flightSegmentIndexFor(distance)
+
+    if (distance < flightStartDistances[segmentIndex]) {
+      val previous = segments[segmentIndex - 1].last()
+      val next = segments[segmentIndex].first()
+      val gap = gapBeforeSegment[segmentIndex]
+      val fraction = if (gap > 0.0) {
+        ((distance - (flightStartDistances[segmentIndex] - gap)) / gap).coerceIn(0.0, 1.0)
+      } else {
+        0.0
+      }
+      return TrackSample(
+        position = Geodesic.interpolate(previous.position, next.position, fraction),
+        elevationMeters = interpolateElevation(
+          previous.elevationMeters,
+          next.elevationMeters,
+          fraction,
+        ),
+        distanceMeters = segmentStartDistances[segmentIndex],
+        segmentIndex = segmentIndex - 1,
+        bearingDegrees = Geodesic.initialBearingDegrees(previous.position, next.position),
+      )
+    }
+
+    // Inside a segment the two axes differ only by the gaps already crossed.
+    val walked = segmentStartDistances[segmentIndex] +
+      (distance - flightStartDistances[segmentIndex])
+    return sampleAt(walked)
+  }
+
+  /**
+   * How far the walker had got at [flightDistanceMeters]. Holds at the end of the last
+   * recording while the camera crosses the unrecorded stretch to the next one.
+   */
+  fun walkedDistanceAtFlight(flightDistanceMeters: Double): Double {
+    val distance = flightDistanceMeters.coerceIn(0.0, totalFlightDistanceMeters)
+    val segmentIndex = flightSegmentIndexFor(distance)
+    if (distance < flightStartDistances[segmentIndex]) return segmentStartDistances[segmentIndex]
+    return (segmentStartDistances[segmentIndex] + (distance - flightStartDistances[segmentIndex]))
+      .coerceAtMost(totalDistanceMeters)
+  }
+
+  /**
+   * The segment [distance] belongs to on the flight axis, counting the unrecorded
+   * stretch *before* a segment as part of that segment. Rounding down instead would
+   * leave the gap unclaimed, and a distance inside it would fall through to the
+   * walking axis and jump the gap in a single frame.
+   */
+  private fun flightSegmentIndexFor(distance: Double): Int {
+    for (index in 0 until segments.size - 1) {
+      if (distance < flightStartDistances[index] + cumulativeBySegment[index].last()) return index
+    }
+    return segments.size - 1
+  }
+
   private fun segmentIndexFor(distance: Double): Int {
     var index = 0
     for (candidate in 1 until segments.size) {
@@ -134,7 +216,33 @@ class TrackSampler private constructor(
 
       val total = segmentStartDistances.last() + cumulativeBySegment.last().last()
 
-      return TrackSampler(segments, cumulativeBySegment, segmentStartDistances, total)
+      // An unrecorded stretch is a straight line between the two recordings either side
+      // of it: that is the best guess available about ground nobody logged.
+      val gapBeforeSegment = DoubleArray(segments.size)
+      for (index in 1 until segments.size) {
+        gapBeforeSegment[index] = Geodesic.distanceMeters(
+          segments[index - 1].last().position,
+          segments[index].first().position,
+        )
+      }
+
+      val flightStartDistances = DoubleArray(segments.size)
+      for (index in 1 until segments.size) {
+        flightStartDistances[index] = flightStartDistances[index - 1] +
+          cumulativeBySegment[index - 1].last() +
+          gapBeforeSegment[index]
+      }
+      val totalFlight = flightStartDistances.last() + cumulativeBySegment.last().last()
+
+      return TrackSampler(
+        segments = segments,
+        cumulativeBySegment = cumulativeBySegment,
+        segmentStartDistances = segmentStartDistances,
+        gapBeforeSegment = gapBeforeSegment,
+        flightStartDistances = flightStartDistances,
+        totalDistanceMeters = total,
+        totalFlightDistanceMeters = totalFlight,
+      )
     }
   }
 }

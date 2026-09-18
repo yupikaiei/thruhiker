@@ -47,10 +47,13 @@ data class FlyoverOptions(
   val lookAheadMeters: Double = 350.0,
 
   /**
-   * Window either side of the walker used to work out the direction of travel.
+   * How far either side of the walker the camera's heading is eased over.
    *
-   * Necessary because a raw leg bearing jitters wherever the track bends or GPS
-   * noise creeps in, and a jittering bearing reads as a camera having a fit.
+   * Necessary because a raw leg bearing jitters wherever the track bends or GPS noise
+   * creeps in, and a jittering bearing reads as a camera having a fit. Easing the heading
+   * along the route rather than across it also means a hairpin becomes a pan spread over
+   * this distance instead of a spin through most of the compass in a few frames, so the
+   * window wants to be generous: it costs nothing but a little lag on a turn.
    */
   val bearingWindowMeters: Double = 800.0,
 
