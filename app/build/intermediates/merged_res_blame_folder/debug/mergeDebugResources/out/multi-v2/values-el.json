@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-el/values-el.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-el/values-el.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/b67b86581ee519add870eede593cb014/transformed/material3/res/values-el/values-el.xml",

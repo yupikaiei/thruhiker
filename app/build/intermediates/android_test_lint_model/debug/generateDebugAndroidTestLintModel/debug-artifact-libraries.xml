@@ -518,10 +518,10 @@
       proguardRules="proguard.txt"/>
   <library
       name=":@@:core:mapping::debug"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/7932ed03158f5bceee4d6189feee1cdd/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/7932ed03158f5bceee4d6189feee1cdd/transformed/out/jars/libs/R.jar"
+      jars="/home/codespace/.gradle/caches/9.1.0/transforms/d7519b67f42cbbc1d558e1ac36ef5270/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/d7519b67f42cbbc1d558e1ac36ef5270/transformed/out/jars/libs/R.jar"
       resolved="ThruHiker.core:mapping:unspecified"
       provided="true"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/7932ed03158f5bceee4d6189feee1cdd/transformed/out"
+      folder="/home/codespace/.gradle/caches/9.1.0/transforms/d7519b67f42cbbc1d558e1ac36ef5270/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"
@@ -582,11 +582,11 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="org.maplibre.gl:android-sdk:13.6.1@aar"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/jars/classes.jar"
-      resolved="org.maplibre.gl:android-sdk:13.6.1"
+      name=":@@:maplibre-terrain::debug"
+      jars="/home/codespace/.gradle/caches/9.1.0/transforms/6e37123b5c09d6a3583bf54ea561695a/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/6e37123b5c09d6a3583bf54ea561695a/transformed/out/jars/libs/R.jar"
+      resolved="ThruHiker:maplibre-terrain:unspecified"
       provided="true"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1"
+      folder="/home/codespace/.gradle/caches/9.1.0/transforms/6e37123b5c09d6a3583bf54ea561695a/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-si/values-si.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-si/values-si.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/a8fcaf745c6fdd58351c3df7a50cc414/transformed/material/res/values-si/values-si.xml",

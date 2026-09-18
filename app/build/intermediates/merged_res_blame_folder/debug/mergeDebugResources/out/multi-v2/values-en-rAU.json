@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-en-rAU/values-en-rAU.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-en-rAU/values-en-rAU.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/8c584ad07057d57e2ff69ce732a6a785/transformed/ui/res/values-en-rAU/values-en-rAU.xml",

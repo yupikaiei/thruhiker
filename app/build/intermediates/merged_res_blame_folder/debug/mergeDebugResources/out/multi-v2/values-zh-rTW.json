@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-zh-rTW/values-zh-rTW.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-zh-rTW/values-zh-rTW.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/045546419d736a73d05b9d3fc85c7d4f/transformed/core-1.18.0/res/values-zh-rTW/values-zh-rTW.xml",
@@ -38,23 +38,6 @@
                     }
                 },
                 {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-zh-rTW/values-zh-rTW.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,138,216,323,406,503,590",
-                        "endColumns": "82,77,106,82,96,86,115",
-                        "endOffsets": "133,211,318,401,498,585,701"
-                    },
-                    "to": {
-                        "startLines": "84,85,86,87,88,89,90",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "7912,7995,8073,8180,8263,8360,8447",
-                        "endColumns": "82,77,106,82,96,86,115",
-                        "endOffsets": "7990,8068,8175,8258,8355,8442,8558"
-                    }
-                },
-                {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/8c584ad07057d57e2ff69ce732a6a785/transformed/ui/res/values-zh-rTW/values-zh-rTW.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",
@@ -69,6 +52,23 @@
                         "startOffsets": "205,958,1035,1111,1198,1289,1367,1441,8648,8726,8801,8874,8949,9017,9098,9171,9243,9415,9489,9557",
                         "endColumns": "91,76,75,86,90,77,73,76,77,74,72,74,67,80,72,71,70,73,67,115",
                         "endOffsets": "292,1030,1106,1193,1284,1362,1436,1513,8721,8796,8869,8944,9012,9093,9166,9238,9309,9484,9552,9668"
+                    }
+                },
+                {
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-zh-rTW/values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,138,216,323,406,503,590",
+                        "endColumns": "82,77,106,82,96,86,115",
+                        "endOffsets": "133,211,318,401,498,585,701"
+                    },
+                    "to": {
+                        "startLines": "84,85,86,87,88,89,90",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "7912,7995,8073,8180,8263,8360,8447",
+                        "endColumns": "82,77,106,82,96,86,115",
+                        "endOffsets": "7990,8068,8175,8258,8355,8442,8558"
                     }
                 },
                 {

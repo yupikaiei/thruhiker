@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-fr/values-fr.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-fr/values-fr.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/8c584ad07057d57e2ff69ce732a6a785/transformed/ui/res/values-fr/values-fr.xml",
@@ -18,6 +18,23 @@
                         "startOffsets": "219,1052,1151,1239,1339,1439,1526,1605,10276,10368,10455,10536,10621,10697,10782,10857,10935,11110,11188,11257",
                         "endColumns": "105,98,87,99,99,86,78,91,91,86,80,84,75,84,74,77,73,77,68,121",
                         "endOffsets": "320,1146,1234,1334,1434,1521,1600,1692,10363,10450,10531,10616,10692,10777,10852,10930,11004,11183,11252,11374"
+                    }
+                },
+                {
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-fr/values-fr.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,198,276,418,553,756,896",
+                        "endColumns": "142,77,141,134,202,139,190",
+                        "endOffsets": "193,271,413,548,751,891,1082"
+                    },
+                    "to": {
+                        "startLines": "84,85,86,87,88,89,90",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "9155,9298,9376,9518,9653,9856,9996",
+                        "endColumns": "142,77,141,134,202,139,190",
+                        "endOffsets": "9293,9371,9513,9648,9851,9991,10182"
                     }
                 },
                 {
@@ -69,23 +86,6 @@
                         "startOffsets": "325,423,525,624,726,830,934,11009",
                         "endColumns": "97,101,98,101,103,103,117,100",
                         "endOffsets": "418,520,619,721,825,929,1047,11105"
-                    }
-                },
-                {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-fr/values-fr.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,198,276,418,553,756,896",
-                        "endColumns": "142,77,141,134,202,139,190",
-                        "endOffsets": "193,271,413,548,751,891,1082"
-                    },
-                    "to": {
-                        "startLines": "84,85,86,87,88,89,90",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "9155,9298,9376,9518,9653,9856,9996",
-                        "endColumns": "142,77,141,134,202,139,190",
-                        "endOffsets": "9293,9371,9513,9648,9851,9991,10182"
                     }
                 },
                 {

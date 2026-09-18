@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-es/values-es.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-es/values-es.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/85e63011f034a22756f7ae81153baa94/transformed/foundation/res/values-es/values-es.xml",
@@ -55,23 +55,6 @@
                     }
                 },
                 {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-es/values-es.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,197,275,416,554,720,843",
-                        "endColumns": "141,77,140,137,165,122,170",
-                        "endOffsets": "192,270,411,549,715,838,1009"
-                    },
-                    "to": {
-                        "startLines": "84,85,86,87,88,89,90",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "9132,9274,9352,9493,9631,9797,9920",
-                        "endColumns": "141,77,140,137,165,122,170",
-                        "endOffsets": "9269,9347,9488,9626,9792,9915,10086"
-                    }
-                },
-                {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/045546419d736a73d05b9d3fc85c7d4f/transformed/core-1.18.0/res/values-es/values-es.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
@@ -86,6 +69,23 @@
                         "startOffsets": "315,414,516,616,714,821,927,10930",
                         "endColumns": "98,101,99,97,106,105,119,100",
                         "endOffsets": "409,511,611,709,816,922,1042,11026"
+                    }
+                },
+                {
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-es/values-es.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,197,275,416,554,720,843",
+                        "endColumns": "141,77,140,137,165,122,170",
+                        "endOffsets": "192,270,411,549,715,838,1009"
+                    },
+                    "to": {
+                        "startLines": "84,85,86,87,88,89,90",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "9132,9274,9352,9493,9631,9797,9920",
+                        "endColumns": "141,77,140,137,165,122,170",
+                        "endOffsets": "9269,9347,9488,9626,9792,9915,10086"
                     }
                 },
                 {

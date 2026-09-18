@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.mapping.GeoJsonRevealTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-18T08:38:00.846Z" hostname="codespaces-acf759" time="0.049">
+<testsuite name="com.thruhiker.core.mapping.GeoJsonRevealTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-18T09:47:02.764Z" hostname="codespaces-acf759" time="0.048">
   <properties/>
-  <testcase name="a reveal never draws a line longer than the route" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.017"/>
-  <testcase name="a partial reveal stays inside the first segment" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.002"/>
-  <testcase name="a track with no length reveals to nothing" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.0"/>
-  <testcase name="the cut lands at the requested distance" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.002"/>
-  <testcase name="nothing is drawn before the flight starts" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.0"/>
+  <testcase name="a reveal never draws a line longer than the route" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.021"/>
+  <testcase name="a partial reveal stays inside the first segment" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.001"/>
+  <testcase name="a track with no length reveals to nothing" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.001"/>
+  <testcase name="the cut lands at the requested distance" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.001"/>
+  <testcase name="nothing is drawn before the flight starts" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.002"/>
   <testcase name="a reveal past a gap draws both segments as separate lines" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.001"/>
-  <testcase name="the reveal is monotonic in the fraction" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.01"/>
-  <testcase name="fractions outside the unit interval are clamped" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.001"/>
-  <testcase name="an empty track reveals to nothing at any fraction" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.005"/>
-  <testcase name="the whole route is drawn at full reveal" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.005"/>
-  <testcase name="half the route is drawn at half reveal" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.0"/>
+  <testcase name="the reveal is monotonic in the fraction" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.007"/>
+  <testcase name="fractions outside the unit interval are clamped" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.002"/>
+  <testcase name="an empty track reveals to nothing at any fraction" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.002"/>
+  <testcase name="the whole route is drawn at full reveal" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.0"/>
+  <testcase name="half the route is drawn at half reveal" classname="com.thruhiker.core.mapping.GeoJsonRevealTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

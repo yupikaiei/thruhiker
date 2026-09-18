@@ -4,10 +4,11 @@
       jars="/workspaces/thruhiker/core/model/build/libs/model.jar"
       resolved="::"/>
   <library
-      name="org.maplibre.gl:android-sdk:13.6.1@aar"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/jars/classes.jar"
-      resolved="org.maplibre.gl:android-sdk:13.6.1"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1"
+      name=":@@:maplibre-terrain::debug"
+      jars="/home/codespace/.gradle/caches/9.1.0/transforms/6e37123b5c09d6a3583bf54ea561695a/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/6e37123b5c09d6a3583bf54ea561695a/transformed/out/jars/libs/R.jar"
+      resolved="ThruHiker:maplibre-terrain:unspecified"
+      partialResultsDir="/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/lint_partial_results/debug/lintAnalyzeDebug/out"
+      folder="/home/codespace/.gradle/caches/9.1.0/transforms/6e37123b5c09d6a3583bf54ea561695a/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"

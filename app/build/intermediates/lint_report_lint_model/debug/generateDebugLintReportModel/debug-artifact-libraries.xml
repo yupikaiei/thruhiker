@@ -429,18 +429,8 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
-      name="org.maplibre.gl:android-sdk:13.6.1@aar"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/jars/classes.jar"
-      resolved="org.maplibre.gl:android-sdk:13.6.1"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1"
-      manifest="AndroidManifest.xml"
-      resFolder="res"
-      assetsFolder="assets"
-      lintJar="lint.jar"
-      publicResources="public.txt"
-      symbolFile="R.txt"
-      externalAnnotations="annotations.zip"
-      proguardRules="proguard.txt"/>
+      name=":@@:maplibre-terrain::debug"
+      project=":maplibre-terrain"/>
   <library
       name="org.maplibre.gl:maplibre-android-gestures:0.0.4@aar"
       jars="/home/codespace/.gradle/caches/9.1.0/transforms/8a1591119de7c55c0069139c94429913/transformed/maplibre-android-gestures-0.0.4/jars/classes.jar"
@@ -946,14 +936,6 @@
       jars="/home/codespace/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.10.2/4a9f78ef49483748e2c129f3d124b8fa249dafbf/kotlinx-coroutines-core-jvm-1.10.2.jar"
       resolved="org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2"/>
   <library
-      name="com.squareup.okhttp3:okhttp:4.12.0@jar"
-      jars="/home/codespace/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.12.0/2f4525d4a200e97e1b87449c2cd9bd2e25b7e8cd/okhttp-4.12.0.jar"
-      resolved="com.squareup.okhttp3:okhttp:4.12.0"/>
-  <library
-      name="com.squareup.okio:okio-jvm:3.6.0@jar"
-      jars="/home/codespace/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.6.0/5600569133b7bdefe1daf9ec7f4abeb6d13e1786/okio-jvm-3.6.0.jar"
-      resolved="com.squareup.okio:okio-jvm:3.6.0"/>
-  <library
       name="androidx.interpolator:interpolator:1.0.0@aar"
       jars="/home/codespace/.gradle/caches/9.1.0/transforms/cd6130ef26adcbfac3a1b323734f9f2c/transformed/interpolator-1.0.0/jars/classes.jar"
       resolved="androidx.interpolator:interpolator:1.0.0"
@@ -1065,6 +1047,14 @@
       symbolFile="R.txt"
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
+  <library
+      name="com.squareup.okhttp3:okhttp:4.12.0@jar"
+      jars="/home/codespace/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.12.0/2f4525d4a200e97e1b87449c2cd9bd2e25b7e8cd/okhttp-4.12.0.jar"
+      resolved="com.squareup.okhttp3:okhttp:4.12.0"/>
+  <library
+      name="com.squareup.okio:okio-jvm:3.6.0@jar"
+      jars="/home/codespace/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.6.0/5600569133b7bdefe1daf9ec7f4abeb6d13e1786/okio-jvm-3.6.0.jar"
+      resolved="com.squareup.okio:okio-jvm:3.6.0"/>
   <library
       name="org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10@jar"
       jars="/home/codespace/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.9.10/c7510d64a83411a649c76f2778304ddf71d7437b/kotlin-stdlib-jdk8-1.9.10.jar"

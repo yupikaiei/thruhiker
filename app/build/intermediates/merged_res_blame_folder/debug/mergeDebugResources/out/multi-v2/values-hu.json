@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-hu/values-hu.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-hu/values-hu.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/a8fcaf745c6fdd58351c3df7a50cc414/transformed/material/res/values-hu/values-hu.xml",
@@ -55,6 +55,23 @@
                     }
                 },
                 {
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-hu/values-hu.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,191,269,439,554",
+                        "endColumns": "135,77,169,114,146",
+                        "endOffsets": "186,264,434,549,696"
+                    },
+                    "to": {
+                        "startLines": "84,85,86,87,88",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "9034,9170,9248,9418,9533",
+                        "endColumns": "135,77,169,114,146",
+                        "endOffsets": "9165,9243,9413,9528,9675"
+                    }
+                },
+                {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/8c584ad07057d57e2ff69ce732a6a785/transformed/ui/res/values-hu/values-hu.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",
@@ -86,23 +103,6 @@
                         "startOffsets": "105,10869,10958",
                         "endColumns": "115,88,96",
                         "endOffsets": "216,10953,11050"
-                    }
-                },
-                {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-hu/values-hu.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "55,191,269,439,554",
-                        "endColumns": "135,77,169,114,146",
-                        "endOffsets": "186,264,434,549,696"
-                    },
-                    "to": {
-                        "startLines": "84,85,86,87,88",
-                        "startColumns": "4,4,4,4,4",
-                        "startOffsets": "9034,9170,9248,9418,9533",
-                        "endColumns": "135,77,169,114,146",
-                        "endOffsets": "9165,9243,9413,9528,9675"
                     }
                 }
             ]

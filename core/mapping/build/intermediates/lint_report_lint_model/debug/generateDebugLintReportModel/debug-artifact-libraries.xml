@@ -4,18 +4,8 @@
       jars="/workspaces/thruhiker/core/model/build/libs/model.jar"
       resolved="::"/>
   <library
-      name="org.maplibre.gl:android-sdk:13.6.1@aar"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/jars/classes.jar"
-      resolved="org.maplibre.gl:android-sdk:13.6.1"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1"
-      manifest="AndroidManifest.xml"
-      resFolder="res"
-      assetsFolder="assets"
-      lintJar="lint.jar"
-      publicResources="public.txt"
-      symbolFile="R.txt"
-      externalAnnotations="annotations.zip"
-      proguardRules="proguard.txt"/>
+      name=":@@:maplibre-terrain::debug"
+      project=":maplibre-terrain"/>
   <library
       name=":@@:core:geo"
       jars="/workspaces/thruhiker/core/geo/build/libs/geo.jar"

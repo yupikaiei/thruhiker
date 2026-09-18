@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-ru/values-ru.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-ru/values-ru.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/045546419d736a73d05b9d3fc85c7d4f/transformed/core-1.18.0/res/values-ru/values-ru.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "317,415,517,618,719,824,927,10675",
                         "endColumns": "97,101,100,100,104,102,116,100",
                         "endOffsets": "410,512,613,714,819,922,1039,10771"
-                    }
-                },
-                {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-ru/values-ru.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,180,258,384,501,673,793",
-                        "endColumns": "124,77,125,116,171,119,147",
-                        "endOffsets": "175,253,379,496,668,788,936"
-                    },
-                    "to": {
-                        "startLines": "84,85,86,87,88,89,90",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "8964,9089,9167,9293,9410,9582,9702",
-                        "endColumns": "124,77,125,116,171,119,147",
-                        "endOffsets": "9084,9162,9288,9405,9577,9697,9845"
                     }
                 },
                 {
@@ -86,6 +69,23 @@
                         "startOffsets": "105,11053,11141",
                         "endColumns": "109,87,90",
                         "endOffsets": "210,11136,11227"
+                    }
+                },
+                {
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-ru/values-ru.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,180,258,384,501,673,793",
+                        "endColumns": "124,77,125,116,171,119,147",
+                        "endOffsets": "175,253,379,496,668,788,936"
+                    },
+                    "to": {
+                        "startLines": "84,85,86,87,88,89,90",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "8964,9089,9167,9293,9410,9582,9702",
+                        "endColumns": "124,77,125,116,171,119,147",
+                        "endOffsets": "9084,9162,9288,9405,9577,9697,9845"
                     }
                 },
                 {

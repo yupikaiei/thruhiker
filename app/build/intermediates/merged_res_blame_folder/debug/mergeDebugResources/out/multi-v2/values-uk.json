@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-uk/values-uk.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-uk/values-uk.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/a8fcaf745c6fdd58351c3df7a50cc414/transformed/material/res/values-uk/values-uk.xml",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-uk/values-uk.xml",
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-uk/values-uk.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8",
                         "startColumns": "4,4,4,4,4,4,4",

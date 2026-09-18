@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.mapping.MapStyleFactoryTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-18T08:38:00.912Z" hostname="codespaces-acf759" time="0.039">
+<testsuite name="com.thruhiker.core.mapping.MapStyleFactoryTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-18T09:47:02.832Z" hostname="codespaces-acf759" time="0.047">
   <properties/>
-  <testcase name="hillshade is bound to the terrain source" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.004"/>
-  <testcase name="exaggeration is configurable" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.003"/>
+  <testcase name="hillshade is bound to the terrain source" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.009"/>
+  <testcase name="exaggeration is configurable" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.0"/>
   <testcase name="terrain property points at the terrain source" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.001"/>
-  <testcase name="hillshade sits above the map layers and below the labels" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.001"/>
-  <testcase name="applying terrain twice is idempotent" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.006"/>
+  <testcase name="hillshade sits above the map layers and below the labels" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.004"/>
+  <testcase name="applying terrain twice is idempotent" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.001"/>
   <testcase name="terrain source is a terrarium raster dem" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.001"/>
-  <testcase name="a style with no sources or layers still gains terrain" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.007"/>
-  <testcase name="a sky layer is added" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.0"/>
-  <testcase name="the open free map style url is keyless https" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.011"/>
+  <testcase name="a style with no sources or layers still gains terrain" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.003"/>
+  <testcase name="a sky layer is added" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.001"/>
+  <testcase name="the open free map style url is keyless https" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.015"/>
   <testcase name="existing sources and layers are preserved" classname="com.thruhiker.core.mapping.MapStyleFactoryTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

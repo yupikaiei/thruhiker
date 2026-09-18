@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.thruhiker.app-mergeDebugResources-42:/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "com.thruhiker.app-mergeDebugResources-41:/values-zh-rHK/values-zh-rHK.xml",
             "map": [
                 {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/b67b86581ee519add870eede593cb014/transformed/material3/res/values-zh-rHK/values-zh-rHK.xml",
@@ -72,23 +72,6 @@
                     }
                 },
                 {
-                    "source": "/home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/res/values-zh-rHK/values-zh-rHK.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,138,216,323,406,503,590",
-                        "endColumns": "82,77,106,82,96,86,115",
-                        "endOffsets": "133,211,318,401,498,585,701"
-                    },
-                    "to": {
-                        "startLines": "84,85,86,87,88,89,90",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "7894,7977,8055,8162,8245,8342,8429",
-                        "endColumns": "82,77,106,82,96,86,115",
-                        "endOffsets": "7972,8050,8157,8240,8337,8424,8540"
-                    }
-                },
-                {
                     "source": "/home/codespace/.gradle/caches/9.1.0/transforms/a8fcaf745c6fdd58351c3df7a50cc414/transformed/material/res/values-zh-rHK/values-zh-rHK.xml",
                     "from": {
                         "startLines": "2",
@@ -103,6 +86,23 @@
                         "startOffsets": "8545",
                         "endColumns": "84",
                         "endOffsets": "8625"
+                    }
+                },
+                {
+                    "source": "/workspaces/thruhiker/third_party/maplibre-android/build/intermediates/packaged_res/debug/packageDebugResources/values-zh-rHK/values-zh-rHK.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,138,216,323,406,503,590",
+                        "endColumns": "82,77,106,82,96,86,115",
+                        "endOffsets": "133,211,318,401,498,585,701"
+                    },
+                    "to": {
+                        "startLines": "84,85,86,87,88,89,90",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "7894,7977,8055,8162,8245,8342,8429",
+                        "endColumns": "82,77,106,82,96,86,115",
+                        "endOffsets": "7972,8050,8157,8240,8337,8424,8540"
                     }
                 }
             ]

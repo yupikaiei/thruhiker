@@ -6,7 +6,7 @@ INJECTED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:2:1-28:12
 INJECTED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:2:1-28:12
 MERGED from [:core:mapping] /workspaces/thruhiker/core/mapping/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:core:designsystem] /workspaces/thruhiker/core/designsystem/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:2:1-20:12
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-17:12
 MERGED from [androidx.fragment:fragment:1.8.9] /home/codespace/.gradle/caches/9.1.0/transforms/7e65a89734f8b96238c03101e4c9bf04/transformed/fragment-1.8.9/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.compose.material3:material3-android:1.4.0] /home/codespace/.gradle/caches/9.1.0/transforms/b67b86581ee519add870eede593cb014/transformed/material3/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.compose.material:material-android:1.10.6] /home/codespace/.gradle/caches/9.1.0/transforms/a8fcaf745c6fdd58351c3df7a50cc414/transformed/material/AndroidManifest.xml:2:1-7:12
@@ -90,14 +90,14 @@ MERGED from [androidx.print:print:1.0.0] /home/codespace/.gradle/caches/9.1.0/tr
 		ADDED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
 ADDED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:6:5-67
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:14:5-67
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:14:5-67
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:5-67
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:5-67
 	android:name
 		ADDED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:7:5-79
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:15:5-79
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:15:5-79
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:5-79
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:5-79
 	android:name
 		ADDED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml:7:22-76
 application
@@ -167,8 +167,8 @@ MERGED from [:core:mapping] /workspaces/thruhiker/core/mapping/build/intermediat
 MERGED from [:core:mapping] /workspaces/thruhiker/core/mapping/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:core:designsystem] /workspaces/thruhiker/core/designsystem/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:core:designsystem] /workspaces/thruhiker/core/designsystem/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:5:5-44
-MERGED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:5:5-44
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.8.9] /home/codespace/.gradle/caches/9.1.0/transforms/7e65a89734f8b96238c03101e4c9bf04/transformed/fragment-1.8.9/AndroidManifest.xml:5:5-44
 MERGED from [androidx.fragment:fragment:1.8.9] /home/codespace/.gradle/caches/9.1.0/transforms/7e65a89734f8b96238c03101e4c9bf04/transformed/fragment-1.8.9/AndroidManifest.xml:5:5-44
 MERGED from [androidx.compose.material3:material3-android:1.4.0] /home/codespace/.gradle/caches/9.1.0/transforms/b67b86581ee519add870eede593cb014/transformed/material3/AndroidManifest.xml:20:5-44
@@ -319,32 +319,24 @@ MERGED from [androidx.print:print:1.0.0] /home/codespace/.gradle/caches/9.1.0/tr
 		INJECTED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from /workspaces/thruhiker/app/src/main/AndroidManifest.xml
-uses-feature#android.hardware.vulkan.version
-ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:7:5-10:38
-	android:version
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:10:9-35
-	android:required
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:9:9-32
-	android:name
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:8:9-55
 uses-feature#android.hardware.wifi
-ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:11:5-13:36
+ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-9:36
 	android:required
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:13:9-33
+		ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-33
 	android:name
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:12:9-45
+		ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-45
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:16:5-76
+ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:5-76
 	android:name
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:16:22-73
+		ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:22-73
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:17:5-81
+ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:5-81
 	android:name
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:17:22-78
+		ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:22-78
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:18:5-79
+ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:5-79
 	android:name
-		ADDED from [org.maplibre.gl:android-sdk:13.6.1] /home/codespace/.gradle/caches/9.1.0/transforms/f38b1ae797f64966e34b6f469f4bae32/transformed/android-sdk-13.6.1/AndroidManifest.xml:18:22-76
+		ADDED from [:maplibre-terrain] /workspaces/thruhiker/third_party/maplibre-android/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:15:22-76
 activity#androidx.compose.ui.tooling.PreviewActivity
 ADDED from [androidx.compose.ui:ui-tooling-android:1.10.6] /home/codespace/.gradle/caches/9.1.0/transforms/d272c3376f8e2bfb2b2daf83b83f6800/transformed/ui-tooling/AndroidManifest.xml:23:9-25:39
 	android:exported
