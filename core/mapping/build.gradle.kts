@@ -37,7 +37,15 @@ dependencies {
 
   // Exposed as api so that feature modules can drive the map without taking a
   // second, potentially mismatched, MapLibre dependency of their own.
-  api(libs.maplibre.android)
+  //
+  // When the locally built 3D-terrain SDK is present it stands in for the published
+  // artifact: same classes, plus a native library that implements terrain. See README,
+  // "3D terrain".
+  if (rootProject.file("third_party/maplibre-android").isDirectory) {
+    api(project(":maplibre-terrain"))
+  } else {
+    api(libs.maplibre.android)
+  }
 
   val composeBom = platform(libs.androidx.compose.bom)
   implementation(composeBom)

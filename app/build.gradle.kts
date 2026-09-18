@@ -42,12 +42,20 @@ android {
    * MapLibre ships a ~13 MB native library per ABI, so a universal APK is about
    * 60 MB for no benefit: any given phone uses exactly one of them. Splitting per
    * ABI produces install-sized artifacts instead.
+   *
+   * The locally built 3D-terrain SDK only carries the arm64-v8a native library, so
+   * with it in place the other splits would install an APK with no renderer at all.
    */
+  val terrainSdk = rootProject.file("third_party/maplibre-android").isDirectory
   splits {
     abi {
       isEnable = true
       reset()
-      include("arm64-v8a", "armeabi-v7a", "x86_64")
+      if (terrainSdk) {
+        include("arm64-v8a")
+      } else {
+        include("arm64-v8a", "armeabi-v7a", "x86_64")
+      }
       isUniversalApk = false
     }
   }

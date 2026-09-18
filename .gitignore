@@ -17,3 +17,7 @@ local.properties
 *.aab
 *.keystore
 !debug.keystore
+
+# The vendored 3D-terrain MapLibre SDK is committed (see README, "3D terrain");
+# it is refreshed, not dropped in, so its build outputs stay out of git.
+/third_party/maplibre-android/build/

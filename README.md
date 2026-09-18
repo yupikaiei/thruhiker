@@ -151,6 +151,8 @@ export ANDROID_HOME=/path/to/android-sdk
 ./gradlew lint              # Android lint
 ```
 
+Builds ship a vendored MapLibre SDK with 3D terrain — see "Terrain" below.
+
 The debug APK lands in `app/build/outputs/apk/debug/`, split per ABI because MapLibre ships a
 ~13 MB native library for each one. Install `app-arm64-v8a-debug.apk` on any modern phone; the
 x86_64 build is for emulators. A universal APK would be about 60 MB, so splits stay on.
@@ -159,10 +161,43 @@ If `ANFlyover camera, progressive reveal, in-app playback ✅ · MP4/GIF export 
 
 ### Terrain
 
-3D terrain has no imperative "enable" call. `MapStyleFactory` fetches the basemap style and injects
-a Terrarium-encoded `raster-dem` source, a root-level `terrain` property, a `hillshade` layer placed
-below the label layers, and a sky layer. That is the whole feature, which is why it is unit-tested
-as a JSON transformation rather than by looking at pixels.
+MapLibre Native's **released** SDK has no 3D terrain: upstream is still building it, on the
+`feature/terrain-3d` branch. MapLibre ignores the root-level `terrain` property in the meantime —
+the style parser only looks up the keys it knows, it does not reject unknown ones — so against the
+published SDK the map is necessarily a flat, hillshaded plane.
+
+`MapStyleFactory` emits the terrain the style specification describes anyway, because that half of
+the feature is portable:
+
+- a Terrarium-encoded `raster-dem` source,
+- a root-level `terrain` property pointing at it, with an exaggeration,
+- a `hillshade` layer on the same source, sitting below the label layers, and
+- a `sky` layer.
+
+That document is all MapLibre GL JS, Mapbox, and MapLibre Native's terrain branch need, and it is
+unit-tested as a JSON transformation rather than by looking at pixels.
+
+3D comes from a vendored copy of that branch in `third_party/maplibre-android/`: the branch's
+Android sources plus its CI-built arm64-v8a native library, stripped. It is committed on purpose, so
+a fresh clone and CI both build terrain without needing an NDK, a token, or a network fetch, and
+`settings.gradle.kts` includes it as `:maplibre-terrain`. `core:mapping` depends on it instead of
+the published artifact — the classes are the same, so no app code changes either way. Delete the
+directory and the build falls back to the published, flat SDK.
+
+To refresh it when upstream moves:
+
+```bash
+scripts/build-maplibre-terrain.sh   # re-fetches the sources and native library, reassembles
+./gradlew :app:assembleDebug
+```
+
+Worth knowing before shipping it:
+
+- It tracks an unreleased upstream branch (draft PR maplibre/maplibre-native#4190), so it carries
+  pre-merge risk; only the OpenGL renderer and only `arm64-v8a` are vendored, so the APK is
+  arm64-only and the other ABI splits are dropped while the module is present.
+- The library is ~11 MB installed, which is roughly what the APK grows by.
+- MapLibre Native is BSD 2-Clause: `third_party/maplibre-android/LICENSE.md`.
 
 ## Free and open stack
 

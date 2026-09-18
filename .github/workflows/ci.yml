@@ -149,7 +149,10 @@ jobs:
           cat > notes.md <<EOF
           Built from \`${GITHUB_SHA}\` on $(date -u +%Y-%m-%d).
 
-          Install \`${asset_prefix}-arm64-v8a.apk\` on any modern phone. The x86_64 build is for emulators and the armeabi-v7a build is for older 32-bit devices; you only need one of them.
+          3D terrain is on: this build uses the vendored MapLibre SDK from the
+          `feature/terrain-3d` branch, which is the only place terrain exists today.
+          It is arm64-only, so \`${asset_prefix}-arm64-v8a.apk\` is the only build —
+          install that one on any modern phone.
 
           These are debug builds signed with the standard Android debug key, so Android will ask you to allow installing from an unknown source and Play Protect may warn. That is expected. A release-signed build needs a keystore and is not set up yet.
           EOF
