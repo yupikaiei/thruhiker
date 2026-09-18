@@ -5,6 +5,7 @@ import com.thruhiker.core.model.LatLng
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.sources.GeoJsonSource
+import kotlin.math.PI
 
 /**
  * Thin handle over a live map.
@@ -14,6 +15,16 @@ import org.maplibre.android.style.sources.GeoJsonSource
  * not ripple out into the feature modules.
  */
 class MapController internal constructor(private val map: MapLibreMap) {
+
+  init {
+    // MapLibre drops the tile level of detail away from the centre of the screen once
+    // the camera is pitched past `tileLodPitchThreshold`. Its default is exactly 60
+    // degrees, which is the tilt this app's cinematic camera sits at on every screen, so
+    // the heuristic is permanently engaged and most of the view is drawn from coarser
+    // tiles: a soft basemap and hillshading too blunt to read as relief. Terrain detail
+    // is the whole point here, so the reduction is switched off.
+    map.tileLodPitchThreshold = TILE_LOD_PITCH_THRESHOLD_RADIANS
+  }
 
   internal fun applyStyle(styleJson: String) {
     map.setStyle(styleBuilderFor(styleJson))
@@ -76,3 +87,15 @@ class MapController internal constructor(private val map: MapLibreMap) {
  */
 internal fun styleBuilderFor(styleJson: String): Style.Builder =
   Style.Builder().fromJson(styleJson)
+
+/**
+ * Tile level of detail is never reduced.
+ *
+ * MapLibre lowers the tile LOD away from the camera viewpoint above this pitch, which
+ * saves tile requests on shallow, wide views. The SDK default is 60 degrees — and
+ * [CameraOptions.CINEMATIC_TILT] is 60 degrees too, as is the flyover's travel tilt — so
+ * leaving the default in place means the pitched camera this app renders *with* is always
+ * over the line. `pi` is the value the MapLibre API documents as "LOD calculation is never
+ * performed", which is what a map whose entire purpose is legible terrain needs.
+ */
+internal val TILE_LOD_PITCH_THRESHOLD_RADIANS: Double = PI
