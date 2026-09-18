@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.gpx.GpxParserTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:48:53.910Z" hostname="codespaces-acf759" time="0.458">
+<testsuite name="com.thruhiker.core.gpx.GpxParserTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-09-18T12:52:27.672Z" hostname="codespaces-acf759" time="0.526">
   <properties/>
-  <testcase name="segments are kept apart" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.235"/>
-  <testcase name="trkpt directly under trk is still read" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.021"/>
-  <testcase name="malformed xml is rejected with a useful message" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.054"/>
+  <testcase name="segments are kept apart" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.363"/>
+  <testcase name="trkpt directly under trk is still read" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.007"/>
+  <testcase name="malformed xml is rejected with a useful message" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.053"/>
   <testcase name="a doctype is refused rather than expanded" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.011"/>
-  <testcase name="gpx 1_0 without a namespace parses" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.005"/>
-  <testcase name="an unparseable timestamp is null rather than throwing" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.012"/>
-  <testcase name="a prefixed namespace is matched by local name" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.007"/>
-  <testcase name="waypoints are read with their names" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.008"/>
-  <testcase name="a missing elevation or time is null rather than zero" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.005"/>
-  <testcase name="a timestamp without a zone is read as utc" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.012"/>
-  <testcase name="elevation and time are read from track points" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.009"/>
-  <testcase name="routes are folded in as segments" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.007"/>
-  <testcase name="a non gpx root element is rejected" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.009"/>
-  <testcase name="metadata name and description are read" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.01"/>
-  <testcase name="unusable points are skipped rather than fatal" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.005"/>
-  <testcase name="an empty document parses to an empty track" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.01"/>
-  <testcase name="timestamps keep their separation" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.009"/>
+  <testcase name="gpx 1_0 without a namespace parses" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.007"/>
+  <testcase name="an unparseable timestamp is null rather than throwing" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.01"/>
+  <testcase name="a prefixed namespace is matched by local name" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.005"/>
+  <testcase name="waypoints are read with their names" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.007"/>
+  <testcase name="a missing elevation or time is null rather than zero" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.004"/>
+  <testcase name="a timestamp without a zone is read as utc" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.009"/>
+  <testcase name="elevation and time are read from track points" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.008"/>
+  <testcase name="routes are folded in as segments" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.002"/>
+  <testcase name="a non gpx root element is rejected" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.006"/>
+  <testcase name="metadata name and description are read" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.004"/>
+  <testcase name="unusable points are skipped rather than fatal" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.007"/>
+  <testcase name="an empty document parses to an empty track" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.003"/>
+  <testcase name="timestamps keep their separation" classname="com.thruhiker.core.gpx.GpxParserTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[[Fatal Error] :1:13: The element type "trk" must be terminated by the matching end-tag "</trk>".
 [Fatal Error] :2:10: DOCTYPE is disallowed when the feature "http://apache.org/xml/features/disallow-doctype-decl" set to true.

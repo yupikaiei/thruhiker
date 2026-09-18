@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.geo.TrackSimplifierTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:46:09.511Z" hostname="codespaces-acf759" time="0.058">
+<testsuite name="com.thruhiker.core.geo.TrackSimplifierTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-18T12:44:10.560Z" hostname="codespaces-acf759" time="0.036">
   <properties/>
-  <testcase name="endpoints always survive" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.02"/>
-  <testcase name="a horizontal detour is preserved" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
+  <testcase name="endpoints always survive" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.007"/>
+  <testcase name="a horizontal detour is preserved" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.001"/>
   <testcase name="track overload simplifies the underlying points" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
   <testcase name="tracks of two points or fewer are returned unchanged" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
   <testcase name="an elevation spike is preserved even when horizontally collinear" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
-  <testcase name="looser tolerances never keep more samples" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.026"/>
-  <testcase name="simplifying a track preserves point order" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.009"/>
+  <testcase name="looser tolerances never keep more samples" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.02"/>
+  <testcase name="simplifying a track preserves point order" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.001"/>
   <testcase name="collinear samples collapse to the endpoints" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
   <testcase name="segments are simplified independently and never merged" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
   <testcase name="an elevation ramp within tolerance is dropped" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
-  <testcase name="zero tolerances retain every deviating sample" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.0"/>
+  <testcase name="zero tolerances retain every deviating sample" classname="com.thruhiker.core.geo.TrackSimplifierTest" time="0.004"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

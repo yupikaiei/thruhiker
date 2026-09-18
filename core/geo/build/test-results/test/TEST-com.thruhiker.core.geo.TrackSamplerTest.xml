@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.geo.TrackSamplerTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:46:09.217Z" hostname="codespaces-acf759" time="0.122">
+<testsuite name="com.thruhiker.core.geo.TrackSamplerTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2026-09-18T12:44:10.454Z" hostname="codespaces-acf759" time="0.09">
   <properties/>
-  <testcase name="a track with no length samples without dividing by zero" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.104"/>
+  <testcase name="a track with no length samples without dividing by zero" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.029"/>
   <testcase name="bearing follows the leg direction" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
-  <testcase name="distance before the start is clamped" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
+  <testcase name="distance before the start is clamped" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
   <testcase name="elevation is interpolated between samples" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
-  <testcase name="sampling between points interpolates along the leg" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
+  <testcase name="sampling between points interpolates along the leg" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.004"/>
+  <testcase name="flight sampling never steps further than the step" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.039"/>
   <testcase name="elevation is null when neither end has it" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
-  <testcase name="an empty track has no sampler" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
-  <testcase name="total distance matches the geodesic path length" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
-  <testcase name="the segment index advances with distance" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
-  <testcase name="a single point track is walkable at zero distance" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
-  <testcase name="sampling after a gap stays in the later segment" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
+  <testcase name="flight and walking sampling agree inside a recorded stretch" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
+  <testcase name="an empty track has no sampler" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
+  <testcase name="total distance matches the geodesic path length" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
+  <testcase name="the segment index advances with distance" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
+  <testcase name="a single point track is walkable at zero distance" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
+  <testcase name="sampling after a gap stays in the later segment" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.001"/>
+  <testcase name="the walk holds still while the camera crosses a gap" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
   <testcase name="a fractional sample walks distance rather than point count" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
-  <testcase name="sampling the start and end returns the endpoints" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
+  <testcase name="sampling the start and end returns the endpoints" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.003"/>
+  <testcase name="flight distance counts the gap between recordings" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
   <testcase name="elevation is carried through when only one end has it" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
   <testcase name="a track of only empty segments has no sampler" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
-  <testcase name="distance beyond the end is clamped" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.007"/>
+  <testcase name="distance beyond the end is clamped" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
+  <testcase name="a flight sample crosses a gap instead of jumping it" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
   <testcase name="duplicate consecutive points do not produce a broken sample" classname="com.thruhiker.core.geo.TrackSamplerTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

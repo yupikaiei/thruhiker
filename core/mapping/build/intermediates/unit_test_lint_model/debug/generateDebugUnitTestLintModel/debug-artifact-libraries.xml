@@ -1,9 +1,9 @@
 <libraries>
   <library
       name=":@@:core:mapping::debug"
-      jars="/home/codespace/.gradle/caches/9.1.0/transforms/d7519b67f42cbbc1d558e1ac36ef5270/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/d7519b67f42cbbc1d558e1ac36ef5270/transformed/out/jars/libs/R.jar"
+      jars="/home/codespace/.gradle/caches/9.1.0/transforms/1fa5e5f753f82ae14fafc6e81f6c7fb4/transformed/out/jars/classes.jar:/home/codespace/.gradle/caches/9.1.0/transforms/1fa5e5f753f82ae14fafc6e81f6c7fb4/transformed/out/jars/libs/R.jar"
       resolved="ThruHiker.core:mapping:unspecified"
-      folder="/home/codespace/.gradle/caches/9.1.0/transforms/d7519b67f42cbbc1d558e1ac36ef5270/transformed/out"
+      folder="/home/codespace/.gradle/caches/9.1.0/transforms/1fa5e5f753f82ae14fafc6e81f6c7fb4/transformed/out"
       manifest="AndroidManifest.xml"
       resFolder="res"
       assetsFolder="assets"

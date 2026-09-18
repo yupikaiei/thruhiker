@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.gpx.GpxRoundTripTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-16T15:48:54.374Z" hostname="codespaces-acf759" time="0.094">
+<testsuite name="com.thruhiker.core.gpx.GpxRoundTripTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-18T12:52:28.203Z" hostname="codespaces-acf759" time="0.156">
   <properties/>
-  <testcase name="elevations and times survive exactly" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.044"/>
-  <testcase name="waypoints survive the round trip" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.007"/>
-  <testcase name="xml metacharacters are escaped" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.005"/>
-  <testcase name="coordinates survive to the centimetre" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.014"/>
-  <testcase name="an empty track still produces a document that parses" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.001"/>
-  <testcase name="a written track reads back with the same shape" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.009"/>
-  <testcase name="the header is a namespaced gpx 1_1 document" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.001"/>
+  <testcase name="elevations and times survive exactly" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.101"/>
+  <testcase name="waypoints survive the round trip" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.009"/>
+  <testcase name="xml metacharacters are escaped" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.006"/>
+  <testcase name="coordinates survive to the centimetre" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.011"/>
+  <testcase name="an empty track still produces a document that parses" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.005"/>
+  <testcase name="a written track reads back with the same shape" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.01"/>
+  <testcase name="the header is a namespaced gpx 1_1 document" classname="com.thruhiker.core.gpx.GpxRoundTripTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

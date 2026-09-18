@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-18T09:47:02.886Z" hostname="codespaces-acf759" time="0.053">
+<testsuite name="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-18T12:54:41.472Z" hostname="codespaces-acf759" time="0.048">
   <properties/>
-  <testcase name="the casing renders beneath the bright line" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.007"/>
-  <testcase name="basemap layers and sources survive" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.001"/>
-  <testcase name="the route is drawn as a casing plus an inner line" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.003"/>
-  <testcase name="the track is added as a geojson source" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.002"/>
-  <testcase name="line width grows with zoom" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.001"/>
+  <testcase name="the casing renders beneath the bright line" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.005"/>
+  <testcase name="basemap layers and sources survive" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.005"/>
+  <testcase name="the route is drawn as a casing plus an inner line" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.001"/>
+  <testcase name="the track is added as a geojson source" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.003"/>
+  <testcase name="line width grows with zoom" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.0"/>
   <testcase name="the casing is wider than the line" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.0"/>
-  <testcase name="the route renders above the hillshade" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.001"/>
+  <testcase name="the route renders above the hillshade" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.004"/>
   <testcase name="a custom track colour is honoured" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.0"/>
-  <testcase name="rebuilding the style does not duplicate layers" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.003"/>
+  <testcase name="rebuilding the style does not duplicate layers" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.004"/>
   <testcase name="omitting the track leaves a terrain only style" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.001"/>
-  <testcase name="terrain and track can be applied in either order with the same result" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.015"/>
+  <testcase name="terrain and track can be applied in either order with the same result" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.017"/>
   <testcase name="the route renders above the basemap but below labels" classname="com.thruhiker.core.mapping.MapStyleFactoryTrackTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
