@@ -3,6 +3,7 @@ package com.thruhiker.core.mapping
 import com.thruhiker.core.model.CameraOptions
 import com.thruhiker.core.model.LatLng
 import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.Style
 import org.maplibre.android.style.sources.GeoJsonSource
 
 /**
@@ -15,7 +16,7 @@ import org.maplibre.android.style.sources.GeoJsonSource
 class MapController internal constructor(private val map: MapLibreMap) {
 
   internal fun applyStyle(styleJson: String) {
-    map.setStyle(styleJson)
+    map.setStyle(styleBuilderFor(styleJson))
   }
 
   /** Moves the camera immediately, with no animation. The flyover rig calls this per frame. */
@@ -58,3 +59,20 @@ class MapController internal constructor(private val map: MapLibreMap) {
     }
   }
 }
+
+/**
+ * Builds a style from an in-memory JSON document.
+ *
+ * The obvious call — `map.setStyle(styleJson)` — is a trap. In this SDK that
+ * overload is the *URL* one: it forwards to [Style.Builder.fromUri], so the
+ * renderer tries to fetch the style document as if it were an address. The fetch
+ * fails, no style is ever installed, and the map stays empty with no tiles and no
+ * error surfaced to the app.
+ *
+ * A style document therefore has to go through [Style.Builder.fromJson], which is
+ * what [MapController.applyStyle] relies on. This is kept as a pure function so a
+ * JVM unit test can pin the shape of the builder instead of leaving the mistake to
+ * be rediscovered on a device.
+ */
+internal fun styleBuilderFor(styleJson: String): Style.Builder =
+  Style.Builder().fromJson(styleJson)

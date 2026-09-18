@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.thruhiker.core.mapping.MapControllerStyleTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-18T08:38:00.902Z" hostname="codespaces-acf759" time="0.005">
+  <properties/>
+  <testcase name="a style document is carried as json rather than as a url" classname="com.thruhiker.core.mapping.MapControllerStyleTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
