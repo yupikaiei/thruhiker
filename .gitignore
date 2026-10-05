@@ -8,7 +8,14 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
-/build
+
+# Build outputs, at any depth.
+#
+# Deliberately not anchored to the root. `/build` matches only the top-level directory, so
+# every module's own `build/` slipped past it: 2,112 files of dex, jars, class files and
+# intermediates were committed, and each `git add -A` re-committed tens of megabytes more.
+build/
+
 /captures
 .externalNativeBuild
 .cxx
@@ -18,6 +25,5 @@ local.properties
 *.keystore
 !debug.keystore
 
-# The vendored 3D-terrain MapLibre SDK is committed (see README, "3D terrain");
-# it is refreshed, not dropped in, so its build outputs stay out of git.
-/third_party/maplibre-android/build/
+# The vendored 3D-terrain MapLibre SDK is committed (see README, "3D terrain"); it is
+# refreshed, not dropped in. Its build outputs are covered by the rule above.
