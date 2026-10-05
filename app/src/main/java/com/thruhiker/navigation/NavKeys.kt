@@ -10,14 +10,18 @@ import kotlinx.serialization.Serializable
  * patterns, so arguments are type-checked at compile time.
  */
 
-@Serializable
-data object FlyoverRoute : NavKey
-
+/** The planner: draw, measure, colour and split a route. The app's front door. */
 @Serializable
 data object PlanRoute : NavKey
 
+/** The kept routes, which open in the flyover. */
+@Serializable
+data object RoutesRoute : NavKey
+
+/** The 3D flight over a route. */
+@Serializable
+data object FlyoverRoute : NavKey
+
+/** On-trail recording. Not built yet. */
 @Serializable
 data object RecordRoute : NavKey
-
-@Serializable
-data object JournalRoute : NavKey

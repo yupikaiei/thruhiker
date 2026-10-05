@@ -2,15 +2,13 @@
     <string name="app_name">ThruHiker</string>
 
     <!-- Bottom navigation -->
-    <string name="destination_flyover">Flyover</string>
     <string name="destination_plan">Plan</string>
+    <string name="destination_routes">Routes</string>
+    <string name="destination_flyover">Flyover</string>
     <string name="destination_record">Record</string>
-    <string name="destination_journal">Journal</string>
 
     <!-- Placeholder copy, replaced as each feature lands -->
-    <string name="placeholder_plan">The itinerary generator, elevation-profile day splitter, resupply and nutrition engine, and permit vault all live here. Phase 5.</string>
     <string name="placeholder_record">Battery-sipping foreground recording with barometric elevation and auto-pause. Phase 3.</string>
-    <string name="placeholder_journal">Photos pinned to their mile marker, auto day recaps, and the end-of-hike book export. Phase 7.</string>
 
     <!-- Route import -->
     <string name="import_gpx">Import GPX</string>
@@ -21,6 +19,7 @@
     <string name="route_error_unreadable">Could not read that file.</string>
     <string name="stats_distance">Distance</string>
     <string name="stats_ascent">Ascent</string>
+    <string name="stats_difficulty">Difficulty</string>
     <string name="stats_walking_time">Est. walking time</string>
     <string name="stats_walking_time_hint">Tobler, from the elevation profile</string>
 
@@ -30,4 +29,62 @@
     <string name="flyover_replay">Replay</string>
     <string name="flyover_progress">%1$d%% of the flight</string>
     <string name="flyover_elevation">Elevation</string>
+    <string name="flyover_reading">%1$d%% · %2$s</string>
+    <string name="flyover_hide_details">Hide details</string>
+    <string name="flyover_show_details">Show details</string>
+
+    <!-- Planner -->
+    <string name="planner_title">Plan a route</string>
+    <string name="planner_add_points">Tap to add points</string>
+    <string name="planner_fit">Fit</string>
+    <string name="planner_empty_hint">Tap the map to drop your first waypoint. Two points make a route.</string>
+    <string name="planner_empty_hint_off">Turn on “Tap to add points” to start dropping waypoints.</string>
+    <string name="planner_undo">Undo</string>
+    <string name="planner_clear">Clear</string>
+    <string name="planner_reverse">Reverse</string>
+    <string name="planner_loop_label">Generated loop length</string>
+    <string name="planner_generate_loop">Generate loop</string>
+    <string name="planner_loop_hint">A shape, not trail routing.</string>
+    <string name="planner_loop_generated">Loop generated. Drag in waypoints to shape it.</string>
+    <string name="planner_import">Import GPX</string>
+    <string name="planner_import_short">Import</string>
+    <plurals name="planner_imported">
+        <item quantity="one">Imported %1$d waypoint</item>
+        <item quantity="other">Imported %1$d waypoints</item>
+    </plurals>
+    <plurals name="planner_merged">
+        <item quantity="one">Imported %1$d file</item>
+        <item quantity="other">Joined %1$d files into one route</item>
+    </plurals>
+    <string name="planner_export_short">Export</string>
+    <string name="planner_save">Save</string>
+    <string name="planner_splits">Splits</string>
+    <string name="planner_fly">Fly 3D</string>
+    <string name="planner_name_label">Route name</string>
+    <string name="planner_default_name">Planned route</string>
+    <string name="planner_saved">Saved “%1$s”</string>
+    <string name="planner_save_failed">Could not save that route.</string>
+    <string name="planner_exported">Exported.</string>
+    <string name="planner_export_failed">Could not export that route.</string>
+    <string name="planner_splits_title">Splits</string>
+    <string name="planner_add_start_time">Set a start time</string>
+    <string name="planner_change_start_time">Change start time</string>
+    <string name="planner_clear_start_time">Clear</string>
+    <string name="planner_no_elevation">Could not read the terrain under this route — looking it up needs a connection the first time. Import a recorded GPX instead, and its own elevation will be used as it is.</string>
+    <string name="planner_sampling_elevation">Reading the terrain under this route…</string>
+    <string name="planner_unknown">—</string>
+
+    <!-- Route library -->
+    <string name="routes_empty_title">No saved routes</string>
+    <string name="routes_empty_body">Plan a route and save it, and it will be waiting here.</string>
+    <string name="routes_menu">Route actions</string>
+    <string name="routes_export">Export GPX</string>
+    <string name="routes_reverse">Reverse</string>
+    <string name="routes_delete">Delete</string>
+    <string name="routes_exported">Exported.</string>
+    <string name="routes_export_failed">Could not export that route.</string>
+    <string name="routes_reversed">Saved “%1$s”.</string>
+    <string name="routes_reverse_failed">Could not reverse that route.</string>
+    <string name="routes_deleted">Deleted “%1$s”.</string>
+    <string name="routes_missing">That route’s file is missing.</string>
 </resources>

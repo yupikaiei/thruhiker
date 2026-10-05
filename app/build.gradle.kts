@@ -45,8 +45,13 @@ android {
    *
    * The locally built 3D-terrain SDK only carries the arm64-v8a native library, so
    * with it in place the other splits would install an APK with no renderer at all.
+   * Opt out of it to build for an x86_64 emulator:
+   *
+   *     ./gradlew assembleDebug -Pthruhiker.vendoredTerrain=false
    */
-  val terrainSdk = rootProject.file("third_party/maplibre-android").isDirectory
+  val terrainSdk =
+    (providers.gradleProperty("thruhiker.vendoredTerrain").orNull?.toBoolean() ?: true) &&
+      rootProject.file("third_party/maplibre-android").isDirectory
   splits {
     abi {
       isEnable = true

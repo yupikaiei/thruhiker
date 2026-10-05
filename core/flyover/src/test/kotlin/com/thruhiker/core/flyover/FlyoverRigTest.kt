@@ -235,20 +235,33 @@ class FlyoverRigTest {
   }
 
   /**
-   * The camera looks ahead of the walker rather than at them, which is what makes
-   * the shot show what is coming instead of what has already gone past.
+   * The camera aims at the walker, not ahead of them.
+   *
+   * MapLibre puts the camera's target in the middle of the screen and the reveal draws the
+   * route behind the walker, so aiming ahead pushes the drawn end of the line down the
+   * frame: the ground behind the target is magnified at the travelling tilt, and the
+   * look-ahead this used to have put the walker roughly a quarter of a screen below the
+   * middle, under the info panel. Aiming at the walker is what keeps the route centred.
    */
   @Test
-  fun `the travelling camera looks a fixed distance ahead`() {
+  fun `the travelling camera centres the walker`() {
     val track = northTrack(count = 40, spacingMeters = 500.0)
     val rig = rig(track)
+    val frame = rig.frameAt(options.introMillis + rig.travelMillis / 2)
+
+    assertEquals(0.0, Geodesic.distanceMeters(frame.position, frame.camera.target), 0.5)
+  }
+
+  @Test
+  fun `a configured look-ahead still shifts the camera off the walker`() {
+    val track = northTrack(count = 40, spacingMeters = 500.0)
+    val rig = rig(track, options.copy(lookAheadMeters = 350.0))
     val sampler = TrackSampler.of(track)!!
     val frame = rig.frameAt(options.introMillis + rig.travelMillis / 2)
 
     val here = sampler.sampleAt(frame.distanceAlongTrackMeters)
-    val ahead = Geodesic.distanceMeters(here.position, frame.camera.target)
 
-    assertEquals(options.lookAheadMeters, ahead, 5.0)
+    assertEquals(350.0, Geodesic.distanceMeters(here.position, frame.camera.target), 5.0)
   }
 
   @Test

@@ -43,8 +43,22 @@ data class FlyoverOptions(
    */
   val bearingOffsetDegrees: Double = 20.0,
 
-  /** How far ahead of the walker the camera looks. */
-  val lookAheadMeters: Double = 350.0,
+  /**
+   * How far ahead of the walker the camera aims, along the route.
+   *
+   * Zero, deliberately. The camera's target is the point MapLibre puts in the middle of
+   * the screen, and the reveal draws the route *behind* the walker, so any look-ahead
+   * pushes the drawn end of the line further down the frame: at the travelling tilt the
+   * ground behind the target is magnified, and the 350 m this used to be measured as a
+   * quarter of the screen height. The walker ended up near the bottom edge, under the
+   * info panel, with the route trailing off screen — which is exactly what "the path is
+   * not centred" looks like from the outside.
+   *
+   * Aiming at the walker centres the moving end of the route and lets the ground ahead
+   * fill the frame above it, because the camera still looks forward: it is the tilt that
+   * decides where it looks, and this only decides which point is in the middle.
+   */
+  val lookAheadMeters: Double = 0.0,
 
   /**
    * How far either side of the walker the camera's heading is eased over.

@@ -6,6 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -14,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.thruhiker.core.model.CameraOptions
+import com.thruhiker.core.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.maplibre.android.MapLibre
@@ -39,6 +41,9 @@ fun ThruHikerMap(
   styleUrl: String = MapStyleFactory.OPEN_FREE_MAP_STYLE_URL,
   terrainExaggeration: Double = MapStyleFactory.DEFAULT_EXAGGERATION,
   trackGeoJson: String? = null,
+  gradientGeoJson: String? = null,
+  waypointsGeoJson: String? = null,
+  onMapClick: ((LatLng) -> Unit)? = null,
   onMapReady: (MapController) -> Unit = {},
 ) {
   val context = LocalContext.current
@@ -94,21 +99,74 @@ fun ThruHikerMap(
     },
   )
 
-  // Style and camera are applied together: MapLibre preserves the camera across a
-  // style change, so setting both here keeps framing deterministic instead of
-  // racing two effects against each other.
-  LaunchedEffect(controller, baseStyleJson, terrainExaggeration, trackGeoJson, camera) {
+  // Terrain and the route layers belong to the style, so they are set once. Note what is
+  // *not* in it: any route geometry. The route is source data and is pushed separately,
+  // because a style is applied asynchronously — it can land well after a seek, and a style
+  // that carries the route therefore draws the whole route again on top of the reveal the
+  // flyover has just set. Keeping the style's route source empty makes the worst case of a
+  // missed update "nothing is drawn", which is the state the flight starts in anyway.
+  LaunchedEffect(controller, baseStyleJson, terrainExaggeration) {
     val readyController = controller ?: return@LaunchedEffect
     val base = baseStyleJson ?: return@LaunchedEffect
 
-    readyController.applyStyle(
-      MapStyleFactory.withTerrainAndTrack(
-        baseStyleJson = base,
-        trackGeoJson = trackGeoJson,
-        exaggeration = terrainExaggeration,
-      ),
+    // Layers are added for every route-bearing feature up front, with empty sources. The
+    // data is pushed separately, for the same reason the track geometry is: a style is
+    // applied asynchronously, so a style that carried the data could land after the user has
+    // already changed it and repaint something stale.
+    val styled = MapStyleFactory.withTerrainAndTrack(
+      baseStyleJson = base,
+      trackGeoJson = NO_TRACK,
+      exaggeration = terrainExaggeration,
     )
-    readyController.moveCamera(camera)
+    val withGradient = MapStyleFactory.withGradientLine(styled, GeoJsonEncoder.EMPTY_COLLECTION)
+    val withWaypoints = MapStyleFactory.withWaypoints(withGradient, GeoJsonEncoder.EMPTY_COLLECTION)
+
+    readyController.applyStyle(withWaypoints)
+  }
+
+  // The drawn route, reasserted whenever it changes. Safe to call before the style has
+  // loaded: the update waits for the style rather than being dropped by it.
+  LaunchedEffect(controller, baseStyleJson, trackGeoJson) {
+    val readyController = controller ?: return@LaunchedEffect
+    if (baseStyleJson == null) return@LaunchedEffect
+    readyController.updateTrack(trackGeoJson ?: NO_TRACK)
+  }
+
+  LaunchedEffect(controller, baseStyleJson, gradientGeoJson) {
+    val readyController = controller ?: return@LaunchedEffect
+    if (baseStyleJson == null) return@LaunchedEffect
+    readyController.updateGradientRoute(gradientGeoJson ?: GeoJsonEncoder.EMPTY_COLLECTION)
+  }
+
+  LaunchedEffect(controller, baseStyleJson, waypointsGeoJson) {
+    val readyController = controller ?: return@LaunchedEffect
+    if (baseStyleJson == null) return@LaunchedEffect
+    readyController.updateWaypoints(waypointsGeoJson ?: GeoJsonEncoder.EMPTY_COLLECTION)
+  }
+
+  // Framing follows the imported route. The flyover moves the camera itself after this, so
+  // this only has to place the establishing shot — and it places it with an animated move,
+  // because a plain jump does not repaint on the SDK this app builds against. See
+  // [MapController.animateCamera].
+  //
+  // Declared *after* the data effects, and that ordering is load-bearing: a route and a new
+  // camera usually arrive in the same recomposition — that is exactly what "generate a loop
+  // and frame it" does — and a source update cancels a camera transition that is still
+  // running. Moving the camera last lets the new geometry land first, so the animation is
+  // not thrown away half way to its destination.
+  LaunchedEffect(controller, baseStyleJson, camera) {
+    val readyController = controller ?: return@LaunchedEffect
+    if (baseStyleJson == null) return@LaunchedEffect
+    readyController.animateCamera(camera)
+  }
+
+  // Registered once and always calling the newest handler. Keying the effect on the callback
+  // would tear down and reinstall the listener on every recomposition, because a lambda
+  // written inline at the call site is a new object each time.
+  val currentOnMapClick by rememberUpdatedState(onMapClick)
+  LaunchedEffect(controller) {
+    val readyController = controller ?: return@LaunchedEffect
+    readyController.setOnMapClickListener { position -> currentOnMapClick?.invoke(position) }
   }
 }
 

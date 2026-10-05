@@ -19,10 +19,10 @@ import kotlin.math.roundToInt
  *
  * The flight has three parts. An intro settles from a wide establishing shot onto
  * the trailhead, turned off-axis so the first sweep reveals the terrain. Travel
- * flies the route at a constant ground speed with the camera looking a little ahead
- * of the walker, offset in bearing so the route runs diagonally across the frame
- * instead of dead ahead into the distance. The outro pulls up and flattens out over
- * the finish.
+ * route at a constant ground speed, aiming at the walker so that the end of the drawn
+ * route stays in the middle of the frame, and offset in bearing so the route runs
+ * diagonally across it instead of dead ahead into the distance. The outro pulls up and
+ * flattens out over the finish.
  */
 class FlyoverRig private constructor(
   private val sampler: TrackSampler,

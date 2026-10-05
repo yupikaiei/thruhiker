@@ -118,6 +118,47 @@ class MapStyleFactoryTrackTest {
     assertTrue(line < labels)
   }
 
+  /**
+   * The real basemap is not sorted "all geometry, then all labels". OpenFreeMap's Liberty
+   * puts a road-arrow symbol above its bridges, buildings and boundaries, so inserting
+   * "below the first symbol" lands the route under a boundary line or a 3D building.
+   */
+  private val libertyLikeStyle = """
+    {
+      "version": 8,
+      "sources": {
+        "openmaptiles": { "type": "vector", "url": "https://example.invalid/tiles.json" }
+      },
+      "layers": [
+        { "id": "background", "type": "background" },
+        { "id": "water", "type": "fill" },
+        { "id": "road-arrow", "type": "symbol" },
+        { "id": "bridge", "type": "line" },
+        { "id": "building", "type": "fill-extrusion" },
+        { "id": "boundary", "type": "line" },
+        { "id": "place-labels", "type": "symbol" }
+      ]
+    }
+  """.trimIndent()
+
+  @Test
+  fun `the route clears basemap geometry drawn after an early symbol`() {
+    val ids = JSONObject(
+      MapStyleFactory.withTerrainAndTrack(libertyLikeStyle, trackGeoJson),
+    ).layerIds()
+
+    val route = ids.indexOf(MapStyleFactory.TRACK_LAYER_ID)
+
+    assertTrue("bridges must not draw over the route", ids.indexOf("bridge") < route)
+    assertTrue("buildings must not draw over the route", ids.indexOf("building") < route)
+    assertTrue("boundaries must not draw over the route", ids.indexOf("boundary") < route)
+    assertTrue("place labels must stay above the route", ids.indexOf("place-labels") > route)
+    assertTrue(
+      "shading must stay below the route",
+      ids.indexOf(MapStyleFactory.HILLSHADE_LAYER_ID) < route,
+    )
+  }
+
   @Test
   fun `the route renders above the hillshade`() {
     val style = JSONObject(
@@ -137,9 +178,8 @@ class MapStyleFactoryTrackTest {
   fun `terrain and track can be applied in either order with the same result`() {
     val terrainFirst = JSONObject(MapStyleFactory.withTerrainAndTrack(baseStyle, trackGeoJson))
     val trackFirst = JSONObject(
-      MapStyleFactory.withTrackLine(
-        MapStyleFactory.withTerrain(baseStyle),
-        trackGeoJson,
+      MapStyleFactory.withTerrain(
+        MapStyleFactory.withTrackLine(baseStyle, trackGeoJson),
       ),
     )
 
