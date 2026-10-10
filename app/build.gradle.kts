@@ -23,6 +23,19 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro",
       )
+
+      // A release APK is unsigned unless a signing config is given, and an unsigned APK
+      // cannot be installed on a phone at all — `adb install` refuses it. So a release build
+      // falls back to the debug keystore, which lets a build be sideloaded for testing
+      // without inventing a key and a password to look after.
+      //
+      // This is not a distribution signature, and it is deliberately not a substitute for
+      // one: the debug key is public, so Play rejects it, and a build later signed with a
+      // real key cannot upgrade over this one without an uninstall first. Declaring a
+      // `release` signing config is all it takes to supersede this — hence the lookup
+      // rather than the name.
+      signingConfig = signingConfigs.findByName("release")
+        ?: signingConfigs.getByName("debug")
     }
   }
 
