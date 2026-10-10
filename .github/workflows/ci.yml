@@ -150,15 +150,16 @@ jobs:
             tag="${GITHUB_REF_NAME}"
             title="ThruHiker ${tag}"
             asset_prefix="thruhiker-${tag}"
-            prerelease_flag=""
           else
             tag="latest"
-            title="Latest build from main (${short_sha})"
+            # The date is in the title because it is the one thing that says "this is new"
+            # in a releases list, where an edited release keeps announcing its first
+            # publication.
+            title="Latest build from main — $(date -u +%Y-%m-%d) (${short_sha})"
             # No commit in the asset names, so this URL is permanent and always serves
             # the newest build:
             #   .../releases/download/latest/thruhiker-arm64-v8a.apk
             asset_prefix="thruhiker"
-            prerelease_flag="--prerelease"
           fi
 
           mkdir -p named
@@ -198,20 +199,33 @@ jobs:
             git push --force origin refs/tags/latest
           fi
 
+          # Replaced, not edited. `gh release edit` leaves `published_at` at the first
+          # publication, so a rolling build rebuilt on every push kept announcing the day it
+          # was first created — which is how a download from today came to display as a month
+          # old. Recreating it dates it honestly.
+          #
+          # It is also deliberately *not* a prerelease. A prerelease is excluded from the
+          # "Latest" badge, so marking the rolling build as one handed that badge to whichever
+          # versioned release came last, and since a versioned release is by nature older than
+          # the next push, GitHub advertised v0.1.0 from three weeks earlier as the newest thing
+          # available. Publishing a version tag now takes the badge back, which is correct,
+          # because a new tag is newer than the build that preceded it.
+          #
+          # Replacing the release also means its previous assets are gone by construction,
+          # which is why there is no longer a loop here deleting them one at a time.
           if gh release view "${tag}" --repo "${repo}" > /dev/null 2>&1; then
-            # A rolling release means "the current build", so the previous APKs go.
-            # --clobber alone only replaces identically named assets, which would
-            # leave three more files behind on every single push.
-            for asset in $(gh release view "${tag}" --repo "${repo}" --json assets --jq '.assets[].name'); do
-              gh release delete-asset "${tag}" "${asset}" --repo "${repo}" --yes
-            done
-
-            gh release edit "${tag}" --repo "${repo}" --title "${title}" \
-              --notes-file notes.md ${prerelease_flag}
-          else
-            gh release create "${tag}" --repo "${repo}" --title "${title}" \
-              --notes-file notes.md --target "${GITHUB_SHA}" ${prerelease_flag}
+            # --cleanup-tag=false is the default, and stated anyway: the tag must survive.
+            # It is what the download URL resolves through, and recreating it here would
+            # defeat the point of a permanent URL.
+            gh release delete "${tag}" --repo "${repo}" --yes --cleanup-tag=false
           fi
+
+          # No --target: the tag already points where it should in both branches, because a
+          # version tag is what triggered the run and `latest` was force-moved just above.
+          # --verify-tag makes that a requirement rather than an assumption, so a release can
+          # never be attached to a commit on a branch instead of to the tag it names.
+          gh release create "${tag}" --repo "${repo}" --verify-tag \
+            --title "${title}" --notes-file notes.md
 
           gh release upload "${tag}" named/*.apk --repo "${repo}"
           echo "Published https://github.com/${repo}/releases/tag/${tag}"

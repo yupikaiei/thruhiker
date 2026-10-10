@@ -260,14 +260,28 @@ the current build — good enough to bookmark on a phone:
 https://github.com/yupikaiei/thruhiker/releases/download/latest/thruhiker-arm64-v8a.apk
 ```
 
-**Frozen versions**, from a `v*` tag: <https://github.com/yupikaiei/thruhiker/releases/latest>
+**Frozen versions**, from a `v*` tag: <https://github.com/yupikaiei/thruhiker/releases>
 
 ```bash
-git tag v0.1.0 && git push origin v0.1.0
+git tag v0.2.0 && git push origin v0.2.0
 ```
 
-Rolling builds are marked as prereleases so they do not take the "Latest" badge away from a real
-tagged version, which is why the two URLs above are different pages.
+The rolling build is *not* marked as a prerelease, so it is the repository's "Latest" release, which
+is what makes it reachable from the repository page. It used to be marked as one, to keep the badge
+for a real versioned release, and the effect was the opposite of what was intended: GitHub advertised
+`v0.1.0` from three weeks earlier as the newest thing available, while the build that actually
+contained everything sat behind a "Pre-release" label. Publishing a version tag takes the badge
+back, because a new tag is newer than the build that preceded it — and that is what the badge is
+for.
+
+Each rolling build is created fresh rather than edited, so its publication date is the date it was
+built. An edited release keeps the `published_at` of the first one, which is how a build from today
+came to display as a month old. The build date is also in the release title.
+
+A tag does not set the app's own version, so bump it in the same change:
+`versionCode` and `versionName` in `app/build.gradle.kts` are what the installed app reports. A
+`v0.2.0` tag on a build that still says `0.1.0` produces a release titled 0.2.0 whose app insists it
+is 0.1.0.
 
 Install `thruhiker-arm64-v8a.apk` on any modern phone. It is the only asset: the vendored terrain
 SDK is arm64-only, so a 32-bit device has no renderer to install. Android will ask you to allow
