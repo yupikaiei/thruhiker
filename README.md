@@ -269,13 +269,69 @@ git tag v0.1.0 && git push origin v0.1.0
 Rolling builds are marked as prereleases so they do not take the "Latest" badge away from a real
 tagged version, which is why the two URLs above are different pages.
 
-Install `thruhiker-arm64-v8a.apk` on any modern phone. You only need one APK: arm64-v8a covers
-modern phones, x86_64 is for emulators, and armeabi-v7a is for older 32-bit devices. Android will
-ask you to allow installs from an unknown source and Play Protect may warn — both are expected for
-a build signed with the debug key.
+Install `thruhiker-arm64-v8a.apk` on any modern phone. It is the only asset: the vendored terrain
+SDK is arm64-only, so a 32-bit device has no renderer to install. Android will ask you to allow
+installs from an unknown source and Play Protect may warn, both of which are expected — "Signing"
+below explains why these builds are signed the way they are, and why that matters if you download
+more than one.
 
 Actions artifacts are uploaded per run as well, but they need a signed-in GitHub session and expire
 after 30 days, which is the reason the releases exist.
+
+## Signing
+
+An APK has to be signed to be installed at all — `adb install` refuses an unsigned one with
+`INSTALL_PARSE_FAILED_NO_CERTIFICATES`. The release variant therefore falls back to the debug
+keystore when no keystore is configured, so `assembleRelease` produces something you can put on a
+phone immediately, with no key to invent or look after first.
+
+That fallback is right locally and wrong in CI, and the difference is worth knowing before it bites.
+A GitHub runner is a fresh machine on every run, so the debug keystore is generated on the spot and
+every published build carries a different signature. Android then refuses to install a new download
+over the previous one and says nothing about why. Two builds this repository published, three weeks
+apart, were signed with these certificates:
+
+| Release | SHA-256 of the signing certificate |
+| --- | --- |
+| `latest`, 2026-10-10 | `b8a6098885aea4176a4193d2dfede4f2a75a41710fadff2decc382238168b7d9` |
+| `v0.1.0`, 2026-09-16 | `b5ec98b637b618d4c4ae64a0eb7e04634a7b3efee75d73919c14812ae3df492c` |
+
+Giving CI a real keystore collapses those into one signature, which is what makes "download the new
+build and install it" actually work. Create one and keep it somewhere you will not lose it:
+
+```bash
+keytool -genkeypair -v -keystore thruhiker.jks -alias thruhiker \
+  -keyalg RSA -keysize 4096 -validity 10000
+
+base64 -i thruhiker.jks | pbcopy   # macOS
+base64 -w0 thruhiker.jks > thruhiker.jks.b64   # Linux
+```
+
+Then add four repository secrets, under Settings → Secrets and variables → Actions:
+
+| Secret | Value |
+| --- | --- |
+| `THRUHIKER_KEYSTORE_BASE64` | the base64 blob above |
+| `THRUHIKER_KEYSTORE_PASSWORD` | the store password you chose |
+| `THRUHIKER_KEY_ALIAS` | `thruhiker` |
+| `THRUHIKER_KEY_PASSWORD` | the key password you chose |
+
+The workflow decodes the keystore into the runner's temp directory and exports `THRUHIKER_KEYSTORE`
+and the rest; `app/build.gradle.kts` reads those and creates a `release` signing config, which the
+release variant then prefers. Nothing is required for a local build, and nothing changes until the
+secrets exist — the workflow warns when they do not. The same four variables work locally:
+
+```bash
+THRUHIKER_KEYSTORE=thruhiker.jks \
+THRUHIKER_KEYSTORE_PASSWORD="$PASS" \
+THRUHIKER_KEY_ALIAS=thruhiker \
+THRUHIKER_KEY_PASSWORD="$PASS" \
+  ./gradlew assembleRelease
+```
+
+`*.keystore` and `*.jks` are gitignored. Back the keystore up outside the repository: lose it and
+you cannot update an installed copy, because Android will not accept a build signed with a
+different key as an upgrade.
 
 ## Building
 
@@ -287,20 +343,24 @@ export ANDROID_HOME=/path/to/android-sdk
 
 ./gradlew test              # unit tests across all modules
 ./gradlew assembleDebug     # debug APK
+./gradlew assembleRelease   # release APK, signed — see "Signing"
 ./gradlew lint              # Android lint
 ```
 
 Builds ship a vendored MapLibre SDK with 3D terrain — see "Terrain" below.
 
-The debug APK lands in `app/build/outputs/apk/debug/`, split per ABI because MapLibre ships a
-~13 MB native library for each one. Install `app-arm64-v8a-debug.apk` on any modern phone; the
-x86_64 build is for emulators. A universal APK would be about 60 MB, so splits stay on. Note there
-is no `app-debug.apk` — the split is not a variant of a base name, it replaces it:
+The APKs land in `app/build/outputs/apk/{debug,release}/`, split per ABI because MapLibre ships a
+~13 MB native library for each one. A universal APK would be about 60 MB, so the splits stay on.
+Note there is no `app-debug.apk` — the split is not a variant of a base name, it replaces it:
 
 ```bash
-adb install -r app/build/outputs/apk/debug/app-x86_64-debug.apk      # emulator
-adb install -r app/build/outputs/apk/debug/app-arm64-v8a-debug.apk   # phone
+adb install -r app/build/outputs/apk/release/app-arm64-v8a-release.apk   # phone
 ```
+
+With the vendored terrain SDK in place, arm64-v8a is the only split built, because that SDK carries
+no other native library and the others would produce an APK with no renderer at all. The other ABIs
+appear only when the build opts out of terrain, which is what an x86_64 emulator needs — see
+"Running on an emulator" below.
 
 If `ANDROID_HOME` is unset, point the build at your SDK with `sdk.dir` in `local.properties` (not
 committed).

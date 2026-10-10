@@ -22,7 +22,11 @@ build/
 local.properties
 *.apk
 *.aab
+
+# Signing material. A keystore is a credential: committing one hands out the ability to sign as
+# this app, and it cannot be rotated afterwards without a new package name.
 *.keystore
+*.jks
 !debug.keystore
 
 # The vendored 3D-terrain MapLibre SDK is committed (see README, "3D terrain"); it is

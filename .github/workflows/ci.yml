@@ -72,14 +72,38 @@ jobs:
       - name: Lint
         run: ./gradlew lint
 
-      - name: Assemble debug APKs
-        run: ./gradlew assembleDebug
+      # A stable signing key, when the repository has one in secrets. Without it the release
+      # variant falls back to the runner's own debug keystore, and a GitHub runner is a fresh
+      # VM every run: that keystore is regenerated each time, so two downloads from two runs
+      # are differently signed and Android will refuse to install one over the other.
+      #
+      #   gh secret set THRUHIKER_KEYSTORE_BASE64 < keystore.jks.b64
+      #   gh secret set THRUHIKER_KEYSTORE_PASSWORD
+      #   gh secret set THRUHIKER_KEY_ALIAS
+      #   gh secret set THRUHIKER_KEY_PASSWORD
+      #
+      # See README, "Signing".
+      - name: Assemble release APKs
+        env:
+          KEYSTORE_BASE64: ${{ secrets.THRUHIKER_KEYSTORE_BASE64 }}
+          THRUHIKER_KEYSTORE_PASSWORD: ${{ secrets.THRUHIKER_KEYSTORE_PASSWORD }}
+          THRUHIKER_KEY_ALIAS: ${{ secrets.THRUHIKER_KEY_ALIAS }}
+          THRUHIKER_KEY_PASSWORD: ${{ secrets.THRUHIKER_KEY_PASSWORD }}
+        run: |
+          if [ -n "${KEYSTORE_BASE64}" ]; then
+            echo "Signing with the configured keystore"
+            printf '%s' "${KEYSTORE_BASE64}" | base64 -d > "${RUNNER_TEMP}/thruhiker.jks"
+            export THRUHIKER_KEYSTORE="${RUNNER_TEMP}/thruhiker.jks"
+          else
+            echo "::warning::No signing keystore in secrets, so this build is signed with the runner's debug key. That key is regenerated every run, so these APKs cannot be installed over an earlier download — see README, 'Signing'."
+          fi
+          ./gradlew assembleRelease
 
       - name: Upload APKs
         uses: actions/upload-artifact@v7
         with:
-          name: thruhiker-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          name: thruhiker-release-apk
+          path: app/build/outputs/apk/release/*.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -111,7 +135,7 @@ jobs:
       - name: Download the built APKs
         uses: actions/download-artifact@v8
         with:
-          name: thruhiker-debug-apk
+          name: thruhiker-release-apk
           path: apk
 
       - name: Publish the release
@@ -141,7 +165,11 @@ jobs:
           for file in apk/*.apk; do
             base=$(basename "$file" .apk)
             abi=${base#app-}
+            # Both suffixes are stripped, so the asset name does not silently change if the
+            # build type does. The download URL is documented as permanent; a stray
+            # `arm64-v8a-release` in it would break that without breaking the build.
             abi=${abi%-debug}
+            abi=${abi%-release}
             cp "$file" "named/${asset_prefix}-${abi}.apk"
           done
           ls -la named
@@ -154,7 +182,13 @@ jobs:
           It is arm64-only, so \`${asset_prefix}-arm64-v8a.apk\` is the only build —
           install that one on any modern phone.
 
-          These are debug builds signed with the standard Android debug key, so Android will ask you to allow installing from an unknown source and Play Protect may warn. That is expected. A release-signed build needs a keystore and is not set up yet.
+          Android will ask you to allow installing from an unknown source, and Play Protect
+          may warn. Both are expected for a sideloaded build.
+
+          If Android refuses to install this over an earlier ThruHiker, uninstall the old one
+          first. Unless this repository has a signing keystore in its secrets, every run signs
+          with its own generated debug key, and those differ from run to run — so two builds
+          are not the same app as far as Android is concerned. See README, "Signing".
           EOF
 
           if [ "${tag}" = "latest" ]; then

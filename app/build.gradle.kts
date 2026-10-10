@@ -16,6 +16,32 @@ android {
     versionName = "0.1.0"
   }
 
+  /**
+   * A real signing key, when one is supplied.
+   *
+   * Read through `providers.environmentVariable` rather than `System.getenv` because this
+   * project builds with the configuration cache on: a provider is a tracked input, so setting
+   * or clearing these re-runs configuration instead of silently reusing a cached one.
+   *
+   * Absent in a fresh clone, which is why the release variant below falls back to the debug
+   * key rather than failing to build at all.
+   */
+  fun signingValue(name: String): String? =
+    providers.environmentVariable(name).orNull?.takeIf(String::isNotBlank)
+
+  val keystorePath = signingValue("THRUHIKER_KEYSTORE")
+
+  signingConfigs {
+    if (keystorePath != null) {
+      create("release") {
+        storeFile = file(keystorePath)
+        storePassword = signingValue("THRUHIKER_KEYSTORE_PASSWORD")
+        keyAlias = signingValue("THRUHIKER_KEY_ALIAS")
+        keyPassword = signingValue("THRUHIKER_KEY_PASSWORD")
+      }
+    }
+  }
+
   buildTypes {
     release {
       isMinifyEnabled = false
@@ -29,11 +55,9 @@ android {
       // falls back to the debug keystore, which lets a build be sideloaded for testing
       // without inventing a key and a password to look after.
       //
-      // This is not a distribution signature, and it is deliberately not a substitute for
-      // one: the debug key is public, so Play rejects it, and a build later signed with a
-      // real key cannot upgrade over this one without an uninstall first. Declaring a
-      // `release` signing config is all it takes to supersede this — hence the lookup
-      // rather than the name.
+      // That fallback is fine locally and a trap in CI: a runner is a fresh machine, so the
+      // debug keystore is regenerated on every run and two builds come out signed with
+      // different keys. Configure a keystore instead — see README, "Signing".
       signingConfig = signingConfigs.findByName("release")
         ?: signingConfigs.getByName("debug")
     }
