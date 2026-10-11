@@ -18,6 +18,7 @@ import kotlin.math.PI
 class MapController internal constructor(
   private val map: MapLibreMap,
   terrainLoad: TerrainLoad = TerrainLoad.BALANCED,
+  tileLodPitchThresholdRadians: Double = TILE_LOD_PITCH_THRESHOLD_RADIANS,
 ) {
 
   /**
@@ -51,7 +52,7 @@ class MapController internal constructor(
     // the heuristic is permanently engaged and most of the view is drawn from coarser
     // tiles: a soft basemap and hillshading too blunt to read as relief. Terrain detail
     // is the whole point here, so the reduction is switched off.
-    map.tileLodPitchThreshold = TILE_LOD_PITCH_THRESHOLD_RADIANS
+    map.tileLodPitchThreshold = tileLodPitchThresholdRadians
     applyTerrainLoadBudget(map, terrainLoad)
   }
 
@@ -301,16 +302,31 @@ internal const val NO_COORDINATES = "\"coordinates\":[]"
 internal const val NO_TRACK = """{"type":"FeatureCollection","features":[]}"""
 
 /**
- * Tile level of detail is never reduced.
+ * Tile level of detail is never reduced, at any pitch.
  *
  * MapLibre lowers the tile LOD away from the camera viewpoint above this pitch, which
- * saves tile requests on shallow, wide views. The SDK default is 60 degrees — and
- * [CameraOptions.CINEMATIC_TILT] is 60 degrees too, as is the flyover's travel tilt — so
- * leaving the default in place means the pitched camera this app renders *with* is always
- * over the line. `pi` is the value the MapLibre API documents as "LOD calculation is never
- * performed", which is what a map whose entire purpose is legible terrain needs.
+ * saves tile requests on shallow, wide views. `pi` is the value the MapLibre API documents as
+ * "LOD calculation is never performed", so the reduction is off entirely and every tile on
+ * screen is drawn at full detail.
+ *
+ * That is what a map whose purpose is legible terrain wants, and it is the default here: the
+ * SDK's own default is 60 degrees, which is also [CameraOptions.CINEMATIC_TILT], so leaving it
+ * alone means the pitched camera this app renders with is permanently over the line.
+ *
+ * It is the wrong answer for a camera that never stops moving, though. The point of the
+ * reduction is to spend less on the parts of a wide view nobody is looking at, and a flyover is
+ * nothing but those parts going past. [CINEMATIC_TILE_LOD_PITCH_RADIANS] is what it asks for.
  */
 internal val TILE_LOD_PITCH_THRESHOLD_RADIANS: Double = PI
+
+/**
+ * The pitch above which the flyover lets MapLibre thin detail away from the centre.
+ *
+ * Deliberately below the travelling tilt of sixty degrees, so the reduction is engaged for the
+ * phase that is actually moving. The intro and outro sit under it and keep full detail, which is
+ * right — those are the shots being looked at.
+ */
+const val CINEMATIC_TILE_LOD_PITCH_RADIANS: Double = 45.0 * PI / 180.0
 
 /**
  * How long an establishing shot takes to settle.

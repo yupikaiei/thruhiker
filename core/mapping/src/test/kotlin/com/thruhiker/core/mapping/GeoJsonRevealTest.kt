@@ -104,6 +104,65 @@ class GeoJsonRevealTest {
   }
 
   /**
+   * Thinning is only allowed to simplify the shape *between* the ends. The line still has to stop
+   * where the walker is — that is the point the camera is centred on and the reveal is measured
+   * to — so the last coordinate is compared against the unthinned reveal at every fraction.
+   */
+  @Test
+  fun `a thinned reveal ends in the same place and draws less`() {
+    val track = straightTrack()
+    val exact = GeoJsonEncoder.Reveal.of(track)
+    val thinned = GeoJsonEncoder.Reveal.of(track, minimumSpacingMeters = 2_500.0)
+
+    for (step in 0..20) {
+      val fraction = step / 20.0
+      val reference = positions(exact.encode(fraction)).mapNotNull { it.lastOrNull() }
+      val drawn = positions(thinned.encode(fraction)).mapNotNull { it.lastOrNull() }
+
+      assertEquals("line count at $fraction", reference.size, drawn.size)
+      for ((index, end) in drawn.withIndex()) {
+        assertEquals(
+          "the drawn line ends somewhere else at $fraction",
+          0.0,
+          Geodesic.distanceMeters(end, reference[index]),
+          0.01,
+        )
+      }
+      assertTrue(
+        "thinning drew more points at $fraction",
+        positions(thinned.encode(fraction)).sumOf { it.size } <=
+          positions(exact.encode(fraction)).sumOf { it.size },
+      )
+    }
+  }
+
+  /**
+   * The point of thinning is that the document stops depending on how densely the route was
+   * recorded: this pins the bound to the route's length over the spacing, so a route recorded a
+   * metre apart cannot make the flight upload four times as much as one recorded four metres
+   * apart.
+   */
+  @Test
+  fun `thinning bounds the drawn points by the route's length`() {
+    val recorded = 4_000
+    val legMeters = 2.0
+    var position = origin
+    val points = ArrayList<TrackPoint>(recorded)
+    repeat(recorded) {
+      points.add(TrackPoint(position))
+      position = north(position, legMeters)
+    }
+    val routeMeters = recorded * legMeters
+
+    val drawn = positions(GeoJsonEncoder.Reveal.of(Track.of(points), 20.0).encode(1.0))
+      .sumOf { it.size }
+
+    val bound = (routeMeters / 20.0 * 1.1).toInt()
+    assertTrue("drew $drawn points for ${routeMeters.toInt()} m of route", drawn <= bound)
+    assertTrue("thinning did nothing: $drawn of $recorded", drawn < recorded / 4)
+  }
+
+  /**
    * The map decides whether to draw the route or hide it by looking for this in the document,
    * so an empty reveal that does not contain it leaves the previous frame's geometry on screen.
    */

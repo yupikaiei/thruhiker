@@ -43,6 +43,7 @@ import com.thruhiker.core.geo.TrackStats
 import com.thruhiker.core.geo.TrackStatsCalculator
 import com.thruhiker.core.gpx.GpxParser
 import com.thruhiker.core.gpx.GpxWaypoint
+import com.thruhiker.core.mapping.CINEMATIC_TILE_LOD_PITCH_RADIANS
 import com.thruhiker.core.mapping.GeoJsonEncoder
 import com.thruhiker.core.mapping.MapController
 import com.thruhiker.core.mapping.TerrainLoad
@@ -100,6 +101,21 @@ private const val HUD_INTERVAL_NANOS = 100_000_000L
  * allows, so nothing about the way it looks changes.
  */
 private const val REVEAL_INTERVAL_NANOS = 50_000_000L
+
+/**
+ * Spacing the flight's revealed geometry is thinned to.
+ *
+ * Every reveal re-uploads the whole drawn route, so its size is the flight's per-step cost,
+ * and that cost lands on the render thread as a geometry parse. Thinning bounds the document by
+ * the route's *length* rather than by how densely it was recorded: a four-thousand-point
+ * recording and a forty-thousand-point one of the same route upload the same thing.
+ *
+ * Twenty metres because the travelling camera is at zoom 13.5, where twenty metres is a couple
+ * of pixels, and because the planner's gradient line already draws at thirty for the same
+ * reason. Only the drawn points are thinned — the distances behind the reveal are measured on
+ * every point — so the line still ends exactly where the walker is.
+ */
+private const val FLIGHT_REVEAL_SPACING_METERS = 20.0
 
 /**
  * Reveal granularity, which is a bandwidth decision rather than a visual one.
@@ -316,6 +332,10 @@ fun FlyoverScreen(modifier: Modifier = Modifier) {
       // The one screen whose camera never stops moving, so the one screen that wants terrain
       // built in small pieces rather than all at once. See TerrainLoad.
       terrainLoad = TerrainLoad.PERFORMANCE,
+      // And the one screen that should let MapLibre thin the tiles it is not looking at. A still
+      // map wants every tile at full detail; a moving one is spending most of its frame on
+      // ground that is already off the edge of the screen.
+      tileLodPitchThresholdRadians = CINEMATIC_TILE_LOD_PITCH_RADIANS,
       onMapReady = { controller = it },
       modifier = Modifier.fillMaxSize(),
     )
@@ -601,7 +621,7 @@ private fun analyse(
   name = name,
   track = track,
   geoJson = GeoJsonEncoder.encode(track),
-  reveal = GeoJsonEncoder.Reveal.of(track),
+  reveal = GeoJsonEncoder.Reveal.of(track, FLIGHT_REVEAL_SPACING_METERS),
   waypointsGeoJson = GeoJsonEncoder.encodeWaypoints(
     waypoints.map { GeoJsonEncoder.WaypointMarker(it.point.position, it.name) },
   ),

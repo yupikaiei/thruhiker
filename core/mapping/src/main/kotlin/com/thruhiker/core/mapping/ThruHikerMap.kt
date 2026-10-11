@@ -42,6 +42,11 @@ fun ThruHikerMap(
   terrainExaggeration: Double = MapStyleFactory.DEFAULT_EXAGGERATION,
   /** How much terrain building a frame may schedule. See [TerrainLoad]. */
   terrainLoad: TerrainLoad = TerrainLoad.BALANCED,
+  /**
+   * The pitch above which MapLibre may thin tile detail away from the centre of the view.
+   * Defaults to never, which is what a still map wants; see [CINEMATIC_TILE_LOD_PITCH_RADIANS].
+   */
+  tileLodPitchThresholdRadians: Double = TILE_LOD_PITCH_THRESHOLD_RADIANS,
   trackGeoJson: String? = null,
   gradientGeoJson: String? = null,
   waypointsGeoJson: String? = null,
@@ -93,7 +98,7 @@ fun ThruHikerMap(
       if (!requestState.requested) {
         requestState.requested = true
         view.getMapAsync { map ->
-          val newController = MapController(map, terrainLoad)
+          val newController = MapController(map, terrainLoad, tileLodPitchThresholdRadians)
           controller = newController
           onMapReady(newController)
         }

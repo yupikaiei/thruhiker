@@ -85,6 +85,7 @@ object GeoJsonEncoder {
   class Reveal private constructor(
     private val segments: List<Prepared>,
     private val totalMeters: Double,
+    private val spacingMeters: Double,
   ) {
 
     private class Prepared(
@@ -146,6 +147,12 @@ object GeoJsonEncoder {
       appendCoordinate(builder, segment.points.first())
       var coordinates = 1
 
+      // Metres since the last point actually written. Points closer together than the spacing
+      // are dropped, which is what bounds the size of this document by the route's length
+      // rather than by how densely it was recorded. At a spacing of zero nothing is dropped, so
+      // this walk emits exactly the points the reference implementation does.
+      var sinceDrawn = 0.0
+
       for (index in 1 until segment.points.size) {
         val travelled = segment.cumulative[index - 1]
         val legLength = segment.cumulative[index] - travelled
@@ -153,12 +160,18 @@ object GeoJsonEncoder {
         if (legLength <= 0.0) continue
 
         if (segment.cumulative[index] <= budget) {
+          sinceDrawn += legLength
+          if (sinceDrawn < spacingMeters) continue
           builder.append(',')
           appendCoordinate(builder, segment.points[index])
           coordinates++
+          sinceDrawn = 0.0
           continue
         }
 
+        // The end of the drawn line is interpolated on the exact leg the route reaches the
+        // budget inside, so the line ends where the walker is rather than at the last point
+        // that survived thinning.
         val cut = Geodesic.interpolate(
           segment.points[index - 1],
           segment.points[index],
@@ -180,8 +193,18 @@ object GeoJsonEncoder {
       private const val NO_COORDINATES_GEOMETRY =
         """{"type":"MultiLineString","coordinates":[]}"""
 
-      /** Measures the whole route and renders each segment's coordinates, once. */
-      fun of(track: Track): Reveal {
+      /**
+       * Measures the whole route, renders each segment's coordinates, once.
+       *
+       * [minimumSpacingMeters] thins the *drawn* points and nothing else: the distances are
+       * measured on every point, so the reveal still ends exactly where the route reaches the
+       * revealed distance, and only the shape between the ends is simplified. It exists because
+       * this document is re-uploaded through the whole flight, so its size is the flight's cost:
+       * at a spacing of zero a ten-thousand-point recording uploads ten thousand coordinates,
+       * and at twenty metres it uploads one per twenty metres of route, whatever the recording
+       * did. At the zoom a flyover travels at, twenty metres is a couple of pixels.
+       */
+      fun of(track: Track, minimumSpacingMeters: Double = 0.0): Reveal {
         val prepared = track.segments.mapNotNull { segment ->
           if (segment.isEmpty) return@mapNotNull null
 
@@ -193,15 +216,22 @@ object GeoJsonEncoder {
           }
 
           val text = StringBuilder(points.size * 22)
-          for ((index, position) in points.withIndex()) {
-            if (index > 0) text.append(',')
-            appendCoordinate(text, position)
+          appendCoordinate(text, points.first())
+          var sinceDrawn = 0.0
+          for (index in 1 until points.size) {
+            sinceDrawn += cumulative[index] - cumulative[index - 1]
+            // The last point is always drawn, so a thinned segment still reaches its own end
+            // rather than stopping at the last point that survived thinning.
+            if (index < points.size - 1 && sinceDrawn < minimumSpacingMeters) continue
+            text.append(',')
+            appendCoordinate(text, points[index])
+            sinceDrawn = 0.0
           }
 
           Prepared(points, cumulative, text.toString())
         }
 
-        return Reveal(prepared, prepared.sumOf { it.lengthMeters })
+        return Reveal(prepared, prepared.sumOf { it.lengthMeters }, minimumSpacingMeters)
       }
     }
   }
