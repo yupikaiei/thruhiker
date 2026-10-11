@@ -40,6 +40,8 @@ fun ThruHikerMap(
   modifier: Modifier = Modifier,
   styleUrl: String = MapStyleFactory.OPEN_FREE_MAP_STYLE_URL,
   terrainExaggeration: Double = MapStyleFactory.DEFAULT_EXAGGERATION,
+  /** How much terrain building a frame may schedule. See [TerrainLoad]. */
+  terrainLoad: TerrainLoad = TerrainLoad.BALANCED,
   trackGeoJson: String? = null,
   gradientGeoJson: String? = null,
   waypointsGeoJson: String? = null,
@@ -91,7 +93,7 @@ fun ThruHikerMap(
       if (!requestState.requested) {
         requestState.requested = true
         view.getMapAsync { map ->
-          val newController = MapController(map)
+          val newController = MapController(map, terrainLoad)
           controller = newController
           onMapReady(newController)
         }

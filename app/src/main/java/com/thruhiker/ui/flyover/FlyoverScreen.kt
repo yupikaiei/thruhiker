@@ -45,6 +45,7 @@ import com.thruhiker.core.gpx.GpxParser
 import com.thruhiker.core.gpx.GpxWaypoint
 import com.thruhiker.core.mapping.GeoJsonEncoder
 import com.thruhiker.core.mapping.MapController
+import com.thruhiker.core.mapping.TerrainLoad
 import com.thruhiker.core.mapping.ThruHikerMap
 import com.thruhiker.core.mapping.TrackFraming
 import com.thruhiker.core.model.CameraOptions
@@ -89,6 +90,18 @@ private val DEFAULT_CAMERA = CameraOptions(
 private const val HUD_INTERVAL_NANOS = 100_000_000L
 
 /**
+ * Least time between two route reveals.
+ *
+ * The reveal advances by a fraction of the route rather than at a rate, so a short flight over
+ * a long route asks for reveals faster than a long one does — thirty a second in the worst
+ * case. Each one costs a geometry parse on the render thread, which is work the frame cannot
+ * start until it is done, so the rate is capped instead of left to the flight's duration. At
+ * twenty a second a minute-long flight still reveals in more steps than the fraction rule
+ * allows, so nothing about the way it looks changes.
+ */
+private const val REVEAL_INTERVAL_NANOS = 50_000_000L
+
+/**
  * Reveal granularity, which is a bandwidth decision rather than a visual one.
  *
  * Every step re-encodes the geometry walked so far and uploads it to the map, so
@@ -119,6 +132,11 @@ private data class ImportedRoute(
   val name: String?,
   val track: Track,
   val geoJson: String,
+  /**
+   * The same route, prepared for the many partial encodes a flight asks for. Built here, on
+   * the background thread that does the rest of the import, rather than per frame.
+   */
+  val reveal: GeoJsonEncoder.Reveal,
   val waypointsGeoJson: String,
   val stats: TrackStats,
   val walkingSeconds: Double,
@@ -168,7 +186,7 @@ fun FlyoverScreen(modifier: Modifier = Modifier) {
       flightMillis = clamped
       // The route is set before the camera moves, so that the frame the camera move
       // renders is the one with the new geometry already in it.
-      controller?.updateTrack(GeoJsonEncoder.encode(active.track, frame.revealedFraction))
+      controller?.updateTrack(active.reveal.encode(frame.revealedFraction))
       controller?.moveCamera(frame.camera)
       hud = FlightHud(frame.progress, frame.elevationMeters, frame.distanceAlongTrackMeters)
       finished = clamped >= rig.durationMillis
@@ -234,6 +252,7 @@ fun FlyoverScreen(modifier: Modifier = Modifier) {
     var elapsed = flightMillis
     var previousFrameNanos = withFrameNanos { it }
     var previousHudNanos = previousFrameNanos
+    var previousRevealNanos = previousFrameNanos
     var appliedReveal = rig.frameAt(elapsed).revealedFraction
 
     while (true) {
@@ -243,7 +262,7 @@ fun FlyoverScreen(modifier: Modifier = Modifier) {
 
       if (elapsed >= rig.durationMillis) {
         val last = rig.frameAt(rig.durationMillis)
-        controller?.updateTrack(GeoJsonEncoder.encode(active.track, 1.0))
+        controller?.updateTrack(active.reveal.encode(1.0))
         controller?.moveCamera(last.camera)
         flightMillis = rig.durationMillis
         hud = FlightHud(1.0, last.elevationMeters, last.distanceAlongTrackMeters)
@@ -254,9 +273,12 @@ fun FlyoverScreen(modifier: Modifier = Modifier) {
 
       val frame = rig.frameAt(elapsed)
 
-      if (abs(frame.revealedFraction - appliedReveal) >= revealStep) {
+      if (abs(frame.revealedFraction - appliedReveal) >= revealStep &&
+        now - previousRevealNanos >= REVEAL_INTERVAL_NANOS
+      ) {
         appliedReveal = frame.revealedFraction
-        controller?.updateTrack(GeoJsonEncoder.encode(active.track, frame.revealedFraction))
+        previousRevealNanos = now
+        controller?.updateTrack(active.reveal.encode(frame.revealedFraction))
       }
       controller?.moveCamera(frame.camera)
 
@@ -291,6 +313,9 @@ fun FlyoverScreen(modifier: Modifier = Modifier) {
       camera = route?.camera ?: DEFAULT_CAMERA,
       trackGeoJson = route?.geoJson,
       waypointsGeoJson = route?.waypointsGeoJson ?: GeoJsonEncoder.EMPTY_COLLECTION,
+      // The one screen whose camera never stops moving, so the one screen that wants terrain
+      // built in small pieces rather than all at once. See TerrainLoad.
+      terrainLoad = TerrainLoad.PERFORMANCE,
       onMapReady = { controller = it },
       modifier = Modifier.fillMaxSize(),
     )
@@ -397,7 +422,10 @@ private fun RouteCard(
         verticalAlignment = Alignment.CenterVertically,
       ) {
         Text(
-          text = route?.name ?: stringResource(R.string.route_none_title),
+          // A route with no name of its own — one handed over from the planner, or a file with
+          // no <name> — used to fall back to "No route loaded", which the statistics directly
+          // underneath then contradicted.
+          text = route?.name ?: stringResource(R.string.route_unnamed_title),
           style = MaterialTheme.typography.titleMedium,
           modifier = Modifier.weight(1f),
         )
@@ -573,6 +601,7 @@ private fun analyse(
   name = name,
   track = track,
   geoJson = GeoJsonEncoder.encode(track),
+  reveal = GeoJsonEncoder.Reveal.of(track),
   waypointsGeoJson = GeoJsonEncoder.encodeWaypoints(
     waypoints.map { GeoJsonEncoder.WaypointMarker(it.point.position, it.name) },
   ),

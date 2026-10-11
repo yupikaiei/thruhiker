@@ -62,6 +62,60 @@ class GeoJsonRevealTest {
   private fun drawnLengthMeters(geoJson: String): Double =
     positions(geoJson).sumOf { path -> Geodesic.pathLengthMeters(path) }
 
+  /**
+   * The prepared reveal is a second implementation of the same rules, written for speed, so it
+   * is checked against the readable one rather than trusted. Fractions are walked finely, and
+   * both fixtures are used, because the cases that are easy to get wrong are a fraction landing
+   * exactly on a leg end, one landing just either side of it, and a gap in the middle.
+   */
+  @Test
+  fun `the prepared reveal draws exactly what the reference reveal draws`() {
+    for (track in listOf(straightTrack(), gappedTrack())) {
+      val reveal = GeoJsonEncoder.Reveal.of(track)
+
+      for (step in 0..40) {
+        val fraction = step / 40.0
+        assertEquals(
+          "at $fraction",
+          positions(GeoJsonEncoder.encode(track, fraction)),
+          positions(reveal.encode(fraction)),
+        )
+      }
+    }
+  }
+
+  /** Fractions a fraction either side of a segment boundary, where the cut logic lives. */
+  @Test
+  fun `the prepared reveal agrees at the segment boundaries`() {
+    val track = gappedTrack()
+    val reveal = GeoJsonEncoder.Reveal.of(track)
+    val firstSegment = Geodesic.pathLengthMeters(track.segments.first().positions)
+    val total = track.segments.sumOf { Geodesic.pathLengthMeters(it.positions) }
+
+    for (step in -4..4) {
+      val fraction = (firstSegment + step * 10.0) / total
+      if (fraction < 0.0 || fraction > 1.0) continue
+      assertEquals(
+        "at $fraction",
+        positions(GeoJsonEncoder.encode(track, fraction)),
+        positions(reveal.encode(fraction)),
+      )
+    }
+  }
+
+  /**
+   * The map decides whether to draw the route or hide it by looking for this in the document,
+   * so an empty reveal that does not contain it leaves the previous frame's geometry on screen.
+   */
+  @Test
+  fun `an empty prepared reveal still reads as empty`() {
+    val reveal = GeoJsonEncoder.Reveal.of(straightTrack())
+
+    assertTrue(reveal.encode(0.0).contains(NO_COORDINATES))
+    assertTrue(reveal.encode(-1.0).contains(NO_COORDINATES))
+    assertEquals(reveal.encode(1.0), reveal.encode(2.0))
+  }
+
   @Test
   fun `nothing is drawn before the flight starts`() {
     val geoJson = GeoJsonEncoder.encode(straightTrack(), revealedFraction = 0.0)

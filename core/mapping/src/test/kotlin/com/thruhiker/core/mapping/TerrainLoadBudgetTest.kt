@@ -27,11 +27,13 @@ class TerrainLoadBudgetTest {
     }
 
     assertNotNull("the terrain SDK must expose $TERRAIN_LOAD_MODE_SETTER", setter)
-    assertNotNull(
-      "the terrain SDK must have a $TERRAIN_LOAD_MODE_BALANCED mode",
-      modeClass.enumConstants?.firstOrNull { constant ->
-        (constant as Enum<*>).name == TERRAIN_LOAD_MODE_BALANCED
-      },
-    )
+    for (mode in TerrainLoad.entries) {
+      assertNotNull(
+        "the terrain SDK must have a ${mode.sdkName} mode",
+        modeClass.enumConstants?.firstOrNull { constant ->
+          (constant as Enum<*>).name == mode.sdkName
+        },
+      )
+    }
   }
 }

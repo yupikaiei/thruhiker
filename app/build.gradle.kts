@@ -147,6 +147,9 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.kotlinx.coroutines.test)
+  // Android ships a stubbed org.json that throws on every call, so anything reaching
+  // GeoJsonEncoder needs the real implementation to be exercised on the JVM.
+  testImplementation(libs.json)
 
   androidTestImplementation(libs.androidx.compose.ui.test.junit4)
   androidTestImplementation(libs.androidx.test.core)

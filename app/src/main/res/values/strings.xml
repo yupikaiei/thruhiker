@@ -13,7 +13,7 @@
     <!-- Route import -->
     <string name="import_gpx">Import GPX</string>
     <string name="import_gpx_another">Import another</string>
-    <string name="route_none_title">No route loaded</string>
+    <string name="route_unnamed_title">Unnamed route</string>
     <string name="route_none_body">Import a GPX file to draw it over the terrain.</string>
     <string name="route_error_no_track">That file has no track points in it.</string>
     <string name="route_error_unreadable">Could not read that file.</string>

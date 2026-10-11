@@ -9,6 +9,25 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.math.round
 
+/** Six decimal places, about 11 cm: finer than a phone screen shows. */
+private const val COORDINATE_SCALE = 1_000_000.0
+
+/**
+ * Writes one `[lon,lat]` pair, rounded.
+ *
+ * Deliberately not `String.format`, which is locale-dependent and would write a decimal comma
+ * wherever the phone is set to one; `StringBuilder.append(Double)` is locale-independent and
+ * several times faster besides. It is the whole per-coordinate cost of a reveal, so it is the
+ * one place in this file where the choice matters more than the readability.
+ */
+private fun appendCoordinate(builder: StringBuilder, position: LatLng) {
+  builder.append('[')
+  builder.append(round(position.longitude * COORDINATE_SCALE) / COORDINATE_SCALE)
+  builder.append(',')
+  builder.append(round(position.latitude * COORDINATE_SCALE) / COORDINATE_SCALE)
+  builder.append(']')
+}
+
 /**
  * Converts a track into GeoJSON for the map, optionally drawing only part of it.
  *
@@ -25,9 +44,6 @@ import kotlin.math.round
  * the one place a transposition bug can hide without failing to compile.
  */
 object GeoJsonEncoder {
-
-  private const val COORDINATE_DECIMALS = 6
-  private const val COORDINATE_SCALE = 1_000_000.0
 
   /**
    * Leg length used when the route is coloured by gradient.
@@ -48,6 +64,147 @@ object GeoJsonEncoder {
     val position: LatLng,
     val label: String? = null,
   )
+
+  /**
+   * A route prepared for repeated partial encoding.
+   *
+   * The flyover re-encodes the revealed part of its route several times a second, and encoding
+   * it from a [Track] re-derives what cannot have changed: the length of every leg, the total,
+   * and a JSON tree for the whole revealed geometry. Measured on a 10,000-point recording, one
+   * half-revealed encode cost 21 ms — inside the frame callback that drives the camera, so every
+   * reveal step dropped a frame or two, several times a second, for the length of the flight.
+   *
+   * Prepared once, a reveal costs one pass over the coordinates it draws: no geodesics, no JSON
+   * tree, no boxing. A segment that is already fully revealed is appended as the text it had
+   * anyway. What is left is proportional to what is *newly* revealed rather than to the route.
+   *
+   * This is a second implementation of [encode]'s reveal rules rather than a wrapper around it,
+   * which is the only way to check a fast one against a readable one. `GeoJsonRevealTest`
+   * compares the two fraction by fraction, on a track with a gap in the middle.
+   */
+  class Reveal private constructor(
+    private val segments: List<Prepared>,
+    private val totalMeters: Double,
+  ) {
+
+    private class Prepared(
+      val points: List<LatLng>,
+      /** Metres from the start of the segment to each point. The first is always zero. */
+      val cumulative: DoubleArray,
+      /** The whole segment's coordinate text, so a revealed segment is a copy. */
+      val text: String,
+    ) {
+      val lengthMeters: Double get() = cumulative[cumulative.size - 1]
+    }
+
+    /** The geometry covering the first [revealedFraction] of the route's length. */
+    fun encode(revealedFraction: Double): String {
+      val budget = totalMeters * revealedFraction.coerceIn(0.0, 1.0)
+      val lines = if (budget <= 0.0) emptyList() else linesWithin(budget)
+
+      val builder = StringBuilder(HEAD.length + 64)
+      builder.append(HEAD)
+      when (lines.size) {
+        // The empty case has to look exactly like this: MapController decides whether the
+        // route is drawn or hidden by looking for `"coordinates":[]` in the document.
+        0 -> builder.append(NO_COORDINATES_GEOMETRY)
+        1 -> builder.append(LINE_START).append(lines[0]).append("]}")
+        else -> {
+          builder.append(MULTI_LINE_START)
+          for ((index, line) in lines.withIndex()) {
+            if (index > 0) builder.append(',')
+            builder.append('[').append(line).append(']')
+          }
+          builder.append("]}")
+        }
+      }
+      return builder.append('}').toString()
+    }
+
+    private fun linesWithin(budget: Double): List<String> {
+      val lines = ArrayList<String>(segments.size)
+      var remaining = budget
+
+      for (segment in segments) {
+        if (segment.lengthMeters <= remaining) {
+          lines.add(segment.text)
+          remaining -= segment.lengthMeters
+        } else {
+          partialLine(segment, remaining)?.let(lines::add)
+          return lines
+        }
+      }
+      return lines
+    }
+
+    /** The first [budget] metres of one segment, or null when that is not a line. */
+    private fun partialLine(segment: Prepared, budget: Double): String? {
+      if (segment.points.size < 2) return null
+      if (budget <= 0.0) return null
+
+      val builder = StringBuilder(512)
+      appendCoordinate(builder, segment.points.first())
+      var coordinates = 1
+
+      for (index in 1 until segment.points.size) {
+        val travelled = segment.cumulative[index - 1]
+        val legLength = segment.cumulative[index] - travelled
+        // A repeated point is not a leg: it draws nothing and there is nothing to cut.
+        if (legLength <= 0.0) continue
+
+        if (segment.cumulative[index] <= budget) {
+          builder.append(',')
+          appendCoordinate(builder, segment.points[index])
+          coordinates++
+          continue
+        }
+
+        val cut = Geodesic.interpolate(
+          segment.points[index - 1],
+          segment.points[index],
+          (budget - travelled) / legLength,
+        )
+        builder.append(',')
+        appendCoordinate(builder, cut)
+        coordinates++
+        break
+      }
+
+      return if (coordinates >= 2) builder.toString() else null
+    }
+
+    companion object {
+      private const val HEAD = """{"type":"Feature","properties":{},"geometry":"""
+      private const val LINE_START = """{"type":"LineString","coordinates":["""
+      private const val MULTI_LINE_START = """{"type":"MultiLineString","coordinates":["""
+      private const val NO_COORDINATES_GEOMETRY =
+        """{"type":"MultiLineString","coordinates":[]}"""
+
+      /** Measures the whole route and renders each segment's coordinates, once. */
+      fun of(track: Track): Reveal {
+        val prepared = track.segments.mapNotNull { segment ->
+          if (segment.isEmpty) return@mapNotNull null
+
+          val points = segment.points.map { it.position }
+          val cumulative = DoubleArray(points.size)
+          for (index in 1 until points.size) {
+            cumulative[index] = cumulative[index - 1] +
+              Geodesic.distanceMeters(points[index - 1], points[index])
+          }
+
+          val text = StringBuilder(points.size * 22)
+          for ((index, position) in points.withIndex()) {
+            if (index > 0) text.append(',')
+            appendCoordinate(text, position)
+          }
+
+          Prepared(points, cumulative, text.toString())
+        }
+
+        return Reveal(prepared, prepared.sumOf { it.lengthMeters })
+      }
+    }
+  }
 
   fun encode(track: Track, revealedFraction: Double = 1.0): String {
     val fraction = revealedFraction.coerceIn(0.0, 1.0)

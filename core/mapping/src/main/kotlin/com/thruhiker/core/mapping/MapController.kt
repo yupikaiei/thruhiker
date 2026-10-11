@@ -15,7 +15,10 @@ import kotlin.math.PI
  * swapping the rendering engine later, or adding an offline-only variant, does
  * not ripple out into the feature modules.
  */
-class MapController internal constructor(private val map: MapLibreMap) {
+class MapController internal constructor(
+  private val map: MapLibreMap,
+  terrainLoad: TerrainLoad = TerrainLoad.BALANCED,
+) {
 
   /**
    * Pixels of the map view covered by something else, in left, top, right, bottom order.
@@ -49,7 +52,7 @@ class MapController internal constructor(private val map: MapLibreMap) {
     // tiles: a soft basemap and hillshading too blunt to read as relief. Terrain detail
     // is the whole point here, so the reduction is switched off.
     map.tileLodPitchThreshold = TILE_LOD_PITCH_THRESHOLD_RADIANS
-    applyTerrainLoadBudget(map)
+    applyTerrainLoadBudget(map, terrainLoad)
   }
 
   internal fun applyStyle(styleJson: String) {
@@ -271,21 +274,20 @@ internal fun cameraPadding(left: Int, top: Int, right: Int, bottom: Int): Double
  * that reason, and a missing method is left as a no-op rather than a failure: the setting is
  * a performance hint, not something correctness depends on.
  */
-private fun applyTerrainLoadBudget(map: MapLibreMap) {
+private fun applyTerrainLoadBudget(map: MapLibreMap, mode: TerrainLoad) {
   val modeClass = runCatching { Class.forName(TERRAIN_LOAD_MODE_CLASS) }.getOrNull() ?: return
-  val balanced = modeClass.enumConstants
-    ?.firstOrNull { constant -> (constant as Enum<*>).name == TERRAIN_LOAD_MODE_BALANCED }
+  val constant = modeClass.enumConstants
+    ?.firstOrNull { candidate -> (candidate as Enum<*>).name == mode.sdkName }
     ?: return
   runCatching {
     MapLibreMap::class.java
       .getMethod(TERRAIN_LOAD_MODE_SETTER, modeClass)
-      .invoke(map, balanced)
+      .invoke(map, constant)
   }
 }
 
 internal const val TERRAIN_LOAD_MODE_CLASS = "org.maplibre.android.maps.TerrainLoadMode"
 internal const val TERRAIN_LOAD_MODE_SETTER = "setTerrainLoadMode"
-internal const val TERRAIN_LOAD_MODE_BALANCED = "BALANCED"
 
 /**
  * An encoded reveal of nothing: a geometry with no coordinates.
